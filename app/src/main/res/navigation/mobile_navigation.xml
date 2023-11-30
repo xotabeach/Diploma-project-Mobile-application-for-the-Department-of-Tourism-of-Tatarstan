@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.mobile_tour.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_question"
+        android:name="com.example.mobile_tour.ui.question.QuestionFragment"
+        android:label="@string/title_question"
+        tools:layout="@layout/fragment_question" />
+
+    <fragment
+        android:id="@+id/navigation_create_route"
+        android:name="com.example.mobile_tour.ui.create_route.Create_routeFragment"
+        android:label="@string/title_create_route"
+        tools:layout="@layout/fragment_create_route" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.mobile_tour.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_right_bar"
+        android:name="com.example.mobile_tour.ui.right_bar.RightBarFragment"
+        android:label="@string/title_right_bar"
+        tools:layout="@layout/fragment_right_bar" />
+
+</navigation>
