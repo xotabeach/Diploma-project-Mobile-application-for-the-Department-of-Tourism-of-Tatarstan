@@ -12,7 +12,7 @@
         android:topLeftRadius="5dp"
         android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="@drawable/rounded_corner_back"
         android:translationY="-40px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

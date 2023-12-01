@@ -6,4 +6,5 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="light_gray">#EAEAEA</color>
+    <color name="nav_gray">#F1F1F1</color>
 </resources>
