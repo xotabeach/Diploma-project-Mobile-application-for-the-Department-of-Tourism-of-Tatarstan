@@ -25,8 +25,7 @@ public class RightBarFragment extends Fragment {
         binding = FragmentRightBarBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        rightBarViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 
