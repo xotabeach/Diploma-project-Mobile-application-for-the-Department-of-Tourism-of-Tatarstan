@@ -1,5 +1,6 @@
 package com.example.mobile_tour;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Build;
 
@@ -14,6 +15,8 @@ import androidx.appcompat.widget.SearchView;
 
 
 import com.example.mobile_tour.R;
+import com.example.mobile_tour.ui.login.LoginActivity;
+import com.example.mobile_tour.ui.splash_screen.SplashScreenActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -57,13 +60,21 @@ public class MainActivity extends AppCompatActivity {
         //
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        hideSystemBars();
+
+
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
+
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_question, R.id.navigation_create_route , R.id.navigation_profile , R.id.navigation_right_bar , R.id.searchView)
+                R.id.navigation_home, R.id.navigation_question, R.id.navigation_create_route , R.id.navigation_profile , R.id.navigation_right_bar , R.id.searchView ,R.id.activity_login)
                 .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        hideSystemBars();
+
     }
 
 

@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/travelers_pana"
+        android:width="400dp"
+        android:height="400dp"
+        android:left="0dp"
+        />
+</layer-list>

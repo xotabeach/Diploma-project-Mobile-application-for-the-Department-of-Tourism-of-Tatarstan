@@ -35,4 +35,10 @@
         android:label="@string/title_right_bar"
         tools:layout="@layout/fragment_right_bar" />
 
+    <fragment
+        android:id="@+id/activity_login"
+        android:name="com.example.mobile_tour.ui.login.LoginActivity"
+        android:label="Login Activity"
+        tools:layout="@layout/activity_login"
+        />
 </navigation>
