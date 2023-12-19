@@ -1,0 +1,7 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/lock"
+        android:width="18dp"
+        android:height="18dp"
+        android:left="18dp"  />
+</layer-list>
