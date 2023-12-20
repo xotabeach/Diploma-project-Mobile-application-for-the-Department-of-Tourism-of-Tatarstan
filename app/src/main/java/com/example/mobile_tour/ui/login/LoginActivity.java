@@ -1,10 +1,13 @@
 package com.example.mobile_tour.ui.login;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.app.Activity;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Point;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,8 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
@@ -72,10 +77,115 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
+        final EditText nameEditText = binding.name;
         final Button loginButton = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
+        final Button registerButton = binding.textView2;
+        final TextView welcomeText =  binding.textView;
+        final Button buttonBack = binding.buttonback;
+        final TextView  regText = binding.textView5;
 
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int screenWidth = size.x;
+        int screenHeight = size.y;
+        nameEditText.setAlpha(0);
+        buttonBack.setAlpha(0);
+        regText.setAlpha(0);
+
+        final float originalUsernameY = usernameEditText.getY();
+        final float originalWelcomeTextY = welcomeText.getY();
+        final float originalNameY = nameEditText.getY();
+        final float originalRegTextY = regText.getY();
+
+        final float[] data = { };
+        //int name_data = (int) nameEditText.getY();
+        //int welc_data = (int) welcomeText.getY();
+        //int us_data = usernameEditText.getY();
+
+
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
+                float user1Y = usernameEditText.getY();
+
+                /*data[0] = user1Y;
+                data[1] = (float) nameEditText.getY();
+                data[2] = (float) welcomeText.getY();*/
+
+                ObjectAnimator usernameAnim = ObjectAnimator.ofFloat(usernameEditText, "y", user1Y, (float) (user1Y+(size.y*0.02)));
+                usernameAnim.setDuration(1000);
+                usernameAnim.start();
+
+
+                ObjectAnimator welcomeTextAnim = ObjectAnimator.ofFloat(welcomeText, "y", welcomeText.getY(), (float)(welcomeText.getY()-(size.y*0.22)));
+                welcomeTextAnim.setDuration(1000);
+                welcomeTextAnim.start();
+
+
+                PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
+                PropertyValuesHolder yPosition = PropertyValuesHolder.ofFloat("y", nameEditText.getY(), nameEditText.getY() + (size.y * 0.024f));
+
+                ObjectAnimator combinedAnim = ObjectAnimator.ofPropertyValuesHolder(nameEditText, alpha, yPosition);
+                combinedAnim.setDuration(1000);
+                combinedAnim.start();
+
+                PropertyValuesHolder alphaRegText = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
+                PropertyValuesHolder yPositionRegText = PropertyValuesHolder.ofFloat("y", nameEditText.getY(), nameEditText.getY() - (size.y * 0.028f));
+
+                ObjectAnimator combinedAnimRegText = ObjectAnimator.ofPropertyValuesHolder(regText, alphaRegText, yPositionRegText);
+                combinedAnimRegText.setDuration(1000);
+                combinedAnimRegText.start();
+                //usernameEditText.setY((float) (user1Y+(size.y*0.02)));
+                //passwordEditText.setY((float) (passw1Y+(size.y*0.1)));
+                //welcomeText.setY((float)(welcomeText.getY()-(size.y*0.23)));
+                registerButton.setVisibility(View.GONE);
+                buttonBack.setAlpha(1);
+            }
+        });
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                /*ObjectAnimator usernameAnim = ObjectAnimator.ofFloat(usernameEditText, "y", usernameEditText.getY(), originalUsernameY*(-1));
+                usernameAnim.setDuration(1000);
+                usernameAnim.start();
+
+
+                ObjectAnimator welcomeTextAnim = ObjectAnimator.ofFloat(welcomeText, "y", welcomeText.getY(), originalWelcomeTextY*(-1));
+                welcomeTextAnim.setDuration(1000);
+                welcomeTextAnim.start();
+
+
+                PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);
+                PropertyValuesHolder yPosition = PropertyValuesHolder.ofFloat("y", nameEditText.getY(), originalNameY*(-1));
+
+                ObjectAnimator combinedAnim = ObjectAnimator.ofPropertyValuesHolder(nameEditText, alpha, yPosition);
+                combinedAnim.setDuration(1000);
+                combinedAnim.start();*/
+
+                usernameEditText.setTranslationY(originalUsernameY);
+                welcomeText.setTranslationY(originalWelcomeTextY);
+                nameEditText.setTranslationY(originalNameY);
+                nameEditText.setAlpha(0);
+                regText.setAlpha(0);
+                regText.setTranslationY(originalRegTextY);
+                //usernameEditText.setY((float) (user1Y+(size.y*0.02)));
+                //passwordEditText.setY((float) (passw1Y+(size.y*0.1)));
+                //welcomeText.setY((float)(welcomeText.getY()-(size.y*0.23)));
+                registerButton.setVisibility(View.VISIBLE);
+                buttonBack.setAlpha(0);
+            }
+        });
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+
+
+
+
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
                 if (loginFormState == null) {

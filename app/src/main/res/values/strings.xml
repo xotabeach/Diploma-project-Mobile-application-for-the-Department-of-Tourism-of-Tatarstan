@@ -12,6 +12,7 @@
     <string name="right_bar_header_title_sub">title sub</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email"> Почта</string>
+    <string name="prompt_name"> Имя</string>
     <string name="prompt_password"> Пароль</string>
     <string name="action_sign_in">Get started</string>
     <string name="action_sign_in_short">Sign in</string>
