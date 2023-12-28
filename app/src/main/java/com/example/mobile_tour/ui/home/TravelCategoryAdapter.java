@@ -2,8 +2,10 @@ package com.example.mobile_tour.ui.home;
 
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,7 +28,12 @@ public class TravelCategoryAdapter extends RecyclerView.Adapter<TravelCategoryAd
     @NonNull
     @Override
     public TravelCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        return new TravelCategoryAdapter.TravelCategoryViewHolder(
+                LayoutInflater.from(parent.getContext()).inflate(
+                        R.layout.category_cardview,
+                        parent, false
+                )
+        );
     }
 
     @Override
@@ -36,24 +43,24 @@ public class TravelCategoryAdapter extends RecyclerView.Adapter<TravelCategoryAd
 
     @Override
     public int getItemCount() {
-        return 0;
+        return travelCategories.size();
     }
 
     static class TravelCategoryViewHolder extends RecyclerView.ViewHolder{
 
-        private KenBurnsView kbvLocation;
+        private ImageView imageLocation;
         private TextView textTitle;
 
         TravelCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            kbvLocation = itemView.findViewById(R.id.kbvLocation);
+            imageLocation = itemView.findViewById(R.id.kbvLocation);
             textTitle = itemView.findViewById(R.id.textTitle);
 
 
         }
 
         void setCategoryData(TravelCategory travelcategory){
-            kbvLocation.setImageResource(travelcategory.imageResId);
+            imageLocation.setImageResource(travelcategory.imageResId);
             textTitle.setText(travelcategory.title);
 
 

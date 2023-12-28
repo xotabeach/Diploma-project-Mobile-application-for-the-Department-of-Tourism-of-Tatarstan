@@ -7,7 +7,9 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Color;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,24 +45,36 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class LoginActivity extends AppCompatActivity {
 
     protected void hideSystemBars(){
-        // Ожидаем, пока окно будет настроено
-        getWindow().getDecorView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-                WindowInsetsController controller = getWindow().getDecorView().getWindowInsetsController();
-                if (controller != null) {
-                    controller.hide(WindowInsets.Type.navigationBars());
-                    controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
 
-                }
-            }
+        View decorView = getWindow().getDecorView();
 
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-                // Ничего не требуется делать здесь
+
+        // Сделаем верхнюю и нижнюю панели прозрачными и растянем экран до границы
+        int flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsController controller = decorView.getWindowInsetsController();
+            if (controller != null) {
+                controller.setSystemBarsAppearance(WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS);
+                controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                controller.show(WindowInsets.Type.navigationBars());
             }
-        });
+        } else {
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        }
+
+        decorView.setSystemUiVisibility(flags);
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
     }
+
+
+
+
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
 

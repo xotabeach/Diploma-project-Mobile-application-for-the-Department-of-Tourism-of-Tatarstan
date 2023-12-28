@@ -36,25 +36,32 @@ public class HomeFragment extends Fragment {
         List<TravelCategory> travelCategories = new ArrayList<>();
 
         TravelLocation travelLocationKazanKremlin = new TravelLocation();
-        travelLocationKazanKremlin.imageUrl = "https://avatars.dzeninfra.ru/get-zen_doc/10099939/pub_6081b287902a3468430b235b_64f89d8abc56014f2c49eb40/scale_1200";
+        travelLocationKazanKremlin.imageUrl = R.drawable.kazan_kremlin;
         travelLocationKazanKremlin.title = "Казанский Кремль";
         travelLocationKazanKremlin.location = "Казань";
         travelLocationKazanKremlin.starRating = 4.8f;
         travelLocations.add(travelLocationKazanKremlin);
 
         TravelLocation travelLocationFamilyCenter = new TravelLocation();
-        travelLocationFamilyCenter.imageUrl = "https://cdn.puzzlegarage.com/img/puzzle/12/6706_preview_r.v2.jpg";
+        travelLocationFamilyCenter.imageUrl = R.drawable.family_center_kazan;
         travelLocationFamilyCenter.title = "Центр семьи";
         travelLocationFamilyCenter.location = "Казань";
         travelLocationFamilyCenter.starRating = 5.0f;
         travelLocations.add(travelLocationFamilyCenter);
 
         TravelLocation travelLocationUramPark = new TravelLocation();
-        travelLocationUramPark.imageUrl = "https://sun9-56.userapi.com/XSqV3hJbHzJOu3DApcSTLB1YnAA5xwj4ynxGXA/cOh8sMDpTzQ.jpg";
+        travelLocationUramPark.imageUrl = R.drawable.park_uram;
         travelLocationUramPark.title = "Парк Урам";
         travelLocationUramPark.location = "Казань";
         travelLocationUramPark.starRating = 5.0f;
         travelLocations.add(travelLocationUramPark);
+
+        TravelLocation travelLocationMitaka = new TravelLocation();
+        travelLocationMitaka.imageUrl = R.drawable.asa_mitaka;
+        travelLocationMitaka.title = "Аса Митака";
+        travelLocationMitaka.location = "Казань";
+        travelLocationMitaka.starRating = 5.0f;
+        travelLocations.add(travelLocationMitaka);
 
         locationsViewPager.setAdapter(new TravelLocationsAdapter(travelLocations));
 
@@ -67,11 +74,41 @@ public class HomeFragment extends Fragment {
 
         TravelCategory travelCategoryParks = new TravelCategory();
         travelCategoryParks.title ="Парки";
-        travelCategoryParks.imageResId = R.drawable.park;
+        travelCategoryParks.imageResId = R.drawable.park_for_app;
         travelCategories.add(travelCategoryParks);
+
+        TravelCategory travelCategoryCafe = new TravelCategory();
+        travelCategoryCafe.title ="Кафе";
+        travelCategoryCafe.imageResId = R.drawable.cafe_for_app;
+        travelCategories.add(travelCategoryCafe);
+
+        TravelCategory travelCategoryHotels = new TravelCategory();
+        travelCategoryHotels.title ="Отели";
+        travelCategoryHotels.imageResId = R.drawable.hotels_for_app;
+        travelCategories.add(travelCategoryHotels);
+
 
         categoryViewPager.setAdapter(new TravelCategoryAdapter(travelCategories));
 
+        categoryViewPager.setClipToPadding(false);
+        categoryViewPager.setClipChildren(false);
+        categoryViewPager.setOffscreenPageLimit(3);
+        categoryViewPager.setCurrentItem(1);
+
+
+        CompositePageTransformer categoryPageTransformer = new CompositePageTransformer();
+        categoryPageTransformer.addTransformer(new MarginPageTransformer(10) );
+        categoryPageTransformer.addTransformer(new ViewPager2.PageTransformer() {
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                float r = 1 - Math.abs(position);
+
+
+                float offsetX = -400 * position;
+                page.setTranslationX(offsetX);
+                page.setScaleX((float) ((0.8f + r * 0.2f)*0.5));
+            }
+        });
         locationsViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -107,13 +144,14 @@ public class HomeFragment extends Fragment {
                 float r = 1 - Math.abs(position);
                 //page.setScaleX((float) ((0.8f + r * 0.2f)*0.8));
                 page.setScaleY(0.85f + r * 0.2f);
-                float offsetX = -70 * position;
+                float offsetX = -80 * position;
                 page.setTranslationX(offsetX);
 
 
             }
         });
 
+        categoryViewPager.setPageTransformer(categoryPageTransformer);
         locationsViewPager.setPageTransformer(compositePageTransformer);
         return root;
     }

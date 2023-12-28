@@ -25,4 +25,5 @@
     <string name="app_widget_description">This is an app widget description</string>
     <string name="topofKazan">Главное в Казани</string>
     <string name="dostKazan">достопримечательности</string>
+    <string name="popCatKazan">популярные категории</string>
 </resources>

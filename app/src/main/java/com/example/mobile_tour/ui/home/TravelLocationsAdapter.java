@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,7 +52,8 @@ public class TravelLocationsAdapter extends RecyclerView.Adapter<TravelLocations
 
     static class TravelLocationViewHolder extends RecyclerView.ViewHolder{
 
-        private KenBurnsView kbvLocation;
+        //private KenBurnsView kbvLocation;
+        private ImageView kbvLocation;
         private TextView textTitle, textLocation, textStarRating;
 
         TravelLocationViewHolder(@NonNull View itemView) {
@@ -63,7 +65,8 @@ public class TravelLocationsAdapter extends RecyclerView.Adapter<TravelLocations
         }
 
         void setLocationData(TravelLocation travelLocation){
-            Picasso.get().load(travelLocation.imageUrl).into(kbvLocation);
+            //Picasso.get().load(travelLocation.imageUrl).into(kbvLocation);
+            kbvLocation.setImageResource(travelLocation.imageUrl);
             textTitle.setText(travelLocation.title);
             textLocation.setText(travelLocation.location);
             textStarRating.setText(String.valueOf(travelLocation.starRating));
