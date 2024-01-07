@@ -25,7 +25,7 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@layout/splash_screen_activity</item>
+        <item name="android:splashScreenTheme">@layout/splash_screen_activity</item>
     </style>
 
     <style name="Theme.Mobile_tour.AppWidgetContainer" parent="Theme.Mobile_tour.AppWidgetContainerParent">

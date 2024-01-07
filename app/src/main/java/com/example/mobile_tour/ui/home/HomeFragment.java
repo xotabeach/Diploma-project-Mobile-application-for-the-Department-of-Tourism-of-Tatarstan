@@ -1,16 +1,19 @@
 package com.example.mobile_tour.ui.home;
 
 
-
-
-import android.graphics.Color;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -24,7 +27,9 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment {
-
+    public Context getApplicationContext() {
+        throw new RuntimeException("Stub!");
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -32,12 +37,26 @@ public class HomeFragment extends Fragment {
         ViewPager2 locationsViewPager = root.findViewById(R.id.viewpagerHomeFragment);
         ViewPager2 categoryViewPager = root.findViewById(R.id.viewpagerHomeFragment_category);
 
+
+
+
+
+
         List<TravelLocation> travelLocations = new ArrayList<>();
         List<TravelCategory> travelCategories = new ArrayList<>();
 
         TravelLocation travelLocationKazanKremlin = new TravelLocation();
         travelLocationKazanKremlin.imageUrl = R.drawable.kazan_kremlin;
         travelLocationKazanKremlin.title = "Казанский Кремль";
+        travelLocationKazanKremlin.category = "Архитектура";
+        travelLocationKazanKremlin.year = "Год основания: 1438";
+        travelLocationKazanKremlin.description = "Казанский кремль - это историческая крепость и культурный комплекс, расположенный в центре города Казань, Россия. Кремль был построен в 16 веке и имеет большое историческое значение.\n" +
+                "\n" +
+                "Здесь можно увидеть различные архитектурные памятники, такие как Казанский кафедральный собор, который служил различными религиозными общинами на протяжении столетий, и Кул-Шариф мечеть, построенную в 2005 году и ставшую символом современного Казани.\n" +
+                "\n" +
+                "Кремль также включает в себя резиденцию Президента Республики Татарстан, музей и различные выставочные залы, представляющие историю и культуру региона.\n" +
+                "\n" +
+                "Кроме того, кремль находится на берегу реки Казанка и предлагает живописные виды на окружающую местность.";
         travelLocationKazanKremlin.location = "Казань";
         travelLocationKazanKremlin.starRating = 4.8f;
         travelLocations.add(travelLocationKazanKremlin);
@@ -64,6 +83,56 @@ public class HomeFragment extends Fragment {
         travelLocations.add(travelLocationMitaka);
 
         locationsViewPager.setAdapter(new TravelLocationsAdapter(travelLocations));
+
+
+        TravelLocationsAdapter adapter = new TravelLocationsAdapter(travelLocations);
+        adapter.setOnItemClickListener(new TravelLocationsAdapter.OnItemClickListener() {
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "channel_id")
+                    .setContentTitle("Заголовок уведомления")
+                    .setContentText("Это текст уведомления");
+
+            @Override
+            public void onItemClick(int position) {
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int screenWidth = displayMetrics.widthPixels;
+                int screenHeight = displayMetrics.heightPixels;
+                TravelLocation clickedLocation = travelLocations.get(position);
+
+
+
+                ClickedLocationDialog dialog = new ClickedLocationDialog(requireContext(), clickedLocation);
+                dialog.show();
+
+
+
+                /*String message = "Название: " + clickedLocation.title + ", Местоположение: " + clickedLocation.location;
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+
+
+
+                for (int i = 0; i < locationsViewPager.getAdapter().getItemCount(); i++) {
+                    float r = 1 - Math.abs(position);
+                    View view = ((RecyclerView) locationsViewPager.getChildAt(0)).getLayoutManager().findViewByPosition(i);
+                    if (view != null) {
+                        if (i == position) {
+                            //view.setScaleX((float) (screenWidth*0.8));
+                            //view.setScaleY((float) (screenHeight*0.8));
+
+
+                        } else {
+
+
+                        }
+                    }
+                }*/
+            }
+
+
+        });
+        locationsViewPager.setAdapter(adapter);
+
 
         locationsViewPager.setClipToPadding(false);
         locationsViewPager.setClipChildren(false);
@@ -104,9 +173,9 @@ public class HomeFragment extends Fragment {
                 float r = 1 - Math.abs(position);
 
 
-                float offsetX = -400 * position;
+                float offsetX = -600 * position;
                 page.setTranslationX(offsetX);
-                page.setScaleX((float) ((0.8f + r * 0.2f)*0.5));
+                page.setScaleX((float) ((0.8f + r * 0.2f)*0.6));
             }
         });
         locationsViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

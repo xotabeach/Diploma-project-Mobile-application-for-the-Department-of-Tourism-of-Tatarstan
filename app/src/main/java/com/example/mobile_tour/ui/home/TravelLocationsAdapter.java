@@ -1,6 +1,8 @@
 package com.example.mobile_tour.ui.home;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +24,16 @@ import java.util.List;
 public class TravelLocationsAdapter extends RecyclerView.Adapter<TravelLocationsAdapter.TravelLocationViewHolder>{
 
     private List<TravelLocation> travelLocations;
-
+    private OnItemClickListener onItemClickListener;
     public TravelLocationsAdapter(List<TravelLocation> travelLocations) {
         this.travelLocations = travelLocations;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -39,10 +48,17 @@ public class TravelLocationsAdapter extends RecyclerView.Adapter<TravelLocations
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TravelLocationViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TravelLocationViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.setLocationData(travelLocations.get(position));
 
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(position);
+                }
+            }
+        });
     }
 
     @Override
