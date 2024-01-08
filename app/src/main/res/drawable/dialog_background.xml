@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="16dp" /> <!-- Укажите радиус, чтобы округлить края -->
+    <solid android:color="#80000000" />
+    <!-- Цвет затемнения -->
+</shape>

@@ -5,6 +5,12 @@
         <item name="android:background">?android:attr/colorBackground</item>
     </style>
 
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+        <item name="android:backgroundDimEnabled">true</item> <!-- Включаем затемнение вокруг окна -->
+        <item name="android:backgroundDimAmount">0.6</item> <!-- Устанавливаем прозрачность затемнения (от 0.0 до 1.0) -->
+    </style>
 
     <style name="Widget.Mobile_tour.AppWidget.InnerView" parent="android:Widget">
         <item name="android:background">?android:attr/colorBackground</item>
