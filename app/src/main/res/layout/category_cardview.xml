@@ -57,7 +57,7 @@
             android:paddingTop="4dp"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/gothampro_bold"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
