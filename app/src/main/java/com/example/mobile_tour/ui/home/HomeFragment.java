@@ -66,10 +66,40 @@ public class HomeFragment extends Fragment {
                 "Кремль также включает в себя резиденцию Президента Республики Татарстан, музей и различные выставочные залы, представляющие историю и культуру региона.\n" +
                 "\n" +
                 "Кроме того, кремль находится на берегу реки Казанка и предлагает живописные виды на окружающую местность.";
+
+
         travelLocationKazanKremlin.location = "Казань";
         travelLocationKazanKremlin.starRating = 4.8f;
         travelLocations.add(travelLocationKazanKremlin);
 
+        TravelLocation travelLocationRiveraAqua = new TravelLocation();
+        travelLocationRiveraAqua.imageUrl = R.drawable.rivera_aqua;
+        travelLocationRiveraAqua.title = "Аквапарк \"Ривьера\"";
+        travelLocationRiveraAqua.category = "Развлечения";
+        travelLocationRiveraAqua.year = "Год основания: 2008";
+        travelLocationRiveraAqua.description = "Крупный развлекательный комплекс с аквапарком и бассейнами.\n" +
+                "Расположен в центре Казани, на берегу реки Казанки.\n" +
+                "Обширная инфраструктура: горки, водные аттракционы, спа-зоны.\n" +
+                "Идеальное место для семейного отдыха и активного времяпровождения.\n" +
+                "Хостинг различных мероприятий, включая концерты и фестивали.\n" +
+                "Аквапарк \"Ривьера\" стал популярным местом для местных жителей и туристов, предлагая увлекательные водные развлечения в самом сердце города.";
+        travelLocationRiveraAqua.location = "Казань";
+        travelLocationRiveraAqua.starRating = 4.7f;
+        travelLocations.add(travelLocationRiveraAqua);
+
+        TravelLocation travelLocationTatarVilage = new TravelLocation();
+        travelLocationTatarVilage.imageUrl = R.drawable.tugan_avil;
+        travelLocationTatarVilage.title = "Татарская деревня \"Туган Авыл\"";
+        travelLocationTatarVilage.category = "Культура";
+        travelLocationTatarVilage.year = "Год основания: 2005";
+        travelLocationTatarVilage.description = "Татарская деревня \"Туган Авыл\" представляет собой уникальный этнографический комплекс, являющийся отражением богатой культуры и традиций татарского народа. Этот аутентичный комплекс является популярным местом для туристов и жителей города, желающих погрузиться в атмосферу татарской деревни.\n" +
+                "\n" +
+                "Состоящий из старинных деревенских домов, мастерских и интересных музеев, \"Туган Авыл\" предоставляет посетителям уникальную возможность познакомиться с традиционным татарским образом жизни. Дома представляют собой аутентичные строения, передающие архитектурные особенности татарских поселений.\n" +
+                "\n" +
+                "Кроме того, в этом этнографическом комплексе проводятся разнообразные мероприятия и фестивали, позволяя посетителям не только увидеть традиции, но и активно участвовать в них. Мастер-классы по традиционным ремеслам, культурные события и выставки создают привлекательную атмосферу для тех, кто стремится глубже понять татарскую культуру.";
+        travelLocationTatarVilage.location = "Казань";
+        travelLocationTatarVilage.starRating = 4.7f;
+        travelLocations.add(travelLocationTatarVilage);
 
         TravelLocation travelLocationUramPark = new TravelLocation();
         travelLocationUramPark.imageUrl = R.drawable.park_uram;
@@ -139,8 +169,8 @@ public class HomeFragment extends Fragment {
 
         locationsViewPager.setClipToPadding(false);
         locationsViewPager.setClipChildren(false);
-        locationsViewPager.setOffscreenPageLimit(3);
-        locationsViewPager.setCurrentItem(1);
+        locationsViewPager.setOffscreenPageLimit(5);
+        locationsViewPager.setCurrentItem(2);
         locationsViewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
 
 
