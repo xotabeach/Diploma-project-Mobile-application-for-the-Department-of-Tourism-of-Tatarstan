@@ -45,6 +45,15 @@ public class HomeFragment extends Fragment {
         List<TravelLocation> travelLocations = new ArrayList<>();
         List<TravelCategory> travelCategories = new ArrayList<>();
 
+
+
+        TravelLocation travelLocationFamilyCenter = new TravelLocation();
+        travelLocationFamilyCenter.imageUrl = R.drawable.family_center_kazan;
+        travelLocationFamilyCenter.title = "Центр семьи";
+        travelLocationFamilyCenter.location = "Казань";
+        travelLocationFamilyCenter.starRating = 5.0f;
+        travelLocations.add(travelLocationFamilyCenter);
+
         TravelLocation travelLocationKazanKremlin = new TravelLocation();
         travelLocationKazanKremlin.imageUrl = R.drawable.kazan_kremlin;
         travelLocationKazanKremlin.title = "Казанский Кремль";
@@ -61,12 +70,6 @@ public class HomeFragment extends Fragment {
         travelLocationKazanKremlin.starRating = 4.8f;
         travelLocations.add(travelLocationKazanKremlin);
 
-        TravelLocation travelLocationFamilyCenter = new TravelLocation();
-        travelLocationFamilyCenter.imageUrl = R.drawable.family_center_kazan;
-        travelLocationFamilyCenter.title = "Центр семьи";
-        travelLocationFamilyCenter.location = "Казань";
-        travelLocationFamilyCenter.starRating = 5.0f;
-        travelLocations.add(travelLocationFamilyCenter);
 
         TravelLocation travelLocationUramPark = new TravelLocation();
         travelLocationUramPark.imageUrl = R.drawable.park_uram;
