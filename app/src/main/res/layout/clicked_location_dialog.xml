@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:elevation="100dp"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     >
 
     <ImageView
@@ -70,6 +71,21 @@
     </LinearLayout>
 
 
-    <!-- Другие элементы интерфейса по вашему выбору -->
+
+    <Button
+        android:id="@+id/button_clicked"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="90dp"
+        android:theme="@style/button_theme_1"
+        android:background="@drawable/button_clicked_dost_after"
+        android:text="добавить"
+        app:layout_constraintTop_toBottomOf="@+id/layoutclickedId"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="157dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -184,6 +184,11 @@ public class HomeFragment extends Fragment {
         travelCategoryCafe.imageResId = R.drawable.cafe_for_app;
         travelCategories.add(travelCategoryCafe);
 
+        TravelCategory travelCategoryEntertainment = new TravelCategory();
+        travelCategoryEntertainment.title ="Развлечения";
+        travelCategoryEntertainment.imageResId = R.drawable.entertainment;
+        travelCategories.add(travelCategoryEntertainment);
+
         TravelCategory travelCategoryHotels = new TravelCategory();
         travelCategoryHotels.title ="Отели";
         travelCategoryHotels.imageResId = R.drawable.hotels_for_app;
@@ -208,7 +213,8 @@ public class HomeFragment extends Fragment {
 
                 float offsetX = -600 * position;
                 page.setTranslationX(offsetX);
-                page.setScaleX((float) ((0.8f + r * 0.2f)*0.6));
+                page.setScaleX((float) ((0.8f + r * 0.2f)*0.55));
+
             }
         });
         locationsViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

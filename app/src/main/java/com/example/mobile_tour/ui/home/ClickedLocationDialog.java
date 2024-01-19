@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -117,12 +119,22 @@ public class ClickedLocationDialog{
         TextView textViewYear = dialogView.findViewById(R.id.textViewYear);
         TextView textView1 = dialogView.findViewById(R.id.textView2);
         View layoutview = dialogView.findViewById(R.id.layoutclickedId);
-
+        Button yourButton = dialogView.findViewById(R.id.button_clicked);
 
         textView.setText(travelLocation.title);
         textViewCat.setText(travelLocation.category);
         textViewYear.setText(travelLocation.year);
         textView1.setText(travelLocation.description);
+
+
+        yourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                yourButton.setBackgroundResource(R.drawable.button_clicked_dost_after); // Устанавливаем прозрачный фон
+                yourButton.setTextColor(Color.BLACK); // Задаем черный цвет для текста
+            }
+        });
 
         // Задаем изображение
         //imageView.setImageResource(travelLocation.imageUrl);

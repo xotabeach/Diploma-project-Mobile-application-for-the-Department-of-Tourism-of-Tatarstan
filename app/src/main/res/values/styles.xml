@@ -12,6 +12,11 @@
         <item name="android:backgroundDimAmount">0.6</item> <!-- Устанавливаем прозрачность затемнения (от 0.0 до 1.0) -->
     </style>
 
+    <style name="On_Clicked_Item_Button">
+        <item name="android:background">@drawable/button_clicked_dost_before</item>
+    </style>
+
+
     <style name="Widget.Mobile_tour.AppWidget.InnerView" parent="android:Widget">
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
