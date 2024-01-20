@@ -2,6 +2,14 @@ package com.example.mobile_tour.ui.home;
 
 
 
+
+
+
+
+
+
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +17,10 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+
+
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -130,9 +142,19 @@ public class ClickedLocationDialog{
         yourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Плавная смена цвета
+                yourButton.setBackgroundResource(R.drawable.button_clicked_dost_after);
+                ObjectAnimator textColorAnimator = ObjectAnimator.ofInt(yourButton, "textColor", Color.parseColor("#FFFFFF"), Color.parseColor("#FF8642"));
+                textColorAnimator.setDuration(550);
+                textColorAnimator.setEvaluator(new ArgbEvaluator());
+                textColorAnimator.start();
 
-                yourButton.setBackgroundResource(R.drawable.button_clicked_dost_after); // Устанавливаем прозрачный фон
-                yourButton.setTextColor(Color.BLACK); // Задаем черный цвет для текста
+
+
+                // Анимированное перемещение кнопки влево
+                ObjectAnimator translationXAnimator = ObjectAnimator.ofFloat(yourButton, "translationX", 0f, -150f);
+                translationXAnimator.setDuration(700);
+                translationXAnimator.start();
             }
         });
 

@@ -1,8 +1,14 @@
 <resources>
-    <style name="button_theme_1"
-    parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">@color/orange_1</item>
-        <item name="colorOnPrimary">@color/orange_1</item>
+    <style name="button_theme_1" parent="Widget.MaterialComponents.TimePicker.Button">
+        <item name="android:textAppearance">@macro/m3_comp_time_picker_period_selector_label_text_type</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="backgroundTint">@color/m3_timepicker_button_background_color</item>
+
+
+        <item name="strokeColor">@macro/m3_comp_time_picker_period_selector_outline_color</item>
+        <item name="strokeWidth">@dimen/m3_comp_time_picker_period_selector_outline_width</item>
+
+
+
     </style>
 </resources>
