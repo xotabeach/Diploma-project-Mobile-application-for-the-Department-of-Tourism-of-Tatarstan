@@ -10,6 +10,8 @@ package com.example.mobile_tour.ui.home;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -131,31 +133,91 @@ public class ClickedLocationDialog{
         TextView textViewYear = dialogView.findViewById(R.id.textViewYear);
         TextView textView1 = dialogView.findViewById(R.id.textView2);
         View layoutview = dialogView.findViewById(R.id.layoutclickedId);
-        Button yourButton = dialogView.findViewById(R.id.button_clicked);
-
+        Button addButton = dialogView.findViewById(R.id.button_clicked);
+        Button deleteButton = dialogView.findViewById(R.id.button_delete);
         textView.setText(travelLocation.title);
         textViewCat.setText(travelLocation.category);
         textViewYear.setText(travelLocation.year);
         textView1.setText(travelLocation.description);
 
 
-        yourButton.setOnClickListener(new View.OnClickListener() {
-            private boolean isClicked = false; // флаг для отслеживания состояния нажатия
+
+
+        int currentPaddingStart = addButton.getPaddingStart();
+        int currentPaddingEnd = addButton.getPaddingEnd();
+        addButton.setPaddingRelative(currentPaddingStart + 25, addButton.getPaddingTop(), currentPaddingEnd + 25, addButton.getPaddingBottom());
+
+        deleteButton.setVisibility(View.INVISIBLE);
+        final boolean[] isClicked = {false};
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            //private boolean isClicked = false; // флаг для отслеживания состояния нажатия
             @Override
             public void onClick(View v) {
-                if (!isClicked) { // проверка состояния нажатия кнопки
-                    yourButton.setBackgroundResource(R.drawable.button_clicked_dost_after);
-                    ObjectAnimator textColorAnimator = ObjectAnimator.ofInt(yourButton, "textColor", Color.parseColor("#FFFFFF"), Color.parseColor("#FF8642"));
-                    textColorAnimator.setDuration(550);
+                if (!isClicked[0]) { // проверка состояния нажатия кнопки
+                    addButton.setBackgroundResource(R.drawable.button_clicked_dost_after);
+                    ObjectAnimator textColorAnimator = ObjectAnimator.ofInt(addButton, "textColor", Color.parseColor("#FFFFFF"), Color.parseColor("#FF8642"));
+                    textColorAnimator.setDuration(450);
                     textColorAnimator.setEvaluator(new ArgbEvaluator());
                     textColorAnimator.start();
 
-                    ObjectAnimator translationXAnimator = ObjectAnimator.ofFloat(yourButton, "translationX", 0f, -150f);
-                    translationXAnimator.setDuration(700);
+                    ObjectAnimator translationXAnimator = ObjectAnimator.ofFloat(addButton, "translationX", 0f, -75f);
+                    translationXAnimator.setDuration(500);
                     translationXAnimator.start();
 
-                    isClicked = true; // устанавливаем флаг нажатия в true
+                    isClicked[0] = true; // устанавливаем флаг нажатия в true
+
+                    // Включение видимости кнопки "delete" и перемещение ее вправо
+                    deleteButton.setVisibility(View.VISIBLE);
+                    ObjectAnimator translationXDeleteAnimator = ObjectAnimator.ofFloat(deleteButton, "translationX", 0f, 15f);
+                    translationXDeleteAnimator.setDuration(500);
+                    translationXDeleteAnimator.start();
+
+                    // Уменьшение padding start и end на 25 единиц
+                    ValueAnimator paddingAnimator = ValueAnimator.ofInt(addButton.getPaddingStart(), addButton.getPaddingStart() - 25);
+                    paddingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int animatedValue = (int) animation.getAnimatedValue();
+                            addButton.setPaddingRelative(animatedValue, addButton.getPaddingTop(), animatedValue, addButton.getPaddingBottom());
+                        }
+                    });
+                    paddingAnimator.setDuration(500);
+                    paddingAnimator.start();
                 }
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Возвращение состояний кнопок в исходное состояние
+                addButton.setBackgroundResource(R.drawable.button_clicked_dost_before);
+                ObjectAnimator textColorAnimator = ObjectAnimator.ofInt(addButton, "textColor", Color.parseColor("#FF8642"), Color.parseColor("#FFFFFF"));
+                textColorAnimator.setDuration(450);
+                textColorAnimator.setEvaluator(new ArgbEvaluator());
+                textColorAnimator.start();
+
+                ObjectAnimator translationXAnimator = ObjectAnimator.ofFloat(addButton, "translationX", -75f, 0f);
+                translationXAnimator.setDuration(500);
+                translationXAnimator.start();
+
+                deleteButton.setVisibility(View.INVISIBLE);
+                ObjectAnimator translationXDeleteAnimator = ObjectAnimator.ofFloat(deleteButton, "translationX", 15f, 0f);
+                translationXDeleteAnimator.setDuration(500);
+                translationXDeleteAnimator.start();
+
+                ValueAnimator paddingAnimator = ValueAnimator.ofInt(addButton.getPaddingStart(), addButton.getPaddingStart() + 25);
+                paddingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        int animatedValue = (int) animation.getAnimatedValue();
+                        addButton.setPaddingRelative(animatedValue, addButton.getPaddingTop(), animatedValue, addButton.getPaddingBottom());
+                    }
+                });
+                paddingAnimator.setDuration(500);
+                paddingAnimator.start();
+                isClicked[0] = false; // возврат флага нажатия в исходное состояние
             }
         });
 
