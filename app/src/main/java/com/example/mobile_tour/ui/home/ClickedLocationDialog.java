@@ -140,21 +140,22 @@ public class ClickedLocationDialog{
 
 
         yourButton.setOnClickListener(new View.OnClickListener() {
+            private boolean isClicked = false; // флаг для отслеживания состояния нажатия
             @Override
             public void onClick(View v) {
-                // Плавная смена цвета
-                yourButton.setBackgroundResource(R.drawable.button_clicked_dost_after);
-                ObjectAnimator textColorAnimator = ObjectAnimator.ofInt(yourButton, "textColor", Color.parseColor("#FFFFFF"), Color.parseColor("#FF8642"));
-                textColorAnimator.setDuration(550);
-                textColorAnimator.setEvaluator(new ArgbEvaluator());
-                textColorAnimator.start();
+                if (!isClicked) { // проверка состояния нажатия кнопки
+                    yourButton.setBackgroundResource(R.drawable.button_clicked_dost_after);
+                    ObjectAnimator textColorAnimator = ObjectAnimator.ofInt(yourButton, "textColor", Color.parseColor("#FFFFFF"), Color.parseColor("#FF8642"));
+                    textColorAnimator.setDuration(550);
+                    textColorAnimator.setEvaluator(new ArgbEvaluator());
+                    textColorAnimator.start();
 
+                    ObjectAnimator translationXAnimator = ObjectAnimator.ofFloat(yourButton, "translationX", 0f, -150f);
+                    translationXAnimator.setDuration(700);
+                    translationXAnimator.start();
 
-
-                // Анимированное перемещение кнопки влево
-                ObjectAnimator translationXAnimator = ObjectAnimator.ofFloat(yourButton, "translationX", 0f, -150f);
-                translationXAnimator.setDuration(700);
-                translationXAnimator.start();
+                    isClicked = true; // устанавливаем флаг нажатия в true
+                }
             }
         });
 
