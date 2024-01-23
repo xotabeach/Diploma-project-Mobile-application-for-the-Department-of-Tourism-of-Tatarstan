@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+
+
 import com.example.mobile_tour.ui.home.TravelLocation;
 
 import java.util.List;
@@ -19,4 +21,7 @@ public class SharedViewModel extends ViewModel {
     public LiveData<List<ClickedTravelData>> getTravelLocations() {
         return travelLocations;
     }
+
+
+
 }

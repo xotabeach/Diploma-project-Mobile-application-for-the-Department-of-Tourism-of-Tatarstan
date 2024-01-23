@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.mobile_tour.DataBaseHelper;
 import com.example.mobile_tour.ui.ClickedTravelData;
 import com.example.mobile_tour.ui.SharedViewModel;
 import com.example.mobile_tour.ui.home.TravelLocation;
@@ -16,7 +17,7 @@ public class Create_routeViewModel extends ViewModel {
 
     public Create_routeViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is Create route fragment");
+        mText.setValue("Ваши достопримечательности:");
     }
 
     public LiveData<String> getText() {
@@ -26,6 +27,11 @@ public class Create_routeViewModel extends ViewModel {
     public void setTravelLocations(List<TravelLocation> locations) {
         travelLocations.setValue(locations);
     }
+
+    public List<ClickedTravelData> loadClickedLandMarksFromDatabase(DataBaseHelper dbHelper) {
+        return dbHelper.getAllClickedLandmarks();
+    }
+
 
     public LiveData<List<TravelLocation>> getTravelLocations() {
         return travelLocations;

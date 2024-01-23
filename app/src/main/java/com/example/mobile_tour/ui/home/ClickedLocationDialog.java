@@ -245,7 +245,8 @@ public class ClickedLocationDialog{
                 paddingAnimator.start();
                 isClicked[0] = false; // возврат флага нажатия в исходное состояние
                 DataBaseHelper dbHelper = new DataBaseHelper(context);
-                dbHelper.deleteClickedData(clickedLocationData);
+                dbHelper.deleteClickedDataByTitle(travelLocation.title);
+                dbHelper.displayClickedData();
             }
         });
 

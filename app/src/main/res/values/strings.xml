@@ -26,4 +26,5 @@
     <string name="topofKazan">Главное в Казани</string>
     <string name="dostKazan">достопримечательности</string>
     <string name="popCatKazan">популярные категории</string>
+    <string name="clearall"><u>очистить всё</u></string>
 </resources>

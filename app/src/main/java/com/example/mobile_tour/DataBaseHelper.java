@@ -21,7 +21,7 @@ import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "landmarks.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -104,17 +104,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteClickedData(List<ClickedTravelData> clickedLocationData) {
+    public void dropClickedLandmarksTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS clickedLandmarks");
+        onCreate(db);
+        db.close();
+    }
+
+
+    public void deleteClickedDataByTitle(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        for (ClickedTravelData clickedData : clickedLocationData) {
-            // Поиск записи в базе данных по заголовку (title)
-            String whereClause = "title = ?";
-            String[] whereArgs = {clickedData.getTitle()};
+        // Поиск записи в базе данных по заголовку (title)
+        String whereClause = "title = ?";
+        String[] whereArgs = {title};
 
-            // Удаление записи из таблицы clickedLandmarks, если она существует
-            db.delete("clickedLandmarks", whereClause, whereArgs);
-        }
+        // Удаление записи из таблицы clickedLandmarks, если она существует
+        db.delete("clickedLandmarks", whereClause, whereArgs);
 
         db.close();
     }
@@ -166,6 +172,32 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
     }
+
+    public List<ClickedTravelData> getAllClickedLandmarks() {
+        List<ClickedTravelData> clickedLandscapes = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM clickedLandmarks", null);
+
+        try {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
+                @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
+                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category"));
+
+                // Дополнительные поля, если есть...
+
+                ClickedTravelData clickedTravelData = new ClickedTravelData(title, image, category);
+                clickedLandscapes.add(clickedTravelData);
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return clickedLandscapes;
+    }
+
 
     public void displayClickedData() {
         SQLiteDatabase db = this.getReadableDatabase();
