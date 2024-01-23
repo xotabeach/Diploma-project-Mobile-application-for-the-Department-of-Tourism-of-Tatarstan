@@ -166,6 +166,48 @@ public class MainActivity extends AppCompatActivity {
         travelLocationUramPark.starRating = 5.0f;
         travelLocations.add(travelLocationUramPark);
 
+        TravelLocation travelLocationParkGorkogo = new TravelLocation();
+        travelLocationParkGorkogo.imageUrl = R.drawable.gorki_park;
+        travelLocationParkGorkogo.title = "ЦПКО имени Горького";
+        travelLocationParkGorkogo.category = "Парки";
+        travelLocationParkGorkogo.year = "Год основания: 1928";
+        travelLocationParkGorkogo.description = "Крупный парк в Вахитовском районе Казани, один из многих в СССР центральных парков, традиционно названных в честь писателя Максима Горького.На площади перед парком стоит мемориал из монумента «Павшим за советскую власть» (1967 г.) и памятника неизвестному солдату. В парке обитает большое количество серых и рыжих белок.";
+        travelLocationParkGorkogo.location = "Казань";
+        travelLocationParkGorkogo.starRating = 4.9f;
+        travelLocations.add(travelLocationParkGorkogo);
+
+
+        TravelLocation travelLocationWheel = new TravelLocation();
+        travelLocationWheel.imageUrl = R.drawable.wheel;
+        travelLocationWheel.title = "Колесо обозрения \"Вокруг света\"";
+        travelLocationWheel.category = "Развлечения";
+        travelLocationWheel.year = "Год основания: 2016";
+        travelLocationWheel.description = "Совсем недавно построенное колесо обозрения высотой в 65 метров находится рядом с аквапарком \"Ривьера\".Всего на колесе 36 кабинок и каждая из них символизирует какую-либо страну. Как снаружи, так и внутри в оформлении можно увидеть достопримечательности и послушать музыку этой страны.";
+        travelLocationWheel.location = "Казань";
+        travelLocationWheel.starRating = 4.5f;
+        travelLocations.add(travelLocationWheel);
+
+        TravelLocation travelLocationAlexPassaj = new TravelLocation();
+        travelLocationAlexPassaj.imageUrl = R.drawable.passaj;
+        travelLocationAlexPassaj.title = "Александровский пассаж";
+        travelLocationAlexPassaj.category = "Архитектура";
+        travelLocationAlexPassaj.year = "Год основания: 1880";
+        travelLocationAlexPassaj.description = "Это архитектурный памятник более позднего периода истории Казани. Доходный дом в стиле необарокко построили в 1880-х годах по заказу купца Александрова. Но в провинциальной Казани не оказалось столько желающих снимать дорогое жильё. Тогда предприниматель продал здание своей сестре, которая захотела передать его городском музею. Но внутренняя планировка не подходила под музейные нужды. Помещения продолжили сдавать в наём, в том числе и под магазины.";
+        travelLocationAlexPassaj.location = "Казань";
+        travelLocationAlexPassaj.starRating = 5.0f;
+        travelLocations.add(travelLocationAlexPassaj);
+
+        TravelLocation travelLocationDvorecZemledelec = new TravelLocation();
+        travelLocationDvorecZemledelec.imageUrl = R.drawable.zemledelec;
+        travelLocationDvorecZemledelec.title = "Дворец земледельцев";
+        travelLocationDvorecZemledelec.category = "Архитектура";
+        travelLocationDvorecZemledelec.year = "Год основания:2010";
+        travelLocationDvorecZemledelec.description = "Современная постройка расположена неподалёку от Казанского кремля и набережной реки Казанки. Здание спроектировали для Министерства сельского хозяйства и продовольствия республики Татарстан. Архитектура Дворца землевладельцев напоминает об имперских зданиях западной Европы, но после завершения работ проект вызвал неоднозначную реакцию у общественности. Несмотря это, здание пользуется популярностью у блогеров, которые часто фотографируются у портала главного корпуса, где установлено бронзовое 20-метровое дерево, символизирующее плодородие и процветание казанских земель.";
+        travelLocationDvorecZemledelec.location = "Казань";
+        travelLocationDvorecZemledelec.starRating = 5.0f;
+        travelLocations.add(travelLocationDvorecZemledelec);
+
+
         TravelLocation travelLocationMitaka = new TravelLocation();
         travelLocationMitaka.imageUrl = R.drawable.asa_mitaka;
         travelLocationMitaka.title = "Аса Митака";
@@ -173,11 +215,48 @@ public class MainActivity extends AppCompatActivity {
         travelLocationMitaka.starRating = 5.0f;
         travelLocations.add(travelLocationMitaka);
 
+
+
+
+
+        TravelCategory travelCategoryParks = new TravelCategory();
+        travelCategoryParks.title ="Парки";
+        travelCategoryParks.imageResId = R.drawable.park_for_app;
+        travelCategories.add(travelCategoryParks);
+
+        TravelCategory travelCategoryCafe = new TravelCategory();
+        travelCategoryCafe.title ="Кафе";
+        travelCategoryCafe.imageResId = R.drawable.cafe_for_app;
+        travelCategories.add(travelCategoryCafe);
+
+        TravelCategory travelCategoryArchitecture = new TravelCategory();
+        travelCategoryArchitecture.title ="Архитектура";
+        travelCategoryArchitecture.imageResId = R.drawable.castle;
+        travelCategories.add(travelCategoryArchitecture);
+
+
+        TravelCategory travelCategoryEntertainment = new TravelCategory();
+        travelCategoryEntertainment.title ="Развлечения";
+        travelCategoryEntertainment.imageResId = R.drawable.entertainment;
+        travelCategories.add(travelCategoryEntertainment);
+
+        TravelCategory travelCategoryHotels = new TravelCategory();
+        travelCategoryHotels.title ="Отели";
+        travelCategoryHotels.imageResId = R.drawable.hotels_for_app;
+        travelCategories.add(travelCategoryHotels);
+
+
         dbHelper.clearDatabase();
 
         dbHelper.insertTravelLocations(travelLocations);
         dbHelper.displayRowCount();
         dbHelper.displayAllData();
+
+
+        dbHelper.insertCategories(travelCategories);
+        dbHelper.displayCategoryData();
+
+
 
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);

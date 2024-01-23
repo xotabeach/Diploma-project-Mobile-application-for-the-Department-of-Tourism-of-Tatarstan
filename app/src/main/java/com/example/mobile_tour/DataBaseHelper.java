@@ -13,6 +13,8 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.mobile_tour.ui.ClickedTravelData;
+import com.example.mobile_tour.ui.home.Landmark;
+import com.example.mobile_tour.ui.home.TravelCategory;
 import com.example.mobile_tour.ui.home.TravelLocation;
 
 import java.io.ByteArrayOutputStream;
@@ -21,7 +23,7 @@ import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "landmarks.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,7 +35,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // Очистка таблицы landmarks
         db.delete("landmarks", null, null);
         db.delete("clickedLandmarks", null, null);
-
+        db.delete("categories",null, null);
         // Или, если вы предпочитаете использовать execSQL
         // db.execSQL("DELETE FROM landmarks");
 
@@ -62,6 +64,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "image INTEGER," +
                 "category TEXT," +
                 "FOREIGN KEY (landmark_id) REFERENCES landmarks(id));");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS categories (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT," +
+                "image INTEGER," +
+                "FOREIGN KEY (name) REFERENCES landmarks(category));");
     }
 
     @Override
@@ -92,6 +100,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    public void insertCategories(List<TravelCategory> travelCategories) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        try {
+            // Очищаем существующие данные в таблице
+            db.execSQL("DELETE FROM categories");
+
+            // Вставляем новые данные
+            for (TravelCategory category : travelCategories) {
+                ContentValues values = new ContentValues();
+                values.put("name", category.title);
+                values.put("image", category.imageResId);
+
+                db.insert("categories", null, values);
+            }
+        } finally {
+            // Всегда закрываем базу данных после выполнения операций
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
+    }
+
 
     public void insertClickedTravelData(ClickedTravelData clickedTravelData) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -173,6 +205,29 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void displayCategoryData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM categories";
+        Cursor cursor = db.rawQuery(query, null);
+
+        try {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
+                @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
+
+                System.out.println("ID: " + id);
+                System.out.println("Name: " + name);
+                System.out.println("Image: " + image);
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+    }
+
+
     public List<ClickedTravelData> getAllClickedLandmarks() {
         List<ClickedTravelData> clickedLandscapes = new ArrayList<>();
 
@@ -196,6 +251,60 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         return clickedLandscapes;
+    }
+
+    public List<TravelCategory> getAllCategories() {
+        List<TravelCategory> categoriesList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM categories";
+        Cursor cursor = db.rawQuery(query, null);
+
+        try {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
+                @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
+
+                // Создаем объект TravelCategory и добавляем его в список
+                TravelCategory category = new TravelCategory();
+                category.setTitle(name);
+                category.setImageResId(image);
+                categoriesList.add(category);
+            }
+        } finally {
+            cursor.close();
+            db.close();
+        }
+
+        return categoriesList;
+    }
+
+
+    public List<Landmark> getLandmarksByCategory(String category) {
+        List<Landmark> landmarks = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Выполняем запрос
+        String query = "SELECT * FROM landmarks WHERE category = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{category});
+
+        // Обрабатываем результат запроса
+        while (cursor.moveToNext()) {
+            @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
+            @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
+            // Добавьте другие поля, если нужно
+
+            // Создаем объект Landmark и добавляем его в список
+            Landmark landmark = new Landmark(id, title, image, category);
+            landmarks.add(landmark);
+        }
+
+        cursor.close();
+        db.close();
+
+        return landmarks;
     }
 
 

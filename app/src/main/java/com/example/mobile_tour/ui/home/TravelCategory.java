@@ -9,4 +9,19 @@ public class TravelCategory {
     public Integer imageResId;
 
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setImageResId(int imageResId) {
+        this.imageResId = imageResId;
+    }
+
+    public int getImageResId() {
+        return imageResId;
+    }
 }

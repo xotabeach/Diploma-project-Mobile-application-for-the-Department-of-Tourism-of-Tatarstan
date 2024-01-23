@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +31,14 @@ import com.example.mobile_tour.MainActivity;
 import com.example.mobile_tour.R;
 import com.example.mobile_tour.ui.SharedViewModel;
 import com.example.mobile_tour.ui.create_route.Create_routeFragment;
+import com.example.mobile_tour.ui.right_bar.RightBarFragment;
+import com.example.mobile_tour.ui.right_bar.RightBarViewModel;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 
 public class HomeFragment extends Fragment {
@@ -45,12 +50,22 @@ public class HomeFragment extends Fragment {
 
 
     private void editViewPager(ViewPager2 locationsViewPager) {
+        Random ran = new Random();
         locationsViewPager.setClipToPadding(false);
         locationsViewPager.setClipChildren(false);
-        locationsViewPager.setOffscreenPageLimit(5);
-        locationsViewPager.setCurrentItem(1);
+        locationsViewPager.setOffscreenPageLimit(9);
+        locationsViewPager.setCurrentItem(ran.nextInt(9));
         locationsViewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
     }
+    private void editViewPagerCat(ViewPager2 categoriesViewPager) {
+        Random ran = new Random();
+        categoriesViewPager.setClipToPadding(false);
+        categoriesViewPager.setClipChildren(false);
+        categoriesViewPager.setOffscreenPageLimit(5);
+        categoriesViewPager.setCurrentItem(ran.nextInt(5));
+        categoriesViewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+    }
+
 
 
     @Override
@@ -66,7 +81,7 @@ public class HomeFragment extends Fragment {
 
 
         List<TravelLocation> travelLocations = new ArrayList<>();
-        List<TravelCategory> travelCategories = new ArrayList<>();
+        //List<TravelCategory> travelCategories = new ArrayList<>();
 
         DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
         travelLocations = dbHelper.getAllTravelLocations();
@@ -112,25 +127,11 @@ public class HomeFragment extends Fragment {
         editViewPager(locationsViewPager);
 
 
-        TravelCategory travelCategoryParks = new TravelCategory();
-        travelCategoryParks.title ="Парки";
-        travelCategoryParks.imageResId = R.drawable.park_for_app;
-        travelCategories.add(travelCategoryParks);
 
-        TravelCategory travelCategoryCafe = new TravelCategory();
-        travelCategoryCafe.title ="Кафе";
-        travelCategoryCafe.imageResId = R.drawable.cafe_for_app;
-        travelCategories.add(travelCategoryCafe);
 
-        TravelCategory travelCategoryEntertainment = new TravelCategory();
-        travelCategoryEntertainment.title ="Развлечения";
-        travelCategoryEntertainment.imageResId = R.drawable.entertainment;
-        travelCategories.add(travelCategoryEntertainment);
+        List<TravelCategory> travelCategories = dbHelper.getAllCategories();
+        System.out.println("А тут сколько????  " + travelCategories.size());
 
-        TravelCategory travelCategoryHotels = new TravelCategory();
-        travelCategoryHotels.title ="Отели";
-        travelCategoryHotels.imageResId = R.drawable.hotels_for_app;
-        travelCategories.add(travelCategoryHotels);
 
 
         categoryViewPager.setAdapter(new TravelCategoryAdapter(travelCategories));
@@ -162,18 +163,29 @@ public class HomeFragment extends Fragment {
         categoryAdapter.setOnItemClickListener(new TravelCategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                // Вызывается при нажатии на элемент категории
-                // Здесь вы можете выполнить действия при выборе категории
+
 
                 if (getActivity() instanceof MainActivity) {
-                    // Получаем NavController из nav_host_fragment
+
                     NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
 
+                    RightBarViewModel rightBarViewModel = new ViewModelProvider(requireActivity()).get(RightBarViewModel.class);
 
+                    String selectedCategory = travelCategories.get(position).getTitle();
+                    List<Landmark> landmarks = dbHelper.getLandmarksByCategory(selectedCategory);
+
+                    // Обновление данных в RightBarViewModel
+                    rightBarViewModel.setSelectedCategory(selectedCategory);
+                    rightBarViewModel.setLandmarks(landmarks);
+
+                    // Выполняем запрос к БД и получаем список landmarks для выбранной категории
+
+                    System.out.println("Количество в категории: " + landmarks.size());
+
+
+                    //rightBarFragment.setupLandmarksData(landmarks);
                     navController.popBackStack();
 
-
-                    // Выполнение навигации к фрагменту с нужным id
                     navController.navigate(R.id.navigation_right_bar);
                 }
 
@@ -243,9 +255,10 @@ public class HomeFragment extends Fragment {
         super.onResume();
 
         ViewPager2 locationsViewPager = getView().findViewById(R.id.viewpagerHomeFragment);
-
+        ViewPager2 categoriesViewPager = getView().findViewById(R.id.viewpagerHomeFragment_category);
         // Вызовите метод настройки еще раз
         editViewPager(locationsViewPager);
+        editViewPagerCat(categoriesViewPager);
     }
 
 }
