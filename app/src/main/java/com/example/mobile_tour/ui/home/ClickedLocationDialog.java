@@ -8,9 +8,10 @@ package com.example.mobile_tour.ui.home;
 
 
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
@@ -18,39 +19,41 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 
 
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.mobile_tour.R;
+import com.example.mobile_tour.ui.ClickedTravelData;
+import com.example.mobile_tour.ui.SharedViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ClickedLocationDialog{
     private Context context;
     private TravelLocation travelLocation;
     private Dialog dialog;
 
+    private SharedViewModel sharedViewModel;
 
     public ClickedLocationDialog(Context context, TravelLocation travelLocation) {
-
+        this.sharedViewModel = sharedViewModel;
         this.context = context;
         this.travelLocation = travelLocation;
     }
@@ -109,6 +112,10 @@ public class ClickedLocationDialog{
 
         int previousColor = window.getNavigationBarColor();
         window.setNavigationBarColor(Color.parseColor("#99000000"));
+
+
+        List<ClickedTravelData> clickedLocationData = new ArrayList<>();
+
 
 
         overlay.setBackgroundColor(Color.parseColor("#99000000")); // Здесь #99000000 - это полупрозрачный черный цвет
@@ -184,6 +191,10 @@ public class ClickedLocationDialog{
                     });
                     paddingAnimator.setDuration(500);
                     paddingAnimator.start();
+                    clickedLocationData.add(new ClickedTravelData(travelLocation.title, travelLocation.imageUrl, travelLocation.category));
+
+
+
                 }
             }
         });

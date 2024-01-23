@@ -63,7 +63,12 @@ public class TravelLocationsAdapter extends RecyclerView.Adapter<TravelLocations
 
     @Override
     public int getItemCount() {
-        return travelLocations.size();
+
+        if (travelLocations != null) {
+            return travelLocations.size();
+        } else {
+            return 0;
+        }
     }
 
     static class TravelLocationViewHolder extends RecyclerView.ViewHolder{

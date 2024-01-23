@@ -16,6 +16,8 @@ import androidx.appcompat.widget.SearchView;
 
 
 import com.example.mobile_tour.R;
+import com.example.mobile_tour.ui.home.TravelCategory;
+import com.example.mobile_tour.ui.home.TravelLocation;
 import com.example.mobile_tour.ui.login.LoginActivity;
 import com.example.mobile_tour.ui.splash_screen.SplashScreenActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,6 +29,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.mobile_tour.databinding.ActivityMainBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DataBaseHelper dbHelper = new DataBaseHelper(this);
+
+        dbHelper.clearDatabase();
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -80,6 +89,95 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         hideSystemBars();
 
+
+
+
+        List<TravelLocation> travelLocations = new ArrayList<>();
+        List<TravelCategory> travelCategories = new ArrayList<>();
+
+
+
+        TravelLocation travelLocationFamilyCenter = new TravelLocation();
+        travelLocationFamilyCenter.imageUrl = R.drawable.family_center_kazan;
+        travelLocationFamilyCenter.title = "Центр семьи";
+        System.out.println("Вот наша картинка: " + travelLocationFamilyCenter.imageUrl);
+        travelLocationFamilyCenter.category = "Архитектура";
+        travelLocationFamilyCenter.year = "Год основания 2013";
+        travelLocationFamilyCenter.description ="Данное сооружение выполнено в форме чаши – традиционного татарского казана. Тюркское слово «казан» означает котел для приготовления пищи. Такой вид строения выбран неспроста – чаша символизирует домашний очаг и семейный уют, а также ассоциируется с культурой местного народа.\n" +
+                "Интересный факт: в день открытия Чаши в ней заключили брак 27 человек в честь 27ми летия Универсиады ";
+        travelLocationFamilyCenter.location = "Казань";
+        travelLocationFamilyCenter.starRating = 5.0f;
+        travelLocations.add(travelLocationFamilyCenter);
+
+        TravelLocation travelLocationKazanKremlin = new TravelLocation();
+        travelLocationKazanKremlin.imageUrl = R.drawable.kazan_kremlin;
+        travelLocationKazanKremlin.title = "Казанский Кремль";
+        travelLocationKazanKremlin.category = "Архитектура";
+        travelLocationKazanKremlin.year = "Год основания: 1438";
+        travelLocationKazanKremlin.description = "Казанский кремль - это историческая крепость и культурный комплекс, расположенный в центре города Казань, Россия. Кремль был построен в 16 веке и имеет большое историческое значение.\n" +
+                "\n" +
+                "Здесь можно увидеть различные архитектурные памятники, такие как Казанский кафедральный собор, который служил различными религиозными общинами на протяжении столетий, и Кул-Шариф мечеть, построенную в 2005 году и ставшую символом современного Казани.\n" +
+                "\n" +
+                "Кремль также включает в себя резиденцию Президента Республики Татарстан, музей и различные выставочные залы, представляющие историю и культуру региона.\n" +
+                "\n" +
+                "Кроме того, кремль находится на берегу реки Казанка и предлагает живописные виды на окружающую местность.";
+
+
+        travelLocationKazanKremlin.location = "Казань";
+        travelLocationKazanKremlin.starRating = 4.8f;
+        travelLocations.add(travelLocationKazanKremlin);
+
+        TravelLocation travelLocationRiveraAqua = new TravelLocation();
+        travelLocationRiveraAqua.imageUrl = R.drawable.rivera_aqua;
+        travelLocationRiveraAqua.title = "Аквапарк \"Ривьера\"";
+        travelLocationRiveraAqua.category = "Развлечения";
+        travelLocationRiveraAqua.year = "Год основания: 2008";
+        travelLocationRiveraAqua.description = "Крупный развлекательный комплекс с аквапарком и бассейнами.\n" +
+                "Расположен в центре Казани, на берегу реки Казанки.\n" +
+                "Обширная инфраструктура: горки, водные аттракционы, спа-зоны.\n" +
+                "Идеальное место для семейного отдыха и активного времяпровождения.\n" +
+                "Хостинг различных мероприятий, включая концерты и фестивали.\n" +
+                "Аквапарк \"Ривьера\" стал популярным местом для местных жителей и туристов, предлагая увлекательные водные развлечения в самом сердце города.";
+        travelLocationRiveraAqua.location = "Казань";
+        travelLocationRiveraAqua.starRating = 4.7f;
+        travelLocations.add(travelLocationRiveraAqua);
+
+        TravelLocation travelLocationTatarVilage = new TravelLocation();
+        travelLocationTatarVilage.imageUrl = R.drawable.tugan_avil;
+        travelLocationTatarVilage.title = "Татарская деревня \"Туган Авыл\"";
+        travelLocationTatarVilage.category = "Культура";
+        travelLocationTatarVilage.year = "Год основания: 2005";
+        travelLocationTatarVilage.description = "Татарская деревня \"Туган Авыл\" представляет собой уникальный этнографический комплекс, являющийся отражением богатой культуры и традиций татарского народа. Этот аутентичный комплекс является популярным местом для туристов и жителей города, желающих погрузиться в атмосферу татарской деревни.\n" +
+                "\n" +
+                "Состоящий из старинных деревенских домов, мастерских и интересных музеев, \"Туган Авыл\" предоставляет посетителям уникальную возможность познакомиться с традиционным татарским образом жизни. Дома представляют собой аутентичные строения, передающие архитектурные особенности татарских поселений.\n" +
+                "\n" +
+                "Кроме того, в этом этнографическом комплексе проводятся разнообразные мероприятия и фестивали, позволяя посетителям не только увидеть традиции, но и активно участвовать в них. Мастер-классы по традиционным ремеслам, культурные события и выставки создают привлекательную атмосферу для тех, кто стремится глубже понять татарскую культуру.";
+        travelLocationTatarVilage.location = "Казань";
+        travelLocationTatarVilage.starRating = 4.7f;
+        travelLocations.add(travelLocationTatarVilage);
+
+        TravelLocation travelLocationUramPark = new TravelLocation();
+        travelLocationUramPark.imageUrl = R.drawable.park_uram;
+        travelLocationUramPark.title = "Парк Урам";
+        travelLocationUramPark.category = "Развлечения";
+        travelLocationUramPark.year = "Год основания: 2021";
+        travelLocationUramPark.description = "Самый большой в России и Европе всесезонный экстрим-парк УРАМ состоит из двух частей – крытой и открытой. На открытой территории площадью 20 000 кв.м. можно заниматься скейтбордингом, BMX Freestyle, паркуром, воркаутом и стритболом. В крытом центре уличной культуры на двух этажах расположились экстрим-зоны (эйр-парк, стрит-плаза, бетонный боул и скейт-дом), а также культурные пространства – центр современной музыки, школа диджеинга, скейт-шоп, зал для танцев, лекторий и кафе. Все спортивные объекты в парке построены в соответствии с международными требованиями безопасности и открыты для всех желающих.";
+        travelLocationUramPark.location = "Казань";
+        travelLocationUramPark.starRating = 5.0f;
+        travelLocations.add(travelLocationUramPark);
+
+        TravelLocation travelLocationMitaka = new TravelLocation();
+        travelLocationMitaka.imageUrl = R.drawable.asa_mitaka;
+        travelLocationMitaka.title = "Аса Митака";
+        travelLocationMitaka.location = "Казань";
+        travelLocationMitaka.starRating = 5.0f;
+        travelLocations.add(travelLocationMitaka);
+
+        dbHelper.clearDatabase();
+
+        dbHelper.insertTravelLocations(travelLocations);
+        dbHelper.displayRowCount();
+        dbHelper.displayAllData();
 
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);
@@ -93,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
         binding.navView.setPadding(0,0,0,-20);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
     }
 
 
