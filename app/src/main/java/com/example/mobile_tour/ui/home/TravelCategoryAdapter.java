@@ -25,6 +25,8 @@ public class TravelCategoryAdapter extends RecyclerView.Adapter<TravelCategoryAd
     }
 
 
+
+
     @NonNull
     @Override
     public TravelCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,11 +41,31 @@ public class TravelCategoryAdapter extends RecyclerView.Adapter<TravelCategoryAd
     @Override
     public void onBindViewHolder(@NonNull TravelCategoryAdapter.TravelCategoryViewHolder holder, int position) {
         holder.setCategoryData(travelCategories.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(position);
+                }
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return travelCategories.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    // Метод для установки слушателя
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     static class TravelCategoryViewHolder extends RecyclerView.ViewHolder{

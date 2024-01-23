@@ -1,18 +1,30 @@
-<com.google.android.material.navigation.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="650dp"
-    android:background="@drawable/rounded_back_2"
-    android:translationX="100dp"
-    android:translationY="80dp"
-    app:headerLayout="@layout/header_right_bar"
-    app:menu="@menu/right_bar_menu" >
+    android:layout_height="match_parent"
+    tools:context=".ui.create_route.Create_routeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="349dp"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+    <TextView
+        android:id="@+id/text_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/gothampro"
+        android:text="Категория:"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textSize="22sp"
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.navigation.NavigationView>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

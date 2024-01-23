@@ -18,12 +18,15 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mobile_tour.DataBaseHelper;
+import com.example.mobile_tour.MainActivity;
 import com.example.mobile_tour.R;
 import com.example.mobile_tour.ui.SharedViewModel;
 import com.example.mobile_tour.ui.create_route.Create_routeFragment;
@@ -41,7 +44,13 @@ public class HomeFragment extends Fragment {
     }
 
 
-
+    private void editViewPager(ViewPager2 locationsViewPager) {
+        locationsViewPager.setClipToPadding(false);
+        locationsViewPager.setClipChildren(false);
+        locationsViewPager.setOffscreenPageLimit(5);
+        locationsViewPager.setCurrentItem(1);
+        locationsViewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+    }
 
 
     @Override
@@ -100,11 +109,7 @@ public class HomeFragment extends Fragment {
         locationsViewPager.setAdapter(adapter);
 
 
-        locationsViewPager.setClipToPadding(false);
-        locationsViewPager.setClipChildren(false);
-        locationsViewPager.setOffscreenPageLimit(5);
-        locationsViewPager.setCurrentItem(2);
-        locationsViewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        editViewPager(locationsViewPager);
 
 
         TravelCategory travelCategoryParks = new TravelCategory();
@@ -150,6 +155,34 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+        TravelCategoryAdapter categoryAdapter = new TravelCategoryAdapter(travelCategories);
+        categoryViewPager.setAdapter(categoryAdapter);
+
+        categoryAdapter.setOnItemClickListener(new TravelCategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // Вызывается при нажатии на элемент категории
+                // Здесь вы можете выполнить действия при выборе категории
+
+                if (getActivity() instanceof MainActivity) {
+                    // Получаем NavController из nav_host_fragment
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_activity_main);
+
+
+                    navController.popBackStack();
+
+
+                    // Выполнение навигации к фрагменту с нужным id
+                    navController.navigate(R.id.navigation_right_bar);
+                }
+
+            }
+        });
+
+
+
+
         locationsViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -204,4 +237,15 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ViewPager2 locationsViewPager = getView().findViewById(R.id.viewpagerHomeFragment);
+
+        // Вызовите метод настройки еще раз
+        editViewPager(locationsViewPager);
+    }
+
 }
