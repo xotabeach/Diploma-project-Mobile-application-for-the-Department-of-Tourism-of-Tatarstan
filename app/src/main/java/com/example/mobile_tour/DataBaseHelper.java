@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.example.mobile_tour.ui.ClickedTravelData;
 import com.example.mobile_tour.ui.home.TravelLocation;
 
 import java.io.ByteArrayOutputStream;
@@ -31,6 +32,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         // Очистка таблицы landmarks
         db.delete("landmarks", null, null);
+        db.delete("clickedLandmarks", null, null);
 
         // Или, если вы предпочитаете использовать execSQL
         // db.execSQL("DELETE FROM landmarks");
@@ -91,6 +93,43 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertClickedTravelData(ClickedTravelData clickedTravelData) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", clickedTravelData.getTitle());
+        values.put("image", clickedTravelData.getImageUrl());
+        values.put("category", clickedTravelData.getCategory());
+
+        db.insert("clickedLandmarks", null, values);
+        db.close();
+    }
+
+    public void deleteClickedData(List<ClickedTravelData> clickedLocationData) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for (ClickedTravelData clickedData : clickedLocationData) {
+            // Поиск записи в базе данных по заголовку (title)
+            String whereClause = "title = ?";
+            String[] whereArgs = {clickedData.getTitle()};
+
+            // Удаление записи из таблицы clickedLandmarks, если она существует
+            db.delete("clickedLandmarks", whereClause, whereArgs);
+        }
+
+        db.close();
+    }
+
+
+    public boolean isLocationDataExists(String title) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT 1 FROM clickedLandmarks WHERE title = ?", new String[]{title});
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return exists;
+    }
+
+
 
     public void displayRowCount() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -121,6 +160,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             System.out.println("ID: " + id);
             System.out.println("Title: " + title);
             System.out.println("ImageURL: "+ image);
+            // Выводите другие поля по аналогии...
+        }
+
+        cursor.close();
+        db.close();
+    }
+
+    public void displayClickedData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM clickedLandmarks";
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
+            @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
+            @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category"));
+            // Дополнительные поля, которые вы хотите вывести...
+
+            System.out.println("ID: " + id);
+            System.out.println("Title: " + title);
+            System.out.println("ImageURL: " + image);
+            System.out.println("Category: " + category);
             // Выводите другие поля по аналогии...
         }
 

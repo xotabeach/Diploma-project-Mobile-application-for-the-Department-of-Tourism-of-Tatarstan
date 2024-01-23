@@ -10,6 +10,8 @@ package com.example.mobile_tour.ui.home;
 
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import static java.security.AccessController.getContext;
+
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -37,6 +39,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.mobile_tour.DataBaseHelper;
 import com.example.mobile_tour.R;
 import com.example.mobile_tour.ui.ClickedTravelData;
 import com.example.mobile_tour.ui.SharedViewModel;
@@ -146,15 +149,26 @@ public class ClickedLocationDialog{
         textViewCat.setText(travelLocation.category);
         textViewYear.setText(travelLocation.year);
         textView1.setText(travelLocation.description);
+        deleteButton.setVisibility(View.INVISIBLE);
 
+        DataBaseHelper dbHelper = new DataBaseHelper(context);
+        if (dbHelper.isLocationDataExists(travelLocation.title)) {
 
+            addButton.setTextColor(Color.parseColor("#FF8642"));
+            addButton.setBackgroundResource(R.drawable.button_clicked_dost_after);
+            addButton.setTranslationX(-75f);
+            addButton.setPadding(25,0,25,0);
+
+            deleteButton.setVisibility(View.VISIBLE);
+            deleteButton.setTranslationX(15f);
+        }
 
 
         int currentPaddingStart = addButton.getPaddingStart();
         int currentPaddingEnd = addButton.getPaddingEnd();
         addButton.setPaddingRelative(currentPaddingStart + 25, addButton.getPaddingTop(), currentPaddingEnd + 25, addButton.getPaddingBottom());
 
-        deleteButton.setVisibility(View.INVISIBLE);
+
         final boolean[] isClicked = {false};
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -193,8 +207,9 @@ public class ClickedLocationDialog{
                     paddingAnimator.start();
                     clickedLocationData.add(new ClickedTravelData(travelLocation.title, travelLocation.imageUrl, travelLocation.category));
 
-
-
+                    DataBaseHelper dbHelper = new DataBaseHelper(context);
+                    dbHelper.insertClickedTravelData(new ClickedTravelData(travelLocation.title, travelLocation.imageUrl, travelLocation.category));
+                    dbHelper.displayClickedData();
                 }
             }
         });
@@ -229,6 +244,8 @@ public class ClickedLocationDialog{
                 paddingAnimator.setDuration(500);
                 paddingAnimator.start();
                 isClicked[0] = false; // возврат флага нажатия в исходное состояние
+                DataBaseHelper dbHelper = new DataBaseHelper(context);
+                dbHelper.deleteClickedData(clickedLocationData);
             }
         });
 
