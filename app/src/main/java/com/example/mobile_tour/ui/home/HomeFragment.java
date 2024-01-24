@@ -68,8 +68,21 @@ public class HomeFragment extends Fragment {
 
 
 
+
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
+
+
+
+        List<TravelLocation> travelLocations = new ArrayList<>();
+        DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
+        travelLocations = dbHelper.getAllTravelLocations();
+        System.out.println("Количество элементов там короче: " + travelLocations.size());
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         ViewPager2 locationsViewPager = root.findViewById(R.id.viewpagerHomeFragment);
@@ -79,13 +92,9 @@ public class HomeFragment extends Fragment {
 
 
 
-
-        List<TravelLocation> travelLocations = new ArrayList<>();
         //List<TravelCategory> travelCategories = new ArrayList<>();
 
-        DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
-        travelLocations = dbHelper.getAllTravelLocations();
-        System.out.println("Количество элементов там короче: " + travelLocations.size());
+
 
 
 
