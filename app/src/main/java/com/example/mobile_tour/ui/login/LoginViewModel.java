@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import android.content.Context;
 import android.util.Patterns;
 
 import com.example.mobile_tour.data.LoginRepository;
@@ -16,6 +17,14 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
+
+
+    private Context context;
+
+    public LoginViewModel(LoginRepository loginRepository, Context context) {
+        this.loginRepository = loginRepository;
+        this.context = context;
+    }
 
     LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
@@ -32,6 +41,19 @@ public class LoginViewModel extends ViewModel {
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
         Result<LoggedInUser> result = loginRepository.login(username, password);
+
+        if (result instanceof Result.Success) {
+            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+        } else {
+            loginResult.setValue(new LoginResult(R.string.login_failed));
+        }
+    }
+
+    public void register(String email, String password, String name) {
+        // Здесь можно выполнять операции для регистрации нового пользователя
+        // Например:
+        Result<LoggedInUser> result = loginRepository.register(email, password, name);
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();

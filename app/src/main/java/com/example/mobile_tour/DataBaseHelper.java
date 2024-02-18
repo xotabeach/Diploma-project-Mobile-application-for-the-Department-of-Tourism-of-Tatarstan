@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.mobile_tour.ui.ClickedTravelData;
 import com.example.mobile_tour.ui.home.Landmark;
@@ -70,6 +71,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "name TEXT," +
                 "image INTEGER," +
                 "FOREIGN KEY (name) REFERENCES landmarks(category));");
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS users (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "email TEXT," +
+                "name TEXT," +
+                "password TEXT);");
     }
 
     @Override
@@ -82,6 +89,49 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         onCreate(db);
     }
+
+    public void insertUser(String email, String name, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("email", email);
+        values.put("name", name);
+        values.put("password", password);
+        db.insert("users", null, values);
+        db.close();
+    }
+
+    // Метод для получения данных о пользователе по электронной почте
+    public boolean isUserExist(String email, String enteredPassword, Context context) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM users WHERE email = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+        boolean userExists = (cursor.getCount() > 0);
+
+        if (userExists) {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") String passwordFromDB = cursor.getString(cursor.getColumnIndex("password"));
+                if (enteredPassword.equals(passwordFromDB)) {
+                    cursor.close();
+                    db.close();
+                    return true;
+                } else {
+                    // Пароль неверный, выводим уведомление
+                    Toast.makeText(context, "Неверный пароль", Toast.LENGTH_SHORT).show();
+                    cursor.close();
+                    db.close();
+                    return false;
+                }
+            }
+        } else {
+            // Пользователь не найден, выводим уведомление
+            Toast.makeText(context, "Пользователь с такой почтой не найден", Toast.LENGTH_SHORT).show();
+        }
+
+        cursor.close();
+        db.close();
+        return false;
+    }
+
 
     public void insertTravelLocations(List<TravelLocation> travelLocations) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -359,6 +409,37 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return travelLocations;
+    }
+
+    @SuppressLint("RestrictedApi")
+    public void displayUserCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT count(*) FROM users";
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            int count = cursor.getInt(0);
+            Log.d(TAG, "Количество элементов в таблице users: " + count);
+        }
+        cursor.close();
+    }
+
+    // Метод для вывода всего содержимого таблицы users в консоль
+    @SuppressLint("RestrictedApi")
+    public void displayAllUserData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM users";
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("email"));
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
+                @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex("password"));
+                // Можете добавить другие поля по аналогии, если они есть в таблице
+
+                Log.d(TAG, "Email: " + email + ", Name: " + name + ", Password: " + password);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
     }
 
 }

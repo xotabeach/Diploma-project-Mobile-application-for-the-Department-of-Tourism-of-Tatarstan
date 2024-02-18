@@ -1,5 +1,8 @@
 package com.example.mobile_tour.data;
 
+import android.content.Context;
+
+import com.example.mobile_tour.DataBaseHelper;
 import com.example.mobile_tour.data.model.LoggedInUser;
 
 import java.io.IOException;
@@ -9,21 +12,46 @@ import java.io.IOException;
  */
 public class LoginDataSource {
 
-    public Result<LoggedInUser> login(String username, String password) {
+    private DataBaseHelper dbHelper; // внедрение зависимости для работы с базой данных
 
-        try {
-            // TODO: handle loggedInUser authentication
-            LoggedInUser fakeUser =
-                    new LoggedInUser(
-                            java.util.UUID.randomUUID().toString(),
-                            "Jane Doe");
-            return new Result.Success<>(fakeUser);
-        } catch (Exception e) {
-            return new Result.Error(new IOException("Error logging in", e));
+    private Context context;
+
+    public LoginDataSource(Context context) {
+        this.context = context;
+        this.dbHelper = new DataBaseHelper(context);
+    }
+    public Result<LoggedInUser> login(String email, String password) {
+        // Вывод значений переменных в консоль
+        System.out.println("Email: " + email);
+        System.out.println("Password: " + password);
+
+        // Аутентификация пользователя в БД
+        if (dbHelper.isUserExist(email, password, context)) {
+            // Имитация успешной аутентификации
+            LoggedInUser user = new LoggedInUser(java.util.UUID.randomUUID().toString(), email);
+            return new Result.Success<>(user);
+        } else {
+            return new Result.Error(new IOException("Invalid username or password"));
+        }
+    }
+
+    public Result<LoggedInUser> register(String email, String password, String name) {
+        // Вывод значений переменных в консоль
+        System.out.println("Email: " + email);
+        System.out.println("Password: " + password);
+        System.out.println("Name: " + name);
+
+        // Регистрация нового пользователя в БД
+        if (!dbHelper.isUserExist(email, password, context)) {
+            dbHelper.insertUser(email, name, password);
+            LoggedInUser registeredUser = new LoggedInUser(java.util.UUID.randomUUID().toString(), email);
+            return new Result.Success<>(registeredUser);
+        } else {
+            return new Result.Error(new IOException("User with this email already exists"));
         }
     }
 
     public void logout() {
-        // TODO: revoke authentication
+        // TODO: отзыв аутентификации
     }
 }

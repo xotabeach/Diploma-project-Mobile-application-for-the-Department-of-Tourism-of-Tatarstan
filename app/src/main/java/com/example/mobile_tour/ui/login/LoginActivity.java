@@ -2,11 +2,14 @@ package com.example.mobile_tour.ui.login;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 
+import androidx.compose.ui.text.input.InputMethodManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
@@ -21,6 +24,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -34,6 +38,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mobile_tour.DataBaseHelper;
 import com.example.mobile_tour.MainActivity;
 import com.example.mobile_tour.R;
 import com.example.mobile_tour.databinding.ActivityMainBinding;
@@ -43,6 +48,9 @@ import com.example.mobile_tour.databinding.ActivityLoginBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class LoginActivity extends AppCompatActivity {
+
+
+
 
     protected void hideSystemBars(){
 
@@ -78,16 +86,25 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
 
+    private void registerUser(String email, String password, String name) {
+        loginViewModel.register(email, password, name);
+    }
+
+    private void loginUser(String email, String password) {
+        loginViewModel.login(email, password);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DataBaseHelper dbHelper = new DataBaseHelper(this);
 
         hideSystemBars();
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
+        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory(this))
                 .get(LoginViewModel.class);
 
         final EditText usernameEditText = binding.username;
@@ -115,6 +132,9 @@ public class LoginActivity extends AppCompatActivity {
         final float originalNameY = nameEditText.getY();
         final float originalRegTextY = regText.getY();
 
+        final boolean[] regState = {false};
+
+
         final float[] data = { };
         //int name_data = (int) nameEditText.getY();
         //int welc_data = (int) welcomeText.getY();
@@ -122,9 +142,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                regState[0] = true;
                 ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
                 float user1Y = usernameEditText.getY();
 
@@ -268,15 +291,53 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        usernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    nameEditText.clearFocus(); // скрыть клавиатуру, если фокус уже был на другом EditText
+                }
+            }
+        });
+
+        nameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    usernameEditText.clearFocus(); // скрыть клавиатуру, если фокус уже был на другом EditText
+                }
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                String username = usernameEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+                String name = nameEditText.getText().toString();
+
+                if (username.isEmpty() || password.isEmpty() || (regState[0] && name.isEmpty())) {
+                    // Выводим уведомление, если не все поля заполнены
+                    Toast.makeText(getApplicationContext(), "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
+                } else {
+                    System.out.println("state: " + regState[0]);
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+                    loginViewModel.login(username, password);
+                    if (regState[0]) {
+                        registerUser(username, password, name);
+                    } else {
+                        loginUser(username, password);
+                    }
+                }
             }
         });
+
+
+
     }
+
+
+
 
     @Override
     protected void onPause(){
