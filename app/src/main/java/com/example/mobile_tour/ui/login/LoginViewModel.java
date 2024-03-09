@@ -5,12 +5,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Patterns;
 
+import com.example.mobile_tour.MainActivity;
 import com.example.mobile_tour.data.LoginRepository;
 import com.example.mobile_tour.data.Result;
 import com.example.mobile_tour.data.model.LoggedInUser;
 import com.example.mobile_tour.R;
+import com.example.mobile_tour.ui.profile.ProfileViewModel;
 
 public class LoginViewModel extends ViewModel {
 
@@ -18,7 +21,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
 
-
+    private ProfileViewModel profileViewModel = new ProfileViewModel();
     private Context context;
 
     public LoginViewModel(LoginRepository loginRepository, Context context) {
@@ -45,6 +48,8 @@ public class LoginViewModel extends ViewModel {
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+
+            //profileViewModel.setEmail(data.getDisplayName());
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }
@@ -58,6 +63,7 @@ public class LoginViewModel extends ViewModel {
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }

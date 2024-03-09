@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.mobile_tour.DataBaseHelper;
 import com.example.mobile_tour.data.model.LoggedInUser;
+import com.example.mobile_tour.ui.profile.ProfileViewModel;
 
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ public class LoginDataSource {
 
     private DataBaseHelper dbHelper; // внедрение зависимости для работы с базой данных
 
+    ProfileViewModel prview = new ProfileViewModel();
     private Context context;
 
     public LoginDataSource(Context context) {
@@ -29,7 +31,9 @@ public class LoginDataSource {
         if (dbHelper.isUserExist(email, password, context)) {
             // Имитация успешной аутентификации
             LoggedInUser user = new LoggedInUser(java.util.UUID.randomUUID().toString(), email);
+            prview.setEmail(email);
             return new Result.Success<>(user);
+
         } else {
             return new Result.Error(new IOException("Invalid username or password"));
         }
@@ -45,6 +49,7 @@ public class LoginDataSource {
         if (!dbHelper.isUserExist(email, password, context)) {
             dbHelper.insertUser(email, name, password);
             LoggedInUser registeredUser = new LoggedInUser(java.util.UUID.randomUUID().toString(), email);
+            prview.setEmail(email);
             return new Result.Success<>(registeredUser);
         } else {
             return new Result.Error(new IOException("User with this email already exists"));

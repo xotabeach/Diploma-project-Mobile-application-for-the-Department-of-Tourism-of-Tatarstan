@@ -1,6 +1,9 @@
 package com.example.mobile_tour.data;
 
+import android.content.Intent;
+
 import com.example.mobile_tour.data.model.LoggedInUser;
+import com.example.mobile_tour.ui.profile.ProfileFragment;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -49,6 +52,7 @@ public class LoginRepository {
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }
+
         return result;
     }
 

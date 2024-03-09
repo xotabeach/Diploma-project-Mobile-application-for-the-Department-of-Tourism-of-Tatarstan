@@ -77,17 +77,18 @@ public class HomeFragment extends Fragment {
 
 
 
-
-        List<TravelLocation> travelLocations = new ArrayList<>();
-        DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
-        travelLocations = dbHelper.getAllTravelLocations();
-        System.out.println("Количество элементов там короче: " + travelLocations.size());
-
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
 
         ViewPager2 locationsViewPager = root.findViewById(R.id.viewpagerHomeFragment);
         ViewPager2 categoryViewPager = root.findViewById(R.id.viewpagerHomeFragment_category);
 
+
+        List<TravelLocation> travelLocations = new ArrayList<>();
+        DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
+        dbHelper.displayAllData();
+        travelLocations = dbHelper.getAllTravelLocations();
+        System.out.println("Количество элементов там короче: " + travelLocations.size());
 
 
 
@@ -262,12 +263,22 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        ViewPager2 locationsViewPager = getView().findViewById(R.id.viewpagerHomeFragment);
+        DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
+        dbHelper.displayAllData();
+        /*ViewPager2 locationsViewPager = getView().findViewById(R.id.viewpagerHomeFragment);
         ViewPager2 categoriesViewPager = getView().findViewById(R.id.viewpagerHomeFragment_category);
         // Вызовите метод настройки еще раз
+
+        List<TravelLocation> travelLocations = new ArrayList<>();
+
+        travelLocations = dbHelper.getAllTravelLocations();
+        List<TravelCategory> travelCategories = dbHelper.getAllCategories();
+        System.out.println("А тут сколько????  " + travelCategories.size());
+        System.out.println("Количество элементов там короче: " + travelLocations.size());
         editViewPager(locationsViewPager);
         editViewPagerCat(categoriesViewPager);
+        */
+
     }
 
 }

@@ -1,15 +1,19 @@
 package com.example.mobile_tour.ui.login;
 
+import static java.security.AccessController.getContext;
+
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
-import androidx.compose.ui.text.input.InputMethodManager;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
@@ -45,6 +49,7 @@ import com.example.mobile_tour.databinding.ActivityMainBinding;
 import com.example.mobile_tour.ui.login.LoginViewModel;
 import com.example.mobile_tour.ui.login.LoginViewModelFactory;
 import com.example.mobile_tour.databinding.ActivityLoginBinding;
+import com.example.mobile_tour.ui.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class LoginActivity extends AppCompatActivity {
@@ -103,6 +108,8 @@ public class LoginActivity extends AppCompatActivity {
         hideSystemBars();
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        dbHelper.displayAllUserData();
 
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory(this))
                 .get(LoginViewModel.class);
@@ -205,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                 ObjectAnimator combinedAnim = ObjectAnimator.ofPropertyValuesHolder(nameEditText, alpha, yPosition);
                 combinedAnim.setDuration(1000);
                 combinedAnim.start();*/
-
+                regState[0] = false;
                 usernameEditText.setTranslationY(originalUsernameY);
                 welcomeText.setTranslationY(originalWelcomeTextY);
                 nameEditText.setTranslationY(originalNameY);
@@ -327,8 +334,13 @@ public class LoginActivity extends AppCompatActivity {
                         registerUser(username, password, name);
                     } else {
                         loginUser(username, password);
+
                     }
+                    sendData(username, password);
                 }
+
+
+
             }
         });
 
@@ -336,7 +348,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
+    protected void sendData(String name, String password){
+        Intent sendProfileData = new Intent(this, MainActivity.class);
+        sendProfileData.putExtra("name", name);
+        startActivity(sendProfileData);
+    }
 
 
     @Override

@@ -1,22 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_home"
+    <!-- Верхняя область информацией о пользователе -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="horizontal">
+
+        <!-- Область для аватки -->
+        <ImageView
+            android:id="@+id/imageViewAvatar"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:src="@drawable/default_avatar"
+            android:layout_weight="1"
+            android:padding="8dp" />
+
+        <!-- Область с информацией о пользователе -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3">
+
+            <!-- Строки с именем, почтой и номером телефона -->
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Имя пользователя"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/textViewEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="example@example.com"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/textViewPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Номер телефона"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Нижняя область с дополнительной информацией -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Строки с дополнительной информацией -->
+        <TextView
+            android:id="@+id/textViewRoutesCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Количество маршрутов: "
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/textViewCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Город проживания: "
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/textViewContactDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Контактные данные: "
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
+    <!-- Кнопка "Редактировать профиль" -->
+    <Button
+        android:id="@+id/buttonEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Редактировать профиль"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+</LinearLayout>

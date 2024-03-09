@@ -19,6 +19,7 @@ import com.example.mobile_tour.R;
 import com.example.mobile_tour.ui.home.TravelCategory;
 import com.example.mobile_tour.ui.home.TravelLocation;
 import com.example.mobile_tour.ui.login.LoginActivity;
+import com.example.mobile_tour.ui.profile.ProfileViewModel;
 import com.example.mobile_tour.ui.splash_screen.SplashScreenActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.core.view.ViewCompat;
@@ -38,7 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
 
+    boolean key = true;
 
+    private String name;
+
+    private ProfileViewModel profileViewModel = new ProfileViewModel();
 
 
     protected void hideSystemBars(){
@@ -76,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
         DataBaseHelper dbHelper = new DataBaseHelper(this);
 
-        dbHelper.clearDatabase();
+
+
+        //dbHelper.clearDatabase();
 
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -248,18 +255,30 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper.clearDatabase();
 
-        dbHelper.insertTravelLocations(travelLocations);
+        //dbHelper.insertTravelLocations(travelLocations);
         dbHelper.displayRowCount();
         dbHelper.displayAllData();
 
 
-        dbHelper.insertCategories(travelCategories);
+        //dbHelper.insertCategories(travelCategories);
         dbHelper.displayCategoryData();
 
 
+        /*if(key){
+            key= false;
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
 
-        Intent loginIntent = new Intent(this, LoginActivity.class);
-        startActivity(loginIntent);
+        }*/
+
+
+
+        Intent sendProfileData = getIntent();
+        name = sendProfileData.getStringExtra("name");
+        System.out.println("МОИ ДАННЫЕ::::: "+name);
+
+        profileViewModel.setEmail(name);
+
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_question, R.id.navigation_create_route , R.id.navigation_profile , R.id.navigation_right_bar , R.id.searchView ,R.id.activity_login)
@@ -268,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 
         binding.navView.setPadding(0,0,0,-20);
-        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        //.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
@@ -292,4 +311,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         hideSystemBars();
     }
+
+    public String getMyName() {return name;}
 }

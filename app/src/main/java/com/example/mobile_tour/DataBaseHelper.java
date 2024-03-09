@@ -34,9 +34,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Очистка таблицы landmarks
-        db.delete("landmarks", null, null);
+        //db.delete("landmarks", null, null);
         db.delete("clickedLandmarks", null, null);
-        db.delete("categories",null, null);
+        //db.delete("categories",null, null);
         // Или, если вы предпочитаете использовать execSQL
         // db.execSQL("DELETE FROM landmarks");
 
@@ -81,11 +81,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 3) {
-            // Добавьте столбец starRating к таблице landmarks, если версия меньше 2
 
-            db.execSQL("ALTER TABLE landmarks ADD COLUMN location TEXT;");
-        }
 
         onCreate(db);
     }
