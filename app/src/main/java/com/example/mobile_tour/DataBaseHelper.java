@@ -34,7 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Очистка таблицы landmarks
-        //db.delete("landmarks", null, null);
+        db.delete("landmarks", null, null);
         db.delete("clickedLandmarks", null, null);
         //db.delete("categories",null, null);
         // Или, если вы предпочитаете использовать execSQL

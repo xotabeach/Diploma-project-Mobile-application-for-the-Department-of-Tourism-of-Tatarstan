@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         DataBaseHelper dbHelper = new DataBaseHelper(this);
-
+        //getSupportActionBar().hide();
 
 
         //dbHelper.clearDatabase();
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         hideSystemBars();
 
 
-
+        dbHelper.clearDatabase();
 
         List<TravelLocation> travelLocations = new ArrayList<>();
         List<TravelCategory> travelCategories = new ArrayList<>();
@@ -255,12 +255,12 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper.clearDatabase();
 
-        //dbHelper.insertTravelLocations(travelLocations);
+        dbHelper.insertTravelLocations(travelLocations);
         dbHelper.displayRowCount();
         dbHelper.displayAllData();
 
 
-        //dbHelper.insertCategories(travelCategories);
+        dbHelper.insertCategories(travelCategories);
         dbHelper.displayCategoryData();
 
 

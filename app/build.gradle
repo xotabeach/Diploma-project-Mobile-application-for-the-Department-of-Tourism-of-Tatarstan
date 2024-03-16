@@ -5,10 +5,12 @@ plugins {
 android {
     namespace 'com.example.mobile_tour'
     compileSdk 34
-
+    viewBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.example.mobile_tour"
-        minSdk 33
+        minSdk 29
         targetSdk 34
         versionCode 1
         versionName "1.0"
@@ -43,6 +45,7 @@ dependencies {
     implementation "com.flaviofaria:kenburnsview:1.0.7"
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'androidx.databinding:library:3.2.0-alpha11'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     implementation "androidx.viewpager2:viewpager2:1.0.0"

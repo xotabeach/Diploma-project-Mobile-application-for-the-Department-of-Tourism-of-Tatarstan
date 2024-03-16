@@ -103,10 +103,24 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //getSupportActionBar().hide();
+
         DataBaseHelper dbHelper = new DataBaseHelper(this);
 
         hideSystemBars();
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        Display display = getWindowManager().getDefaultDisplay();
+        Point screenSize = new Point();
+        display.getSize(screenSize);
+        int screenWidth1 = screenSize.x;
+
+        // Проверяем размер экрана
+        if (screenWidth1 < 400) {
+            // Загружаем разметку для экранов шириной 360dp
+            //binding =
+        } else {
+            // Загружаем основную разметку
+            binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        }
         setContentView(binding.getRoot());
 
         dbHelper.displayAllUserData();
@@ -125,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
         final TextView  regText = binding.textView5;
 
 
-        Display display = getWindowManager().getDefaultDisplay();
+        //Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int screenWidth = size.x;
