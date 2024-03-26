@@ -1,38 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
         <item
-
             android:id="@+id/navigation_home"
-            android:icon="@drawable/home"
-            android:title="@string/title_home"/>
+            android:icon="@drawable/home_icon"
+            android:title="@string/title_home"
+            app:showAsAction="ifRoom" />
 
         <item
-
             android:id="@+id/navigation_profile"
             android:icon="@drawable/user"
-            android:title="@string/title_profile"/>
+            android:title="@string/title_profile"
+            app:showAsAction="ifRoom" />
 
         <item
             android:id="@+id/navigation_create_route"
             android:icon="@drawable/maps"
             android:title="@string/title_create_route"
-            />
-
-
+            app:showAsAction="ifRoom" />
 
         <item
             android:id="@+id/navigation_question"
             android:icon="@drawable/question"
             android:title="@string/title_question"
-            />
-        <item
+            app:showAsAction="ifRoom" />
 
+        <item
             android:id="@+id/navigation_right_bar"
             android:icon="@drawable/menu"
             android:title="@string/title_right_bar"
-            />
+            app:showAsAction="ifRoom" />
 
 </menu>

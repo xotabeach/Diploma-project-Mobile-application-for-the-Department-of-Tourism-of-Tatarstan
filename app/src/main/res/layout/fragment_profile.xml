@@ -6,8 +6,10 @@
     <!-- Верхняя область информацией о пользователе -->
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="100dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/userInfo">
 
         <!-- Область для аватки -->
         <ImageView
@@ -20,6 +22,7 @@
 
         <!-- Область с информацией о пользователе -->
         <LinearLayout
+            android:layout_marginStart="15dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -46,7 +49,7 @@
                 android:id="@+id/textViewPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Номер телефона"
+                android:text="Пароль:"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="10dp"/>
         </LinearLayout>
@@ -54,6 +57,7 @@
 
     <!-- Нижняя область с дополнительной информацией -->
     <LinearLayout
+        android:id="@+id/dopData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -90,8 +94,9 @@
         android:id="@+id/buttonEditProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Редактировать профиль"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_margin="55dp"
+        android:text="Редактировать профиль" />
 
 </LinearLayout>

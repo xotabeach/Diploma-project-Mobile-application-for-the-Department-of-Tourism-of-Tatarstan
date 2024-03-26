@@ -2,12 +2,16 @@ package com.example.mobile_tour.ui.login;
 
 import static java.security.AccessController.getContext;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -24,6 +28,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Display;
@@ -38,6 +43,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -148,6 +154,23 @@ public class LoginActivity extends AppCompatActivity {
         buttonBack.setAlpha(0);
         regText.setAlpha(0);
 
+        int buttonWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int buttonHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        int xPosition = (int)(screenWidth * 0.45); // 50% ширины экрана
+        int yPosition = (int)(screenHeight * 0.90); // 80% высоты экрана
+
+
+        buttonBack.setX((int)(screenWidth* 0.2));
+        buttonBack.setY((int)(screenWidth* 0.9));
+        registerButton.setX(xPosition);
+        registerButton.setY(yPosition);
+
+
+        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(buttonWidth, buttonHeight);
+        registerButton.setLayoutParams(buttonParams);
+
+
         final float originalUsernameY = usernameEditText.getY();
         final float originalWelcomeTextY = welcomeText.getY();
         final float originalNameY = nameEditText.getY();
@@ -167,45 +190,67 @@ public class LoginActivity extends AppCompatActivity {
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 regState[0] = true;
                 ViewGroup rootView = (ViewGroup) findViewById(android.R.id.content);
                 float user1Y = usernameEditText.getY();
-
-                /*data[0] = user1Y;
-                data[1] = (float) nameEditText.getY();
-                data[2] = (float) welcomeText.getY();*/
+                rootView.setClickable(false);
 
                 ObjectAnimator usernameAnim = ObjectAnimator.ofFloat(usernameEditText, "y", user1Y, (float) (user1Y+(size.y*0.02)));
-                usernameAnim.setDuration(1000);
-                usernameAnim.start();
-
-
                 ObjectAnimator welcomeTextAnim = ObjectAnimator.ofFloat(welcomeText, "y", welcomeText.getY(), (float)(welcomeText.getY()-(size.y*0.22)));
-                welcomeTextAnim.setDuration(1000);
-                welcomeTextAnim.start();
-
-
                 PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
                 PropertyValuesHolder yPosition = PropertyValuesHolder.ofFloat("y", nameEditText.getY(), nameEditText.getY() + (size.y * 0.024f));
-
-                ObjectAnimator combinedAnim = ObjectAnimator.ofPropertyValuesHolder(nameEditText, alpha, yPosition);
-                combinedAnim.setDuration(1000);
-                combinedAnim.start();
-
                 PropertyValuesHolder alphaRegText = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
                 PropertyValuesHolder yPositionRegText = PropertyValuesHolder.ofFloat("y", nameEditText.getY(), nameEditText.getY() - (size.y * 0.028f));
 
+                ObjectAnimator combinedAnim = ObjectAnimator.ofPropertyValuesHolder(nameEditText, alpha, yPosition);
                 ObjectAnimator combinedAnimRegText = ObjectAnimator.ofPropertyValuesHolder(regText, alphaRegText, yPositionRegText);
-                combinedAnimRegText.setDuration(1000);
-                combinedAnimRegText.start();
-                //usernameEditText.setY((float) (user1Y+(size.y*0.02)));
-                //passwordEditText.setY((float) (passw1Y+(size.y*0.1)));
-                //welcomeText.setY((float)(welcomeText.getY()-(size.y*0.23)));
-                registerButton.setVisibility(View.GONE);
-                buttonBack.setAlpha(1);
+
+                AnimatorSet set = new AnimatorSet();
+                set.playTogether(usernameAnim, welcomeTextAnim, combinedAnim, combinedAnimRegText);
+                set.setDuration(1000);
+                set.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        // После завершения всех анимаций разблокировать экран
+                        rootView.setClickable(true);
+                        registerButton.setVisibility(View.GONE);
+                        buttonBack.setAlpha(1);
+                        buttonBack.setX((int)(screenWidth* 0.1));
+                        buttonBack.setY(registerButton.getY());
+                    }
+                });
+
+                set.start();
+
             }
         });
+
+
+        View rootView = getWindow().getDecorView().getRootView();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        regState[0] = false;
+                        usernameEditText.setTranslationY(originalUsernameY);
+                        welcomeText.setTranslationY(originalWelcomeTextY);
+                        nameEditText.setTranslationY(originalNameY);
+                        nameEditText.setAlpha(0);
+                        regText.setAlpha(0);
+                        regText.setTranslationY(originalRegTextY);
+                        //usernameEditText.setY((float) (user1Y+(size.y*0.02)));
+                        //passwordEditText.setY((float) (passw1Y+(size.y*0.1)));
+                        //welcomeText.setY((float)(welcomeText.getY()-(size.y*0.23)));
+                        registerButton.setVisibility(View.VISIBLE);
+                        buttonBack.setAlpha(0);
+                    }
+                });
+            }
+        });
+
         buttonBack.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -365,8 +410,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void sendData(String name, String password){
         Intent sendProfileData = new Intent(this, MainActivity.class);
         sendProfileData.putExtra("name", name);
+        sendProfileData.putExtra("password", password);
+        //System.out.println("МОИ PASKWEOPFKOPDMFOLPDMSFGFFFFFFFFFFНЫЕ::::: "+password);
         startActivity(sendProfileData);
     }
+
+
 
 
     @Override

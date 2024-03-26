@@ -4,6 +4,7 @@ package com.example.mobile_tour.ui.home;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,6 +81,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
 
+
         ViewPager2 locationsViewPager = root.findViewById(R.id.viewpagerHomeFragment);
         ViewPager2 categoryViewPager = root.findViewById(R.id.viewpagerHomeFragment_category);
 
@@ -90,12 +92,18 @@ public class HomeFragment extends Fragment {
         travelLocations = dbHelper.getAllTravelLocations();
         System.out.println("Количество элементов там короче: " + travelLocations.size());
 
-
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenHeight = displayMetrics.heightPixels;
 
 
         //List<TravelCategory> travelCategories = new ArrayList<>();
 
 
+        int newHeight = (int) (screenHeight * 0.37);
+        ViewGroup.LayoutParams params = locationsViewPager.getLayoutParams();
+        params.height = newHeight;
+        locationsViewPager.setLayoutParams(params);
 
 
 

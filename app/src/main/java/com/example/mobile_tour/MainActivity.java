@@ -5,11 +5,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Build;
 
+import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.MotionEvent;
+import android.widget.LinearLayout;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
@@ -22,6 +27,8 @@ import com.example.mobile_tour.ui.login.LoginActivity;
 import com.example.mobile_tour.ui.profile.ProfileViewModel;
 import com.example.mobile_tour.ui.splash_screen.SplashScreenActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.navigation.NavController;
@@ -42,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
     boolean key = true;
 
     private String name;
+    private String password;
 
     private ProfileViewModel profileViewModel = new ProfileViewModel();
+    private String[] profile_data = new String[2];
 
 
     protected void hideSystemBars(){
@@ -89,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
+        findViewById(android.R.id.content).setBackgroundColor(Color.WHITE);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         //
         // Passing each menu ID as a set of Ids because each
@@ -273,11 +282,22 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         Intent sendProfileData = getIntent();
         name = sendProfileData.getStringExtra("name");
+        password = sendProfileData.getStringExtra("password");
+        profile_data[0] = name;
+        profile_data[1] = password;
         System.out.println("МОИ ДАННЫЕ::::: "+name);
+        System.out.println("МОИ ДАННЫЕ ПАРОЛЬ::::: "+password);
+
 
         profileViewModel.setEmail(name);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenHeight = displayMetrics.heightPixels;
+
+
 
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -286,6 +306,17 @@ public class MainActivity extends AppCompatActivity {
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        navController.navigate(R.id.navigation_home); // Перенаправление на фрагмент "Home"
+                    }
+                });
+            }
+        });
         binding.navView.setPadding(0,0,0,-20);
         //.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
@@ -312,5 +343,5 @@ public class MainActivity extends AppCompatActivity {
         hideSystemBars();
     }
 
-    public String getMyName() {return name;}
+    public String[] getMyName() {return profile_data;}
 }
