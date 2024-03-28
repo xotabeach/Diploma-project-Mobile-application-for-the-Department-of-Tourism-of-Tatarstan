@@ -113,6 +113,12 @@ public class LoginActivity extends AppCompatActivity {
 
         DataBaseHelper dbHelper = new DataBaseHelper(this);
 
+
+        dbHelper.clearDatabase();
+        dbHelper.removeDuplicateUsers();
+        dbHelper.displayAllUserData();
+
+
         hideSystemBars();
         Display display = getWindowManager().getDefaultDisplay();
         Point screenSize = new Point();
@@ -129,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         setContentView(binding.getRoot());
 
-        dbHelper.displayAllUserData();
+
 
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory(this))
                 .get(LoginViewModel.class);
@@ -386,20 +392,23 @@ public class LoginActivity extends AppCompatActivity {
                     // Выводим уведомление, если не все поля заполнены
                     Toast.makeText(getApplicationContext(), "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
                 } else {
-                    System.out.println("state: " + regState[0]);
-                    loadingProgressBar.setVisibility(View.VISIBLE);
-                    loginViewModel.login(username, password);
+
+
+
                     if (regState[0]) {
                         registerUser(username, password, name);
+                        sendData(username, password);
                     } else {
-                        loginUser(username, password);
-
+                        if (dbHelper.isUserExist(username, password)) {
+                            loginUser(username, password);
+                            loginViewModel.login(username, password);
+                            loadingProgressBar.setVisibility(View.VISIBLE);
+                            sendData(username, password);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Пользователь с указанными данными не найден", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    sendData(username, password);
                 }
-
-
-
             }
         });
 

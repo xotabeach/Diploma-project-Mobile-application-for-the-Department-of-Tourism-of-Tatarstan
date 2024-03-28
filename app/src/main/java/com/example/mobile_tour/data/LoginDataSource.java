@@ -28,7 +28,7 @@ public class LoginDataSource {
         System.out.println("Password: " + password);
 
         // Аутентификация пользователя в БД
-        if (dbHelper.isUserExist(email, password, context)) {
+        if (dbHelper.isUserExist(email, password)) {
             // Имитация успешной аутентификации
             LoggedInUser user = new LoggedInUser(java.util.UUID.randomUUID().toString(), email);
             prview.setEmail(email);
@@ -44,16 +44,13 @@ public class LoginDataSource {
         System.out.println("Email: " + email);
         System.out.println("Password: " + password);
         System.out.println("Name: " + name);
-
+        System.out.println("я в дата сорс");
         // Регистрация нового пользователя в БД
-        if (!dbHelper.isUserExist(email, password, context)) {
             dbHelper.insertUser(email, name, password);
             LoggedInUser registeredUser = new LoggedInUser(java.util.UUID.randomUUID().toString(), email);
             prview.setEmail(email);
             return new Result.Success<>(registeredUser);
-        } else {
-            return new Result.Error(new IOException("User with this email already exists"));
-        }
+
     }
 
     public void logout() {

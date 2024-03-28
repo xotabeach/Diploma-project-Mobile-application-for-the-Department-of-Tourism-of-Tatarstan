@@ -58,6 +58,7 @@ public class LoginViewModel extends ViewModel {
     public void register(String email, String password, String name) {
         // Здесь можно выполнять операции для регистрации нового пользователя
         // Например:
+        System.out.println("Я во вью модел");
         Result<LoggedInUser> result = loginRepository.register(email, password, name);
 
         if (result instanceof Result.Success) {

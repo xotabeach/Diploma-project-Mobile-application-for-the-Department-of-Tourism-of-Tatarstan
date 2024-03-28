@@ -24,7 +24,7 @@ import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "landmarks.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 8;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,9 +34,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Очистка таблицы landmarks
-        db.delete("landmarks", null, null);
+        
         db.delete("clickedLandmarks", null, null);
-        //db.delete("categories",null, null);
+
         // Или, если вы предпочитаете использовать execSQL
         // db.execSQL("DELETE FROM landmarks");
 
@@ -72,60 +72,150 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "image INTEGER," +
                 "FOREIGN KEY (name) REFERENCES landmarks(category));");
 
+
+
+
         db.execSQL("CREATE TABLE IF NOT EXISTS users (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "email TEXT," +
                 "name TEXT," +
-                "password TEXT);");
+                "password TEXT," +
+                "image INTEGER," +
+                "routes_count INTEGER," +
+                "city TEXT," +
+                "contact_info TEXT);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
 
-        onCreate(db);
+
     }
+
+    @SuppressLint("RestrictedApi")
+    public void displayAllUserData() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        onCreate(db);
+        String tableName = "users";
+
+        // Получаем метаданные таблицы
+        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
+        String[] columnNames = cursor.getColumnNames(); // Получаем названия столбцов
+        int columnCount = columnNames.length; // Получаем количество столбцов
+
+        // Выводим названия столбцов
+        for (String columnName : columnNames) {
+            Log.d(TAG, "Column Name: " + columnName);
+        }
+
+        // Закрываем курсор, так как он больше не нужен
+        cursor.close();
+
+        // Получаем данные о пользователях
+        cursor = db.rawQuery("SELECT * FROM " + tableName, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Извлекаем данные о каждом пользователе на основе метаданных
+                for (int i = 0; i < columnCount; i++) {
+                    String columnName = columnNames[i];
+                    @SuppressLint("Range") String columnValue = cursor.getString(cursor.getColumnIndex(columnName));
+                    Log.d(TAG, columnName + ": " + columnValue);
+                }
+                Log.d(TAG, "-------------------------------");
+            } while (cursor.moveToNext());
+        } else {
+            Log.d(TAG, "No data found in the users table");
+        }
+
+        // Закрываем курсор и базу данных
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+    }
+
+
+    public void removeDuplicateUsers() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Создаем временную таблицу для хранения наименьших id для каждого дубликата
+        db.execSQL("CREATE TEMP TABLE TempUsers AS " +
+                "SELECT MIN(id) AS min_id, email, name, password " +
+                "FROM users " +
+                "GROUP BY email, name, password");
+
+        // Удаляем из основной таблицы users все записи, кроме тех, у которых id соответствуют минимальным id в TempUsers
+        db.execSQL("DELETE FROM users WHERE id NOT IN (SELECT min_id FROM TempUsers)");
+
+        // Удаляем временную таблицу
+        db.execSQL("DROP TABLE IF EXISTS TempUsers");
+
+        db.close();
+    }
+
+
+    public String[] getUserDataByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM users WHERE email = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        String[] userData = new String[8]; // Инициализируем массив на 8 элементов
+
+        if (cursor != null && cursor.moveToFirst()) {
+            // Если есть данные в результате запроса, заполняем массив соответствующим образом
+            for (int i = 0; i < 8; i++) {
+                userData[i] = cursor.getString(i);
+            }
+            cursor.close();
+        } else {
+            // Если данных нет, заполняем массив пустыми значениями
+            for (int i = 0; i < 8; i++) {
+                userData[i] = "";
+            }
+        }
+
+        db.close();
+        return userData;
+    }
+
 
     public void insertUser(String email, String name, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+
+
         values.put("email", email);
         values.put("name", name);
         values.put("password", password);
+        values.put("image", 0);
+        values.put("routes_count", 0);
+        values.putNull("city");
+        values.putNull("contact_info");
         db.insert("users", null, values);
         db.close();
     }
 
     // Метод для получения данных о пользователе по электронной почте
-    public boolean isUserExist(String email, String enteredPassword, Context context) {
+    public boolean isUserExist(String email, String enteredPassword) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM users WHERE email = ?";
         Cursor cursor = db.rawQuery(query, new String[]{email});
         boolean userExists = (cursor.getCount() > 0);
 
         if (userExists) {
-            while (cursor.moveToNext()) {
-                @SuppressLint("Range") String passwordFromDB = cursor.getString(cursor.getColumnIndex("password"));
-                if (enteredPassword.equals(passwordFromDB)) {
-                    cursor.close();
-                    db.close();
-                    return true;
-                } else {
-                    // Пароль неверный, выводим уведомление
-                    Toast.makeText(context, "Неверный пароль", Toast.LENGTH_SHORT).show();
-                    cursor.close();
-                    db.close();
-                    return false;
-                }
-            }
+            cursor.moveToFirst();
+            @SuppressLint("Range") String passwordFromDB = cursor.getString(cursor.getColumnIndex("password"));
+            cursor.close();
+            db.close();
+            return enteredPassword.equals(passwordFromDB);
         } else {
-            // Пользователь не найден, выводим уведомление
-            Toast.makeText(context, "Пользователь с такой почтой не найден", Toast.LENGTH_SHORT).show();
+            cursor.close();
+            db.close();
+            return false;
         }
-
-        cursor.close();
-        db.close();
-        return false;
     }
 
 
@@ -419,23 +509,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
     }
 
-    // Метод для вывода всего содержимого таблицы users в консоль
-    @SuppressLint("RestrictedApi")
-    public void displayAllUserData() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM users";
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("email"));
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
-                @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex("password"));
-                // Можете добавить другие поля по аналогии, если они есть в таблице
 
-                Log.d(TAG, "Email: " + email + ", Name: " + name + ", Password: " + password);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-    }
+
+
 
 }
