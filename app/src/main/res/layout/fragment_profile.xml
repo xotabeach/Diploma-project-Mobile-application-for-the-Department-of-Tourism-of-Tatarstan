@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -6,19 +7,38 @@
     <!-- Верхняя область информацией о пользователе -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="120dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/userInfo">
 
         <!-- Область для аватки -->
-        <ImageView
-            android:id="@+id/imageViewAvatar"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:src="@drawable/default_avatar"
-            android:layout_weight="1"
-            android:padding="8dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/imageViewAvatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/default_avatar"
+                android:layout_weight="1"
+                android:layout_margin="10dp" />
+
+            <Button
+                android:id="@+id/buttonChangeAvatar"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="-50dp"
+                android:backgroundTint="#454545"
+                app:icon="@drawable/camera"
+                app:iconGravity="top"
+                app:iconTint="#4E4E4E"
+                app:strokeColor="#000000" />
+        </LinearLayout>
+
 
         <!-- Область с информацией о пользователе -->
         <LinearLayout
@@ -33,25 +53,57 @@
                 android:id="@+id/textViewName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Имя пользователя"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="Имя пользователя"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textViewEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="example@example.com"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="example@example.com"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textViewPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:password="true"
+                    android:text="Пароль:"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/buttonTogglePasswordVisibility"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="15dp"
+                    android:backgroundTint="#000000"
+                    app:icon="@drawable/see_password"
+                    app:iconGravity="end|textStart"
+                    app:iconTint="#656565"
+                    app:iconTintMode="src_atop" />
+            </LinearLayout>
+
 
             <TextView
-                android:id="@+id/textViewPhone"
+                android:id="@+id/textChangePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Пароль:"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="10dp"
+                android:text="Пароль:"
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -61,6 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="35dp"
         android:padding="16dp">
 
         <!-- Строки с дополнительной информацией -->
@@ -68,25 +121,28 @@
             android:id="@+id/textViewRoutesCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Количество маршрутов: "
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:text="Количество маршрутов: "
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textViewCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Город проживания: "
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:text="Город проживания: "
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textViewContactDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Контактные данные: "
             android:layout_marginTop="2dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:text="Контактные данные: "
+            android:textSize="16sp" />
     </LinearLayout>
 
     <!-- Кнопка "Редактировать профиль" -->

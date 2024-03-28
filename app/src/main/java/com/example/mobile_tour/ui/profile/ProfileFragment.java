@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment {
 
         TextView usernameTextView = root.findViewById(R.id.textViewName);
         TextView usermailTextView = root.findViewById(R.id.textViewEmail);
-        TextView passwordTextView = root.findViewById(R.id.textViewPhone);
+        TextView passwordTextView = root.findViewById(R.id.textViewPassword);
         ImageView avatarImageView = root.findViewById(R.id.imageViewAvatar);
         LinearLayout userInformationLayout = root.findViewById(R.id.userInfo);
         LinearLayout additionalInfoLayout = root.findViewById(R.id.dopData);
@@ -58,8 +58,8 @@ public class ProfileFragment extends Fragment {
         int buttonWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         int buttonHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
 
-        int xPosition = (int)(width * 0.35); // 50% ширины экрана
-        int yPosition = (int)(height * 0.40); // 80% высоты экрана
+        int xPosition = (int)(width * 0.15); // 50% ширины экрана
+        int yPosition = (int)(height * 0.20); // 80% высоты экрана
 
         editProfileButton.setX(xPosition);
         editProfileButton.setY(yPosition);
