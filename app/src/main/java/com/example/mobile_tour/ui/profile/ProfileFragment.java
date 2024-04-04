@@ -10,6 +10,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,13 +46,18 @@ import com.example.mobile_tour.databinding.FragmentProfileBinding;
 
 import org.w3c.dom.Text;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class ProfileFragment extends Fragment {
 
+
+    private View.OnClickListener editButtonClickListener;
     private FragmentProfileBinding binding;
 
     private int height;
 
-    private boolean shakeEnabled = true;
+    private boolean shakeEnabled = false;
 
     private void setShakeEnabled(boolean enabled) {
         shakeEnabled = enabled;
@@ -64,6 +71,8 @@ public class ProfileFragment extends Fragment {
 
     private LinearLayout profileTitle;
     private ImageView editButton;
+
+    private ImageView confirmButton;
     private CardView imageCard;
     private ImageView imageViewAvatar;
     private ImageView imageViewChangeAvatar;
@@ -159,6 +168,7 @@ public class ProfileFragment extends Fragment {
 
         profileTitle = root.findViewById(R.id.profileTitle);
         editButton = root.findViewById(R.id.editButton);
+        confirmButton = root.findViewById(R.id.confirmButton);
         imageCard = root.findViewById(R.id.imageCard);
         imageViewAvatar = root.findViewById(R.id.imageViewAvatar);
         imageViewChangeAvatar = root.findViewById(R.id.imageViewChangeAvatar);
@@ -184,6 +194,8 @@ public class ProfileFragment extends Fragment {
 
         textViewMail.setEnabled(true); // Делаем textViewMail кликабельным
 
+
+        confirmButton.setVisibility(View.GONE);
 
         imageCard.setEnabled(false);
         imageViewChangeAvatar.setEnabled(false);
@@ -230,7 +242,7 @@ public class ProfileFragment extends Fragment {
         else
             textViewName.setText("Неизвестно");
         if(!userData[4].equals("0"))
-            avatarImageView.setImageAlpha(Integer.parseInt(userData[4]));
+            avatarImageView.setImageURI(Uri.parse(userData[4]));
         else
             avatarImageView.setImageResource(R.drawable.default_avatar);
         textViewRoutes.setText(userData[5]);
@@ -244,10 +256,7 @@ public class ProfileFragment extends Fragment {
         else
             textViewMail.setText("Не указан");
 
-        if(!userData[4].equals("0"))
-            avatarImageView.setImageAlpha(Integer.parseInt(userData[4]));
-        else
-            avatarImageView.setImageResource(R.drawable.default_avatar);
+
         //usermailTextView.setText(userData[1]);
         //passwordTextView.setText(userData[3]);
 
@@ -288,16 +297,18 @@ public class ProfileFragment extends Fragment {
                 // Инвертируем значение переменной shakeEnabled при каждом нажатии
                 shakeEnabled = !shakeEnabled;
 
-                editButton.setEnabled(true);
-                imageCard.setEnabled(true);
-                imageViewChangeAvatar.setEnabled(true);
-                buttonDeleteAvatar.setEnabled(true);
-                cityCard.setEnabled(true);
-                nameCard.setEnabled(true);
-                mailCard.setEnabled(true);
-                aboutCard.setEnabled(true);
-                routesCard.setEnabled(true);
+
                 if (shakeEnabled) {
+                    confirmButton.setVisibility(View.VISIBLE);
+
+                    imageCard.setEnabled(true);
+                    imageViewChangeAvatar.setEnabled(true);
+                    buttonDeleteAvatar.setEnabled(true);
+                    cityCard.setEnabled(true);
+                    nameCard.setEnabled(true);
+                    mailCard.setEnabled(true);
+                    aboutCard.setEnabled(true);
+                    routesCard.setEnabled(true);
                     // Если тряска включена, запускаем анимацию для каждого CardView
                     shakeView(imageCard, -2, 2, -2, 2);
                     shakeView(cityCard, 2, 2, -2, 2);
@@ -305,7 +316,16 @@ public class ProfileFragment extends Fragment {
                     shakeView(mailCard, -3, 3, 3, -3);
                     shakeView(aboutCard, -3, 3, -3, 3);
                 } else {
-                    // Если тряска выключена, останавливаем анимацию для всех CardView
+                    confirmButton.setVisibility(View.GONE);
+
+                    imageCard.setEnabled(false);
+                    imageViewChangeAvatar.setEnabled(false);
+                    buttonDeleteAvatar.setEnabled(false);
+                    cityCard.setEnabled(false);
+                    nameCard.setEnabled(false);
+                    mailCard.setEnabled(false);
+                    aboutCard.setEnabled(false);
+                    routesCard.setEnabled(false);
                     imageCard.clearAnimation();
                     cityCard.clearAnimation();
                     nameCard.clearAnimation();
@@ -324,6 +344,49 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
+
+
+
+
+
+
+
+
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Здесь вызываем метод из базы данных для сохранения изменений
+                boolean result = dbHelper.updateUserData(values, userData[1]);
+                if (result) {
+                    // Успешное обновление данных в базе данных
+                    Toast.makeText(requireContext(), "Данные успешно обновлены", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Что-то пошло не так при обновлении данных
+                    Toast.makeText(requireContext(), "Ошибка при обновлении данных", Toast.LENGTH_SHORT).show();
+                }
+
+                // После завершения обновления данных выключаем редактирование
+                confirmButton.setVisibility(View.GONE);
+                editButton.setEnabled(false);
+                imageCard.setEnabled(false);
+                imageViewChangeAvatar.setEnabled(false);
+                buttonDeleteAvatar.setEnabled(false);
+                cityCard.setEnabled(false);
+                nameCard.setEnabled(false);
+                mailCard.setEnabled(false);
+                aboutCard.setEnabled(false);
+                routesCard.setEnabled(false);
+
+                // Остановка анимации, если она была включена
+                imageCard.clearAnimation();
+                cityCard.clearAnimation();
+                nameCard.clearAnimation();
+                mailCard.clearAnimation();
+                aboutCard.clearAnimation();
+            }
+        });
 
         textViewMail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -412,8 +475,17 @@ public class ProfileFragment extends Fragment {
                 // Преобразуйте URI изображения в строку и сохраните его в базу данных или в другое место хранения
                 String imagePath = selectedImage.toString();
                 // Далее обновите отображаемое изображение
-                avatarImageView.setImageURI(selectedImage);
-                values.put("image", imagePath);
+                //avatarImageView.setImageURI(selectedImage);
+
+                // Используйте ContentResolver для загрузки изображения из URI
+                try {
+                    InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    avatarImageView.setImageBitmap(bitmap);
+                    values.put("image", imagePath); // Если вам нужно сохранить путь к изображению
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

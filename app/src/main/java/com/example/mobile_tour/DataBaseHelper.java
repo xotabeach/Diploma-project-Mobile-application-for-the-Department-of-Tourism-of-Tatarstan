@@ -93,6 +93,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public boolean updateUserData(ContentValues values, String userEmail) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.update("users", values, "email=?", new String[]{userEmail});
+        db.close();
+
+        return rowsAffected > 0;
+    }
+
+
     @SuppressLint("RestrictedApi")
     public void displayAllUserData() {
 

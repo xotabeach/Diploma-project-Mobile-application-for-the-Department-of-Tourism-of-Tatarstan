@@ -1,6 +1,9 @@
 package com.example.mobile_tour;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Build;
@@ -29,6 +32,8 @@ import com.example.mobile_tour.ui.splash_screen.SplashScreenActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.navigation.NavController;
@@ -47,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     boolean key = true;
-
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
     private String name;
     private String password;
 
@@ -90,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
         DataBaseHelper dbHelper = new DataBaseHelper(this);
         //getSupportActionBar().hide();
+
+
 
 
         //dbHelper.clearDatabase();
