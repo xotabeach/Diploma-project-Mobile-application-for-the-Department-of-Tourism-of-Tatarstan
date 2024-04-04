@@ -34,7 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // Очистка таблицы landmarks
-        
+        //db.delete("landmarks", null, null);
         db.delete("clickedLandmarks", null, null);
 
         // Или, если вы предпочитаете использовать execSQL
@@ -80,7 +80,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "email TEXT," +
                 "name TEXT," +
                 "password TEXT," +
-                "image INTEGER," +
+                "image TEXT," +
                 "routes_count INTEGER," +
                 "city TEXT," +
                 "contact_info TEXT);");
@@ -190,7 +190,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("email", email);
         values.put("name", name);
         values.put("password", password);
-        values.put("image", 0);
+        values.putNull("image");
         values.put("routes_count", 0);
         values.putNull("city");
         values.putNull("contact_info");

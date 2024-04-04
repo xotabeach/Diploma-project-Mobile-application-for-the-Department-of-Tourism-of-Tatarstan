@@ -1,0 +1,18 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Слой для белого прямоугольника с закругленными углами -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" />
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+    <!-- Слой для тени снизу -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="#00000000"
+            android:endColor="#33000000"
+            android:angle="90" />
+        </shape>
+    </item>
+</layer-list>
