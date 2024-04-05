@@ -91,11 +91,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         if (oldVersion < 9 && newVersion >= 9) {
-            // Если текущая версия меньше 9 и новая версия больше или равна 9,
-            // то выполняем необходимые изменения в базе данных
 
-            // Добавляем столбец surname в таблицу users
-            db.execSQL("ALTER TABLE users ADD COLUMN surname TEXT");
         }
 
     }

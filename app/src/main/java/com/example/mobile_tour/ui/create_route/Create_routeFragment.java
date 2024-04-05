@@ -38,6 +38,12 @@ public class Create_routeFragment extends Fragment{
 
     private FragmentCreateRouteBinding binding;
 
+    private LinearLayout itemsCase;
+
+    private CardView createParamsRoute;
+
+    private CardView createAutoRoute;
+
     private TextView textyourchoise;
 
     private void handleDeleteAllButtonClick() {
@@ -180,6 +186,14 @@ public class Create_routeFragment extends Fragment{
         binding = FragmentCreateRouteBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
+        itemsCase = root.findViewById(R.id.itemsCase);
+        createAutoRoute = root.findViewById(R.id.createAutoRoute);
+        createParamsRoute = root.findViewById(R.id.createParamsRoute);
+
+
+
+
         final TextView textView = binding.textNotifications;
         final LinearLayout linearLayout = root.findViewById(R.id.LinearCreate);
         final AppCompatButton deleteAllButton = root.findViewById(R.id.button_delete_all);
@@ -191,10 +205,13 @@ public class Create_routeFragment extends Fragment{
             textView.setText("Создание маршрута");
             deleteAllButton.setVisibility(View.GONE); // Скрыть кнопку удаления всех элементов
         } else {
+            itemsCase.setVisibility(View.GONE);
+            createAutoRoute.setVisibility(View.GONE);
+            createParamsRoute.setVisibility(View.GONE);
             createrouteViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
             createCards(linearLayout, clickedLandscapes);
             textyourchoise.setVisibility(View.INVISIBLE);
-            // Установка слушателя нажатия на кнопку удаления всех элементов
+
             deleteAllButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

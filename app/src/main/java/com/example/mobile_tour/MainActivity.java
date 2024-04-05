@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         List<TravelCategory> travelCategories = new ArrayList<>();
 
 
-
+/*
         TravelLocation travelLocationFamilyCenter = new TravelLocation();
         travelLocationFamilyCenter.imageUrl = R.drawable.family_center_kazan;
         travelLocationFamilyCenter.title = "Центр семьи";
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+*/
 
         TravelCategory travelCategoryParks = new TravelCategory();
         travelCategoryParks.title ="Парки";

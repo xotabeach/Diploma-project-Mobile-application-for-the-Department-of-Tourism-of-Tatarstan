@@ -176,7 +176,7 @@ public class ProfileFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
 
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext());
-        dbHelper.updateSurnameByEmail("xotabich1941@gmail.com", "");
+
         if (mainActivity != null) {
             data = mainActivity.getMyName();
             System.out.println("ПРОФТИТТТТИИИЛЬ:" + data[0]);
@@ -204,6 +204,9 @@ public class ProfileFragment extends Fragment {
             image = userData[5];
             city = userData[7];
             routes = userData[6];
+
+            name = name.replaceAll("\\s", "");
+            surname = surname.replaceAll("\\s", "");
             // Другие поля, если есть
 
             Log.d(TAG, "Email: " + email + ", Name: " + name + ", Surname: " + surname + ", Password: " + password + ", Image " + image+ ", City: " + city+ ", Routes: " + routes);
@@ -305,7 +308,6 @@ public class ProfileFragment extends Fragment {
 
         }
         else
-            textViewSurname.setEnabled(false);
             textViewSurname.setText("Не задана");
         if(image != null)
             avatarImageView.setImageURI(Uri.parse(image));
@@ -466,6 +468,7 @@ public class ProfileFragment extends Fragment {
                 if(!newCity.equals("") && !newCity.equals(city))
                 {
                     Log.d("New City", newCity);
+                    newCity = newCity.replaceAll("\\s", "");
                     values.put("city", newCity);
                 }
                 else{
@@ -474,6 +477,7 @@ public class ProfileFragment extends Fragment {
                 if(!newName.equals("") && !newName.equals(name))
                 {
                     Log.d("New Name", newName);
+                    newName = newName.replaceAll("\\s", "");
                     values.put("name", newName);
                 }
                 else{
@@ -481,8 +485,9 @@ public class ProfileFragment extends Fragment {
                 }
                 if (!newSurname.equals("") && !newSurname.equals("Не задана"))
                 {
-                    Log.d("New Surname", newSurname);
+                    newSurname = newSurname.replaceAll("\\s", "");
                     values.put("surname", newSurname);
+                    Log.d("New Surname", newSurname);
                 }
                 else{
                     textViewSurname.setText(surname);
