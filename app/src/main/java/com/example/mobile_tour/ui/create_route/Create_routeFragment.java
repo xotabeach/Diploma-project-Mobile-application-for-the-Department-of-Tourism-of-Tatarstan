@@ -38,6 +38,8 @@ public class Create_routeFragment extends Fragment{
 
     private FragmentCreateRouteBinding binding;
 
+    private TextView textyourchoise;
+
     private void handleDeleteAllButtonClick() {
         // Вызовите метод для удаления всех данных из базы данных
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext());
@@ -141,10 +143,7 @@ public class Create_routeFragment extends Fragment{
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Обработка нажатия на кнопку удаления
-                    // clickedLandmark содержит данные элемента списка, для которого была создана кнопка
-                    // Можете использовать clickedLandmark для выполнения необходимых действий
-                    // Например, передача clickedLandmark в метод для удаления данных
+
                     handleDeleteButtonClick(clickedLandmark);
                 }
             });
@@ -166,6 +165,7 @@ public class Create_routeFragment extends Fragment{
 
     }
 
+    private LinearLayout linearLayoutSearch;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -177,45 +177,47 @@ public class Create_routeFragment extends Fragment{
 
         List<ClickedTravelData> clickedLandscapes = createrouteViewModel.loadClickedLandMarksFromDatabase(dbHelper);
 
-
-        Toast.makeText(requireContext(), "Количество элементов: " + clickedLandscapes.size(), Toast.LENGTH_SHORT).show();
         binding = FragmentCreateRouteBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
         final TextView textView = binding.textNotifications;
-        createrouteViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final LinearLayout linearLayout = root.findViewById(R.id.LinearCreate);
+        final AppCompatButton deleteAllButton = root.findViewById(R.id.button_delete_all);
+        textyourchoise = root.findViewById(R.id.textyourchoise);
+        linearLayoutSearch = requireActivity().findViewById(R.id.linearLayoutSearch);
+        linearLayoutSearch.setVisibility(View.GONE);
 
-
-        LinearLayout linearLayout = root.findViewById(R.id.LinearCreate);
-
-        createCards(linearLayout, clickedLandscapes);
-
-        AppCompatButton deleteAllButton = root.findViewById(R.id.button_delete_all);
-
-        // Установите слушатель нажатия
-        deleteAllButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Обработка нажатия на кнопку очистки всех данных
-                handleDeleteAllButtonClick();
-            }
-        });
-
+        if (clickedLandscapes.size() == 0) {
+            textView.setText("Создание маршрута");
+            deleteAllButton.setVisibility(View.GONE); // Скрыть кнопку удаления всех элементов
+        } else {
+            createrouteViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+            createCards(linearLayout, clickedLandscapes);
+            textyourchoise.setVisibility(View.INVISIBLE);
+            // Установка слушателя нажатия на кнопку удаления всех элементов
+            deleteAllButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleDeleteAllButtonClick();
+                }
+            });
+        }
 
         return root;
     }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        linearLayoutSearch.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        linearLayoutSearch.setVisibility(View.GONE);
         // Очистите текущее содержимое, например, удалите все дочерние элементы из LinearLayout
         LinearLayout linearLayout = requireView().findViewById(R.id.LinearCreate);
         linearLayout.removeAllViews();

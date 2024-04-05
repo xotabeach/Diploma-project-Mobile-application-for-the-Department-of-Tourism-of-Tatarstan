@@ -41,7 +41,7 @@
         app:navGraph="@navigation/mobile_navigation" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayoutSearch"
 
         android:layout_width="match_parent"
         android:layout_height="90dp"

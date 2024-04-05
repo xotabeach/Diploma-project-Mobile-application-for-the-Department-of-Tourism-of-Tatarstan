@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private ProfileViewModel profileViewModel = new ProfileViewModel();
     private String[] profile_data = new String[2];
 
+    private LinearLayout linearLayoutSearch;
 
     protected void hideSystemBars(){
         View decorView = getWindow().getDecorView();
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         hideSystemBars();
+
 
 
         dbHelper.clearDatabase();
@@ -307,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_question, R.id.navigation_create_route , R.id.navigation_profile , R.id.navigation_right_bar , R.id.searchView ,R.id.activity_login)
                 .build();
 

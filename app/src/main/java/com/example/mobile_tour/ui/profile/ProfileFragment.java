@@ -14,11 +14,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +29,10 @@ import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -36,6 +42,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -64,14 +72,16 @@ public class ProfileFragment extends Fragment {
     }
     private boolean scrollstate;
     private int initialProfileLayoutHeight;
-    private LinearLayout mainInfoLayoutProfile;
     private ImageView avatarImageView;
     private String[] data;
+
+    private ImageView location_icon;
     private ProfileViewModel viewModel;
 
     private LinearLayout profileTitle;
     private ImageView editButton;
 
+    AutoCompleteTextView autoCompleteTextView;
     private ImageView confirmButton;
     private CardView imageCard;
     private ImageView imageViewAvatar;
@@ -118,11 +128,33 @@ public class ProfileFragment extends Fragment {
 
 
 
+    private String[] getAllCities() {
+        String[] cities = {
+                // Российские города
+                "Москва", "Санкт-Петербург", "Новосибирск", "Екатеринбург", "Нижний Новгород", "Казань",
+                "Челябинск", "Омск", "Самара", "Ростов-на-Дону", "Уфа", "Красноярск", "Пермь", "Воронеж",
+                "Волгоград", "Краснодар", "Саратов", "Тюмень", "Тольятти", "Ижевск", "Барнаул", "Ульяновск",
+                "Иркутск", "Хабаровск", "Ярославль", "Владивосток", "Махачкала", "Томск", "Оренбург", "Кемерово",
+                // Китайские города (переведенные на русский)
+                "Пекин", "Шанхай", "Гуанчжоу", "Шэньчжэнь", "Тяньцзинь", "Хунчун", "Чунцин", "Чэнду", "Чанчжоу",
+                "Сучжоу", "Хэфэй", "Нанкин", "Ухань", "Чанчунь", "Харбин",
+                // Украинские города
+                "Киев", "Харьков", "Одесса", "Днепр", "Донецк"
+        };
+        return cities;
+    }
 
 
 
-
-
+    private boolean isViewInBounds(View view, int x, int y) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int viewX = location[0];
+        int viewY = location[1];
+        int viewWidth = view.getWidth();
+        int viewHeight = view.getHeight();
+        return (x >= viewX && x <= (viewX + viewWidth) && y >= viewY && y <= (viewY + viewHeight));
+    }
 
 
     @SuppressLint({"RestrictedApi", "ClickableViewAccessibility"})
@@ -148,47 +180,63 @@ public class ProfileFragment extends Fragment {
         View root = binding.getRoot();
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
+        LinearLayout linearLayoutSearch = requireActivity().findViewById(R.id.linearLayoutSearch);
+        linearLayoutSearch.setVisibility(View.VISIBLE);
+
         if (userData != null) {
             // Используйте полученные данные о пользователе здесь, например:
             String email = userData[1];
             String name = userData[2];
             String password = userData[3];
+            String image = userData[4];
+            String city = userData[6];
+            String routes = userData[5];
             // Другие поля, если есть
 
-            Log.d(TAG, "Email: " + email + ", Name: " + name + ", Password: " + password);
+            Log.d(TAG, "Email: " + email + ", Name: " + name + ", Password: " + password + ", Image " + image+ ", City: " + city+ ", Routes: " + routes);
         } else {
             // Пользователь с указанным адресом электронной почты не найден
             Log.d(TAG, "Пользователь с указанным адресом электронной почты не найден");
         }
 
 
+
+
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
 
+        // TextView
         profileTitle = root.findViewById(R.id.profileTitle);
-        editButton = root.findViewById(R.id.editButton);
-        confirmButton = root.findViewById(R.id.confirmButton);
-        imageCard = root.findViewById(R.id.imageCard);
-        imageViewAvatar = root.findViewById(R.id.imageViewAvatar);
-        imageViewChangeAvatar = root.findViewById(R.id.imageViewChangeAvatar);
-        buttonDeleteAvatar = root.findViewById(R.id.buttonDeleteAvatar);
-        cityCard = root.findViewById(R.id.cityCard);
         textViewCity = root.findViewById(R.id.textViewCity);
-        nameCard = root.findViewById(R.id.nameCard);
         textViewName = root.findViewById(R.id.textViewName);
-        mailCard = root.findViewById(R.id.mailCard);
         textViewMail = root.findViewById(R.id.textViewMail);
-        aboutCard = root.findViewById(R.id.aboutCard);
         textViewTitle = root.findViewById(R.id.textViewTitle);
-        editButton_About = root.findViewById(R.id.editButton_About);
-        routesCard = root.findViewById(R.id.routesCard);
-        imageRoutes = root.findViewById(R.id.imageRoutes);
         textViewRoutesDescr = root.findViewById(R.id.textViewRoutesDescr);
         textViewRoutes = root.findViewById(R.id.textViewRoutes);
-        avatarImageView = root.findViewById(R.id.imageViewAvatar);
         textViewHello = root.findViewById(R.id.textHello);
-        profileTitle = root.findViewById(R.id.profileTitle);
+
+// CardView
+        imageCard = root.findViewById(R.id.imageCard);
+        cityCard = root.findViewById(R.id.cityCard);
+        nameCard = root.findViewById(R.id.nameCard);
+        mailCard = root.findViewById(R.id.mailCard);
+        aboutCard = root.findViewById(R.id.aboutCard);
+        routesCard = root.findViewById(R.id.routesCard);
+
+// ImageView
+        imageViewAvatar = root.findViewById(R.id.imageViewAvatar);
+        location_icon = root.findViewById(R.id.location_icon);
+        imageViewChangeAvatar = root.findViewById(R.id.imageViewChangeAvatar);
+        buttonDeleteAvatar = root.findViewById(R.id.buttonDeleteAvatar);
+        imageRoutes = root.findViewById(R.id.imageRoutes);
+        avatarImageView = root.findViewById(R.id.imageViewAvatar);
+
+// Button
+        editButton = root.findViewById(R.id.editButton);
+        confirmButton = root.findViewById(R.id.confirmButton);
+        editButton_About = root.findViewById(R.id.editButton_About);
+
         LinearLayout userInformationLayout = root.findViewById(R.id.userInfo);
 
 
@@ -257,8 +305,6 @@ public class ProfileFragment extends Fragment {
             textViewMail.setText("Не указан");
 
 
-        //usermailTextView.setText(userData[1]);
-        //passwordTextView.setText(userData[3]);
 
 
         Configuration configuration = getResources().getConfiguration();
@@ -268,37 +314,14 @@ public class ProfileFragment extends Fragment {
 
 
 
-        /*mainInfoLayoutProfile.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                mainInfoLayoutProfile.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                initialProfileLayoutHeight = (int) (height * 1.3);
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainInfoLayoutProfile.getLayoutParams();
-                params.topMargin = height - initialProfileLayoutHeight;
-                mainInfoLayoutProfile.setLayoutParams(params);
-
-                // Вывод параметров в консоль
-                Log.d(TAG, "Main info layout height: " + initialProfileLayoutHeight);
-                Log.d(TAG, "Main info layout top margin: " + params.topMargin);
-            }
-        });*/
-
-
-
-
-
-
-
-
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Инвертируем значение переменной shakeEnabled при каждом нажатии
                 shakeEnabled = !shakeEnabled;
 
-
                 if (shakeEnabled) {
+                    // Включаем режим редактирования
                     confirmButton.setVisibility(View.VISIBLE);
 
                     imageCard.setEnabled(true);
@@ -309,15 +332,33 @@ public class ProfileFragment extends Fragment {
                     mailCard.setEnabled(true);
                     aboutCard.setEnabled(true);
                     routesCard.setEnabled(true);
+
                     // Если тряска включена, запускаем анимацию для каждого CardView
                     shakeView(imageCard, -2, 2, -2, 2);
                     shakeView(cityCard, 2, 2, -2, 2);
                     shakeView(nameCard, 2, -2, 2, -2);
                     shakeView(mailCard, -3, 3, 3, -3);
                     shakeView(aboutCard, -3, 3, -3, 3);
-                } else {
-                    confirmButton.setVisibility(View.GONE);
 
+                    // Заменяем TextView на AutoCompleteTextView
+                    location_icon.setVisibility(View.GONE);
+                    textViewCity.setVisibility(View.GONE);
+                    autoCompleteTextView = new AutoCompleteTextView(requireContext());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(25, 0, 5, 0); // Отступы слева и справа
+                    autoCompleteTextView.setLayoutParams(params);
+                    autoCompleteTextView.setText("");
+                    autoCompleteTextView.setThreshold(1);
+                    autoCompleteTextView.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, getAllCities()));
+                    autoCompleteTextView.setSingleLine(true);
+                    cityCard.addView(autoCompleteTextView);
+
+                    // Растягиваем cityCard до правого края
+
+                } else {
+                    // Выключаем режим редактирования
+                    confirmButton.setVisibility(View.GONE);
+                    location_icon.setVisibility(View.VISIBLE);
                     imageCard.setEnabled(false);
                     imageViewChangeAvatar.setEnabled(false);
                     buttonDeleteAvatar.setEnabled(false);
@@ -326,11 +367,19 @@ public class ProfileFragment extends Fragment {
                     mailCard.setEnabled(false);
                     aboutCard.setEnabled(false);
                     routesCard.setEnabled(false);
+
                     imageCard.clearAnimation();
                     cityCard.clearAnimation();
                     nameCard.clearAnimation();
                     mailCard.clearAnimation();
                     aboutCard.clearAnimation();
+
+                    // Удаляем AutoCompleteTextView и возвращаем TextView
+                    cityCard.removeViewAt(cityCard.getChildCount() - 1);
+                    textViewCity.setVisibility(View.VISIBLE);
+
+
+
                 }
             }
 
@@ -346,10 +395,28 @@ public class ProfileFragment extends Fragment {
 
 
 
+        cityCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Разрешаем редактирование текста в поле города
+                textViewCity.setEnabled(true);
+                // После нажатия устанавливаем фокус на поле, чтобы пользователь мог сразу вводить текст
+                textViewCity.requestFocus();
+            }
+        });
 
 
 
+        textViewCity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
 
+
+                    textViewCity.setEnabled(false);
+                }
+            }
+        });
 
 
 
@@ -357,19 +424,49 @@ public class ProfileFragment extends Fragment {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Здесь вызываем метод из базы данных для сохранения изменений
-                boolean result = dbHelper.updateUserData(values, userData[1]);
-                if (result) {
-                    // Успешное обновление данных в базе данных
-                    Toast.makeText(requireContext(), "Данные успешно обновлены", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Что-то пошло не так при обновлении данных
-                    Toast.makeText(requireContext(), "Ошибка при обновлении данных", Toast.LENGTH_SHORT).show();
+                String newCity = autoCompleteTextView.getText().toString();
+                // Выводим текст в консоль
+                Log.d("New City", newCity);
+
+                // Удаляем AutoCompleteTextView и возвращаем TextView
+                cityCard.removeViewAt(cityCard.getChildCount() - 1);
+                textViewCity.setVisibility(View.VISIBLE);
+                textViewCity.setText(newCity);
+                if(!newCity.equals(""))
+                {
+                    values.put("city", newCity);
                 }
+                else{
+                    textViewCity.setText(userData[6]);
+                }
+                if (values.size() > 0) {
+                    // Здесь вызываем метод из базы данных для сохранения изменений
+
+                    // Получаем новое значение города из AutoCompleteTextView, если он был отображен
+
+
+                    // Помещаем новое значение города в ContentValues
+
+
+                    // Вызываем метод из базы данных для сохранения изменений
+                    boolean result = dbHelper.updateUserData(values, userData[1]);
+                    if (result) {
+                        // Успешное обновление данных в базе данных
+                        Toast.makeText(requireContext(), "Данные успешно обновлены", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Что-то пошло не так при обновлении данных
+                        Toast.makeText(requireContext(), "Ошибка при обновлении данных", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Выводим сообщение об ошибке, если values пустой
+                    Toast.makeText(requireContext(), "Нет данных для обновления", Toast.LENGTH_SHORT).show();
+                }
+
 
                 // После завершения обновления данных выключаем редактирование
                 confirmButton.setVisibility(View.GONE);
-                editButton.setEnabled(false);
+                location_icon.setVisibility(View.VISIBLE);
+                //textViewCity.setVisibility(View.VISIBLE);
                 imageCard.setEnabled(false);
                 imageViewChangeAvatar.setEnabled(false);
                 buttonDeleteAvatar.setEnabled(false);
@@ -387,6 +484,31 @@ public class ProfileFragment extends Fragment {
                 aboutCard.clearAnimation();
             }
         });
+
+
+
+// Обработчик события клика вне области cityCard
+        root.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    // Проверяем, был ли клик вне области cityCard
+                    if (!isViewInBounds(cityCard, (int) event.getRawX(), (int) event.getRawY())) {
+                        // Принимаем текст из textViewCity
+                        String newCity = textViewCity.getText().toString();
+                        // Вызываем метод для сохранения текста
+
+                        // Скрываем клавиатуру
+                        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(textViewCity.getWindowToken(), 0);
+
+                    }
+                }
+                return false;
+            }
+        });
+
+
 
         textViewMail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -413,50 +535,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        /*usernameTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Разрешаем редактирование текста в поле имени пользователя
-                usernameTextView.setEnabled(true);
-                // После нажатия устанавливаем фокус на поле, чтобы пользователь мог сразу вводить текст
-                usernameTextView.requestFocus();
-            }
-        });
-
-        // Обработчик события для кнопки смены видимости пароля
-        togglePasswordVisibilityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
 
-
-                if (passwordTextView.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-
-                    passwordTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    passwordTextView.setTextSize(16);
-                    togglePasswordVisibilityButton.setText("Скрыть пароль");
-                } else {
-
-                    passwordTextView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    passwordTextView.setTextSize(16);
-                    togglePasswordVisibilityButton.setText("Показать пароль");
-                }
-
-            }
-        });
-
-
-
-        // Автоматическое размещение кнопки в нижней части экрана
-        if (screenLayout == Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-            // Если экран очень большой
-            editProfileButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            editProfileButton.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-
-        }
-
-        //final TextView textView = binding.textHome;
-*/
         return root;
     }
 

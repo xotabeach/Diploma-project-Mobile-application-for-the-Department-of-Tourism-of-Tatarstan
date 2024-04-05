@@ -122,7 +122,7 @@
         android:id="@+id/textView"
         android:layout_width="227dp"
         android:layout_height="109dp"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="216dp"
         android:fontFamily="@font/gothampro_bold"
         android:text="Welcome To        BeTour"

@@ -127,7 +127,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/cityCard"
         android:layout_marginStart="-15dp"
@@ -135,8 +135,8 @@
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintStart_toEndOf="@+id/imageCard"
-        app:layout_constraintTop_toBottomOf="@+id/profileTitle"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileTitle">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -144,6 +144,7 @@
             android:padding="9dp">
 
             <ImageView
+                android:id="@+id/location_icon"
                 android:layout_width="21dp"
                 android:layout_height="27dp"
                 android:src="@drawable/location"/>
@@ -151,7 +152,6 @@
             <TextView
                 android:id="@+id/textViewCity"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gothampro"
@@ -164,7 +164,8 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
+
+<androidx.cardview.widget.CardView
         android:id="@+id/nameCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
