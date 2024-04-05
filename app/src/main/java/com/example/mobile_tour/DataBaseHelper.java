@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "landmarks.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final String DATABASE_NAME = "landmarks2.db";
+    private static final int DATABASE_VERSION = 9;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -79,6 +79,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "email TEXT," +
                 "name TEXT," +
+                "surname TEXT," +
                 "password TEXT," +
                 "image TEXT," +
                 "routes_count INTEGER," +
@@ -89,7 +90,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        if (oldVersion < 9 && newVersion >= 9) {
+            // Если текущая версия меньше 9 и новая версия больше или равна 9,
+            // то выполняем необходимые изменения в базе данных
 
+            // Добавляем столбец surname в таблицу users
+            db.execSQL("ALTER TABLE users ADD COLUMN surname TEXT");
+        }
 
     }
 
@@ -101,6 +108,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+
+    public boolean updateSurnameByEmail(String email, String newSurname) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("surname", newSurname);
+        int rowsAffected = db.update("users", values, "email=?", new String[]{email});
+        db.close();
+        return rowsAffected > 0;
+    }
 
     @SuppressLint("RestrictedApi")
     public void displayAllUserData() {
@@ -171,7 +187,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM users WHERE email = ?";
         Cursor cursor = db.rawQuery(query, new String[]{email});
 
-        String[] userData = new String[8]; // Инициализируем массив на 8 элементов
+        String[] userData = new String[9]; // Инициализируем массив на 8 элементов
 
         if (cursor != null && cursor.moveToFirst()) {
             // Если есть данные в результате запроса, заполняем массив соответствующим образом
@@ -198,6 +214,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         values.put("email", email);
         values.put("name", name);
+        values.put("surname","");
         values.put("password", password);
         values.putNull("image");
         values.put("routes_count", 0);

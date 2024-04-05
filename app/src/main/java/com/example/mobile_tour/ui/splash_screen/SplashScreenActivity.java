@@ -1,7 +1,10 @@
 package com.example.mobile_tour.ui.splash_screen;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,11 +16,27 @@ import android.view.WindowInsetsController;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 
 import com.example.mobile_tour.R;
 import com.example.mobile_tour.ui.login.LoginActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
+
+    private static final int REQUEST_GALLERY_PERMISSION = 1001;
+    private void requestGalleryPermission() {
+        // Проверяем, есть ли у приложения необходимое разрешение
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Если разрешение не предоставлено, запрашиваем его у пользователя
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_GALLERY_PERMISSION);
+        } else {
+
+
+        }
+    }
+
 
     @SuppressLint("ResourceType")
     @Override
@@ -29,7 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.splash_screen_activity);
-
+        requestGalleryPermission();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

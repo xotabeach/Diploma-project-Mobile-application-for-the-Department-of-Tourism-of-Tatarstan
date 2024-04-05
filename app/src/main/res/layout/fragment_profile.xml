@@ -1,63 +1,61 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EAEAEA"
     android:orientation="vertical">
 
 
     <LinearLayout
+        android:id="@+id/profileTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="95dp"
-        android:padding="5dp"
-        android:id="@+id/profileTitle"
         android:clickable="true"
+        android:padding="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
 
+            android:id="@+id/textHello"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="15dp"
-            android:id="@+id/textHello"
+            android:layout_weight="1"
             android:fontFamily="@font/gothampro"
             android:gravity="start"
             android:lineSpacingExtra="20sp"
             android:text="Привет, Пользователь"
             android:textColor="#000000"
             android:textSize="23sp" />
+
         <ImageView
             android:id="@+id/confirmButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:clickable="true"
             android:layout_marginEnd="14dp"
-            android:src="@drawable/check_mark"/>
+            android:clickable="true"
+            android:src="@drawable/check_mark" />
+
         <ImageView
             android:id="@+id/editButton"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:clickable="true"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/edit"/>
+            android:clickable="true"
+            android:src="@drawable/edit" />
     </LinearLayout>
-
-
-
-
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/imageCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="-8dp"
         app:cardCornerRadius="37dp"
         app:cardElevation="3dp"
-        android:layout_marginStart="-8dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileTitle">
@@ -127,16 +125,17 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cityCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/cityCard"
         android:layout_marginStart="-15dp"
         app:cardCornerRadius="17dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintStart_toEndOf="@+id/imageCard"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageCard"
         app:layout_constraintTop_toBottomOf="@+id/profileTitle">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -147,13 +146,13 @@
                 android:id="@+id/location_icon"
                 android:layout_width="21dp"
                 android:layout_height="27dp"
-                android:src="@drawable/location"/>
+                android:src="@drawable/location" />
 
             <TextView
                 android:id="@+id/textViewCity"
-                android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/gothampro"
                 android:text="Казань"
                 android:textColor="#000000"
@@ -165,17 +164,17 @@
     </androidx.cardview.widget.CardView>
 
 
-<androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/nameCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="-15dp"
         app:cardCornerRadius="17dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintTop_toBottomOf="@+id/cityCard"
-        app:layout_constraintStart_toEndOf="@+id/imageCard"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="-15dp">
+        app:layout_constraintStart_toEndOf="@+id/imageCard"
+        app:layout_constraintTop_toBottomOf="@+id/cityCard">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -187,9 +186,9 @@
                 android:layout_width="27dp"
                 android:layout_height="27dp"
                 android:layout_marginStart="2dp"
-                android:src="@drawable/personal_information"/>
+                android:src="@drawable/personal_information" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textViewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -198,25 +197,42 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/gothampro"
                 android:lineSpacingExtra="10sp"
-                android:text="Никита \nТарасов"
+                android:text="Никита"
+                android:focusable="false"
                 android:textColor="#000000"
                 android:textSize="20sp"
-                android:translationY="5dp" />
+                android:translationY="5dp"
+                android:background="@null" />
+            <EditText
+                android:id="@+id/textViewSurname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="5dp"
+                android:focusable="false"
+                android:fontFamily="@font/gothampro"
+                android:lineSpacingExtra="10sp"
+                android:text=""
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:background="@null"
+                android:translationY="5dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/mailCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/mailCard"
+        android:layout_marginStart="-12dp"
+        android:layout_marginTop="-8dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true"
-        android:layout_marginTop="-8dp"
-        android:layout_marginStart="-12dp"
         app:layout_constraintStart_toEndOf="@+id/imageCard"
-        app:layout_constraintTop_toBottomOf="@+id/nameCard"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/nameCard">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -224,18 +240,17 @@
             android:padding="9dp">
 
 
-
-        <TextView
-            android:layout_marginStart="1dp"
-            android:id="@+id/textViewMail"
-            android:layout_marginBottom="6dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gothampro"
-            android:text="xotabich1941@gmail.com"
-            android:textColor="#000000"
-            android:textSize="11sp"
-            android:translationY="5dp" />
+            <TextView
+                android:id="@+id/textViewMail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gothampro"
+                android:text="xotabich1941@gmail.com"
+                android:textColor="#000000"
+                android:textSize="11sp"
+                android:translationY="5dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -251,115 +266,111 @@
         app:layout_constraintTop_toBottomOf="@+id/imageCard">
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/aboutMeText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/aboutMeText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/textViewTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/gothampro"
+                    android:text="Обо мне:"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textViewTitle"
+                <ImageView
+                    android:id="@+id/editButton_About"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_gravity="end"
+                    android:clickable="true"
+                    android:src="@drawable/edit" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/imageinAbout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"
-                android:fontFamily="@font/gothampro"
-                android:text="Обо мне:"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aboutMeText">
 
-            <ImageView
-                android:id="@+id/editButton_About"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:layout_gravity="end"
-                android:clickable="true"
-                android:src="@drawable/edit" />
-        </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageinAbout"
-            android:paddingStart="10dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aboutMeText">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="140dp"
+                        android:layout_height="125dp"
+                        android:layout_centerHorizontal="true"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp"
+                        app:cardUseCompatPadding="true">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/imageViewPeople"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/talking_people" />
+                    </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="140dp"
-                    android:layout_height="125dp"
-                    app:cardElevation="0dp"
-                    android:layout_centerHorizontal="true"
-                    app:cardCornerRadius="12dp"
-                    app:cardUseCompatPadding="true">
+                    <!-- Дополнительный TextView -->
+                    <TextView
+                        android:id="@+id/textViewAboutMe"
+                        android:layout_width="140dp"
+                        android:layout_height="120dp"
 
-                    <ImageView
-                        android:id="@+id/imageViewPeople"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/talking_people" />
-                </androidx.cardview.widget.CardView>
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/gothampro"
+                        android:text=""
+                        android:textColor="#000000"
+                        android:translationZ="5dp" />
+                </RelativeLayout>
+            </LinearLayout>
 
-                <!-- Дополнительный TextView -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageinAbout">
+
                 <TextView
-                    android:id="@+id/textViewAboutMe"
-                    android:layout_width="140dp"
-                    android:layout_height="120dp"
+                    android:id="@+id/textViewDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="7dp"
+
                     android:fontFamily="@font/gothampro"
-                    android:text=""
+                    android:text="расскажите о себе"
                     android:textColor="#000000"
                     android:translationZ="5dp" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageinAbout">
-
-            <TextView
-                android:id="@+id/textViewDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_centerHorizontal="true"
-
-                android:fontFamily="@font/gothampro"
-                android:text="расскажите о себе"
-                android:textColor="#000000"
-                android:translationZ="5dp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.cardview.widget.CardView>
@@ -434,7 +445,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

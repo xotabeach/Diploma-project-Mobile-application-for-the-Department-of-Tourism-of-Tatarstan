@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EAEAEA"
     tools:context=".ui.create_route.Create_routeFragment">
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/topName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FF8642"
         android:orientation="vertical"
@@ -42,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/gothampro"
 
@@ -53,63 +54,190 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topName"
-        app:layout_constraintVertical_bias="0.25" />
-
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
-        android:id="@+id/textButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:id="@+id/headerRoute"
+        android:background="#F0F0F0"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_notifications">
 
-        <TextView
-            android:id="@+id/textyourchoise"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:fontFamily="@font/gothampro"
-            android:gravity="center_horizontal"
-            android:text="Ваш выбор:"
-            android:textColor="#000000"
-            android:textSize="18sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_delete_all"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/textButtonLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_gravity="end"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="25dp"
-            android:background="@drawable/clear_button_style"
-            android:foregroundGravity="center"
-            android:text="@string/clearall"
-            android:textAllCaps="false"
-            android:textSize="14sp"
-            android:typeface="normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_notifications" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textyourchoise"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:fontFamily="@font/gothampro"
+                android:gravity="center_horizontal"
+                android:text="Ваш выбор:"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_delete_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="end"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/clear_button_style"
+                android:foregroundGravity="center"
+                android:text="@string/clearall"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:typeface="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_notifications" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemsCase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EFEFEF"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/headerRoute">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/createParamsRoute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:cardCornerRadius="37dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileTitle">
+
+            <!-- Ваш LinearLayout с содержимым -->
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="9dp">
+
+                <!-- Здесь располагается ваше содержимое -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardUseCompatPadding="true">
+
+                    <ImageView
+                        android:id="@+id/createParamsRouteImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/map_image" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/gothampro"
+                    android:gravity="center_horizontal"
+                    android:text="Создать маршрут по параметрам"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/createAutoRoute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="-30dp"
+            app:cardCornerRadius="37dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileTitle">
+
+            <!-- Ваш LinearLayout с содержимым -->
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="9dp">
+
+                <!-- Здесь располагается ваше содержимое -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardUseCompatPadding="true">
+
+                    <ImageView
+                        android:id="@+id/createAutoRouteImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/robot_kazan" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/gothampro"
+                    android:gravity="center_horizontal"
+                    android:text="Генерация случайного маршрута"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
 
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/scrollViewCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:overScrollMode="ifContentScrolls"
         android:scrollbars="vertical"
-        android:id="@+id/scrollViewCreate"
-        app:layout_constraintTop_toBottomOf="@id/textButtonLayout"
-        android:layout_marginTop="5dp">
+        app:layout_constraintTop_toBottomOf="@id/textButtonLayout">
+
         <LinearLayout
+            android:id="@+id/LinearCreate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/LinearCreate"
             android:orientation="vertical">
-
 
 
         </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.mobile_tour.ui.profile;
 
 import static android.app.Activity.RESULT_OK;
+import static androidx.core.content.ContextCompat.getSystemService;
 import static androidx.fragment.app.FragmentManager.TAG;
 
 import android.annotation.SuppressLint;
@@ -34,6 +35,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,7 +61,6 @@ import java.io.InputStream;
 
 public class ProfileFragment extends Fragment {
 
-
     private View.OnClickListener editButtonClickListener;
     private FragmentProfileBinding binding;
 
@@ -74,6 +75,8 @@ public class ProfileFragment extends Fragment {
     private int initialProfileLayoutHeight;
     private ImageView avatarImageView;
     private String[] data;
+
+    private EditText textViewSurname;
 
     private ImageView location_icon;
     private ProfileViewModel viewModel;
@@ -90,7 +93,7 @@ public class ProfileFragment extends Fragment {
     private CardView cityCard;
     private TextView textViewCity;
     private CardView nameCard;
-    private TextView textViewName;
+    private EditText textViewName;
     private CardView mailCard;
     private TextView textViewMail;
     private CardView aboutCard;
@@ -101,8 +104,6 @@ public class ProfileFragment extends Fragment {
     private ImageView imageRoutes;
     private TextView textViewRoutesDescr;
     private TextView textViewRoutes;
-
-
     private TextView textViewHello;
 
 
@@ -116,7 +117,6 @@ public class ProfileFragment extends Fragment {
 
 
 
-
     private void moveProfileLayoutUpWithoutAnimation(LinearLayout layout, float k) {
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout.getLayoutParams();
         int currentTopMargin = params.topMargin;
@@ -124,8 +124,6 @@ public class ProfileFragment extends Fragment {
         params.topMargin = newTopMargin;
         layout.setLayoutParams(params);
     }
-
-
 
 
     private String[] getAllCities() {
@@ -144,7 +142,21 @@ public class ProfileFragment extends Fragment {
         return cities;
     }
 
+    private String email;
+    private String name;
+    private String surname;
+    private String password;
+    private String image;
+    private String city;
+    private String routes;
 
+
+    private void showSoftKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
 
     private boolean isViewInBounds(View view, int x, int y) {
         int[] location = new int[2];
@@ -164,7 +176,7 @@ public class ProfileFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
 
         DataBaseHelper dbHelper = new DataBaseHelper(requireContext());
-
+        dbHelper.updateSurnameByEmail("xotabich1941@gmail.com", "");
         if (mainActivity != null) {
             data = mainActivity.getMyName();
             System.out.println("ПРОФТИТТТТИИИЛЬ:" + data[0]);
@@ -185,20 +197,20 @@ public class ProfileFragment extends Fragment {
 
         if (userData != null) {
             // Используйте полученные данные о пользователе здесь, например:
-            String email = userData[1];
-            String name = userData[2];
-            String password = userData[3];
-            String image = userData[4];
-            String city = userData[6];
-            String routes = userData[5];
+            email = userData[1];
+            name = userData[2];
+            surname = userData[3];
+            password = userData[4];
+            image = userData[5];
+            city = userData[7];
+            routes = userData[6];
             // Другие поля, если есть
 
-            Log.d(TAG, "Email: " + email + ", Name: " + name + ", Password: " + password + ", Image " + image+ ", City: " + city+ ", Routes: " + routes);
+            Log.d(TAG, "Email: " + email + ", Name: " + name + ", Surname: " + surname + ", Password: " + password + ", Image " + image+ ", City: " + city+ ", Routes: " + routes);
         } else {
             // Пользователь с указанным адресом электронной почты не найден
             Log.d(TAG, "Пользователь с указанным адресом электронной почты не найден");
         }
-
 
 
 
@@ -207,6 +219,7 @@ public class ProfileFragment extends Fragment {
         int width = displayMetrics.widthPixels;
 
         // TextView
+        textViewSurname = root.findViewById(R.id.textViewSurname);
         profileTitle = root.findViewById(R.id.profileTitle);
         textViewCity = root.findViewById(R.id.textViewCity);
         textViewName = root.findViewById(R.id.textViewName);
@@ -239,11 +252,13 @@ public class ProfileFragment extends Fragment {
 
         LinearLayout userInformationLayout = root.findViewById(R.id.userInfo);
 
-
         textViewMail.setEnabled(true); // Делаем textViewMail кликабельным
 
 
         confirmButton.setVisibility(View.GONE);
+
+        textViewName.setEnabled(false);
+        textViewSurname.setEnabled(false);
 
         imageCard.setEnabled(false);
         imageViewChangeAvatar.setEnabled(false);
@@ -258,20 +273,13 @@ public class ProfileFragment extends Fragment {
         int buttonWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         int buttonHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
 
-
-        //moveProfileLayoutUpWithoutAnimation(imageButtonLayout,0.25F);
-
-// Проверка, есть ли данные о пользователе
-
-
-
         int xPosition = (int)(width * 0.15); // 50% ширины экрана
         int yPosition = (int)(height * 0.20); // 80% высоты экрана
 
         textViewRoutesDescr.setShadowLayer(1, 0, 0, Color.GRAY);
 
 
-
+        textViewSurname.setClickable(false);
 
         // Динамическое задание весов макетов для масштабирования
 
@@ -279,23 +287,35 @@ public class ProfileFragment extends Fragment {
 
 
         if (userData[2] != "") {
-            String name = userData[2];
-            if (Character.isLowerCase(name.charAt(0))) { // Проверяем, начинается ли строка с маленькой буквы
-                name = Character.toUpperCase(name.charAt(0)) + name.substring(1); // Преобразуем первую букву в заглавную
+
+            if (Character.isLowerCase(name.charAt(0))) {
+                name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
             }
             textViewName.setText(name);
             textViewHello.setText("Привет, " + name);
         }
-
         else
             textViewName.setText("Неизвестно");
-        if(!userData[4].equals("0"))
-            avatarImageView.setImageURI(Uri.parse(userData[4]));
+        if (!userData[3].isEmpty()) {
+
+            if (Character.isLowerCase(surname.charAt(0))) {
+                surname = Character.toUpperCase(surname.charAt(0)) + surname.substring(1);
+            }
+            textViewSurname.setText(surname);
+
+        }
+        else
+            textViewSurname.setEnabled(false);
+            textViewSurname.setText("Не задана");
+        if(image != null)
+            avatarImageView.setImageURI(Uri.parse(image));
         else
             avatarImageView.setImageResource(R.drawable.default_avatar);
-        textViewRoutes.setText(userData[5]);
-        if(userData[6] != null)
-            textViewCity.setText(userData[6]);
+
+        textViewRoutes.setText(routes);
+
+        if(city != null)
+            textViewCity.setText(city);
         else
             textViewCity.setText("Не указан");
 
@@ -328,6 +348,8 @@ public class ProfileFragment extends Fragment {
                     imageViewChangeAvatar.setEnabled(true);
                     buttonDeleteAvatar.setEnabled(true);
                     cityCard.setEnabled(true);
+                    textViewName.setEnabled(true);
+                    textViewSurname.setEnabled(true);
                     nameCard.setEnabled(true);
                     mailCard.setEnabled(true);
                     aboutCard.setEnabled(true);
@@ -362,6 +384,11 @@ public class ProfileFragment extends Fragment {
                     imageCard.setEnabled(false);
                     imageViewChangeAvatar.setEnabled(false);
                     buttonDeleteAvatar.setEnabled(false);
+                    textViewName.setEnabled(false);
+                    textViewName.setText(name);
+                    textViewSurname.setEnabled(false);
+                    textViewSurname.setText("Не задана");
+
                     cityCard.setEnabled(false);
                     nameCard.setEnabled(false);
                     mailCard.setEnabled(false);
@@ -425,45 +452,64 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String newCity = autoCompleteTextView.getText().toString();
+                String newName = textViewName.getText().toString();
+                String newSurname = textViewSurname.getText().toString();
                 // Выводим текст в консоль
-                Log.d("New City", newCity);
+
+
+
 
                 // Удаляем AutoCompleteTextView и возвращаем TextView
                 cityCard.removeViewAt(cityCard.getChildCount() - 1);
                 textViewCity.setVisibility(View.VISIBLE);
                 textViewCity.setText(newCity);
-                if(!newCity.equals(""))
+                if(!newCity.equals("") && !newCity.equals(city))
                 {
+                    Log.d("New City", newCity);
                     values.put("city", newCity);
                 }
                 else{
-                    textViewCity.setText(userData[6]);
+                    textViewCity.setText(city);
                 }
+                if(!newName.equals("") && !newName.equals(name))
+                {
+                    Log.d("New Name", newName);
+                    values.put("name", newName);
+                }
+                else{
+                    textViewName.setText(name);
+                }
+                if (!newSurname.equals("") && !newSurname.equals("Не задана"))
+                {
+                    Log.d("New Surname", newSurname);
+                    values.put("surname", newSurname);
+                }
+                else{
+                    textViewSurname.setText(surname);
+                }
+
                 if (values.size() > 0) {
-                    // Здесь вызываем метод из базы данных для сохранения изменений
-
-                    // Получаем новое значение города из AutoCompleteTextView, если он был отображен
 
 
-                    // Помещаем новое значение города в ContentValues
 
-
-                    // Вызываем метод из базы данных для сохранения изменений
-                    boolean result = dbHelper.updateUserData(values, userData[1]);
+                    boolean result = dbHelper.updateUserData(values, email);
                     if (result) {
-                        // Успешное обновление данных в базе данных
+
+                        textViewSurname.setText(newSurname);
+                        textViewName.setText(newName);
                         Toast.makeText(requireContext(), "Данные успешно обновлены", Toast.LENGTH_SHORT).show();
                     } else {
-                        // Что-то пошло не так при обновлении данных
+
                         Toast.makeText(requireContext(), "Ошибка при обновлении данных", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Выводим сообщение об ошибке, если values пустой
+                    textViewName.setText(name);
+                    textViewSurname.setText("Не задана");
                     Toast.makeText(requireContext(), "Нет данных для обновления", Toast.LENGTH_SHORT).show();
                 }
 
 
-                // После завершения обновления данных выключаем редактирование
+
                 confirmButton.setVisibility(View.GONE);
                 location_icon.setVisibility(View.VISIBLE);
                 //textViewCity.setVisibility(View.VISIBLE);
@@ -471,6 +517,8 @@ public class ProfileFragment extends Fragment {
                 imageViewChangeAvatar.setEnabled(false);
                 buttonDeleteAvatar.setEnabled(false);
                 cityCard.setEnabled(false);
+                textViewName.setEnabled(false);
+                textViewSurname.setEnabled(false);
                 nameCard.setEnabled(false);
                 mailCard.setEnabled(false);
                 aboutCard.setEnabled(false);
@@ -485,15 +533,69 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        textViewName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textViewName.setFocusableInTouchMode(true);
+                //textViewName.setText("          ");
+                textViewName.requestFocus();
+            }
+        });
 
+        textViewName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    textViewName.setFocusableInTouchMode(false);
+
+                }
+            }
+        });
+
+        textViewSurname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Разрешаем редактирование текста в поле фамилии
+                textViewSurname.setFocusableInTouchMode(true);
+                //textViewSurname.setText("          ");
+                textViewSurname.requestFocus();
+            }
+        });
+
+        textViewSurname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    textViewSurname.setFocusableInTouchMode(false);
+
+                }
+            }
+        });
+
+
+        buttonDeleteAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Устанавливаем дефолтное изображение в ImageViewAvatar
+                imageViewAvatar.setImageResource(R.drawable.default_avatar);
+
+                // Очищаем значение изображения в ContentValues
+                values.putNull("image");
+            }
+        });
 
 // Обработчик события клика вне области cityCard
         root.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    // Проверяем, если фокус у textViewName или textViewSurname, то сбрасываем его
+                    if (textViewName.hasFocus() || textViewSurname.hasFocus()) {
+                        textViewName.clearFocus();
+                        textViewSurname.clearFocus();
+                    }
                     // Проверяем, был ли клик вне области cityCard
-                    if (!isViewInBounds(cityCard, (int) event.getRawX(), (int) event.getRawY())) {
+                    else if (!isViewInBounds(cityCard, (int) event.getRawX(), (int) event.getRawY())) {
                         // Принимаем текст из textViewCity
                         String newCity = textViewCity.getText().toString();
                         // Вызываем метод для сохранения текста
@@ -501,13 +603,11 @@ public class ProfileFragment extends Fragment {
                         // Скрываем клавиатуру
                         InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(textViewCity.getWindowToken(), 0);
-
                     }
                 }
                 return false;
             }
         });
-
 
 
         textViewMail.setOnClickListener(new View.OnClickListener() {
@@ -534,8 +634,6 @@ public class ProfileFragment extends Fragment {
                 startActivityForResult(galleryIntent, 1);
             }
         });
-
-
 
         return root;
     }
@@ -569,6 +667,5 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
-
 
 }

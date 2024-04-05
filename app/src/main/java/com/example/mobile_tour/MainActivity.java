@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         List<TravelLocation> travelLocations = new ArrayList<>();
         List<TravelCategory> travelCategories = new ArrayList<>();
 
-/*
+
 
         TravelLocation travelLocationFamilyCenter = new TravelLocation();
         travelLocationFamilyCenter.imageUrl = R.drawable.family_center_kazan;
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
         travelLocations.add(travelLocationMitaka);
 
 
-*/
+
 
 
         TravelCategory travelCategoryParks = new TravelCategory();
