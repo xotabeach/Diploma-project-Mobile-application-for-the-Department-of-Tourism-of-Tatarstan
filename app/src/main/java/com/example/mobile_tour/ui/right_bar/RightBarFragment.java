@@ -1,5 +1,6 @@
 package com.example.mobile_tour.ui.right_bar;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,9 @@ public class RightBarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRightBarBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
+
+        LinearLayout linearLayoutSearch = requireActivity().findViewById(R.id.linearLayoutSearch);
+        linearLayoutSearch.setVisibility(View.GONE);
 
         categoryTitleTextView = rootView.findViewById(R.id.text_notifications_cat);
         LinearLayout linearLayout = rootView.findViewById(R.id.LinearRightBar);
@@ -94,7 +98,12 @@ public class RightBarFragment extends Fragment {
         LinearLayout.LayoutParams cardViewParams = new LinearLayout.LayoutParams(500,600);
         cardViewParams.setMargins(16, 0, 16, 0); // Отступы между карточками
         cardView.setLayoutParams(cardViewParams);
-        cardView.setBackgroundResource(R.drawable.rounded_corner_back);
+        cardView.setUseCompatPadding(true);
+        cardView.setPadding(5,5,5,5);
+        cardView.setCardElevation(4);
+        //cardView.setCardBackgroundColor(Color.parseColor("#EAEAEA"));
+        cardView.setRadius(21);
+        //ardView.setBackgroundResource(R.drawable.rounded_corner_back);
 
         // Создание макета для элементов внутри CardView
         LinearLayout cardLayout = new LinearLayout(requireContext());
@@ -106,6 +115,7 @@ public class RightBarFragment extends Fragment {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 375
         );
+        imageParams.setMargins(0,-15,0,0);
         imageView.setLayoutParams(imageParams);
         imageView.setImageResource(landmark.getImage()); // Замените на ваш ресурс изображения
 
@@ -115,6 +125,7 @@ public class RightBarFragment extends Fragment {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
+        titleParams.setMargins(8, 0, 0, 0);
         titleTextView.setLayoutParams(titleParams);
         titleTextView.setTextSize(18);
         titleTextView.setText(landmark.getTitle());
@@ -125,6 +136,7 @@ public class RightBarFragment extends Fragment {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
+        categoryParams.setMargins(15,0,0,0);
         categoryTextView.setLayoutParams(categoryParams);
         categoryTextView.setText(landmark.getCategory());
 

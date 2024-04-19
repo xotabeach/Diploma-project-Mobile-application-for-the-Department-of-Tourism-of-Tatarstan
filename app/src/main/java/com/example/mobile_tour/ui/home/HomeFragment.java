@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -175,6 +176,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        categoryViewPager.setMinimumHeight(120);
         TravelCategoryAdapter categoryAdapter = new TravelCategoryAdapter(travelCategories);
         categoryViewPager.setAdapter(categoryAdapter);
 
@@ -273,6 +275,8 @@ public class HomeFragment extends Fragment {
         super.onResume();
         DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
         dbHelper.displayAllData();
+        LinearLayout linearLayoutSearch = requireActivity().findViewById(R.id.linearLayoutSearch);
+        linearLayoutSearch.setVisibility(View.VISIBLE);
         /*ViewPager2 locationsViewPager = getView().findViewById(R.id.viewpagerHomeFragment);
         ViewPager2 categoriesViewPager = getView().findViewById(R.id.viewpagerHomeFragment_category);
         // Вызовите метод настройки еще раз
@@ -289,4 +293,11 @@ public class HomeFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LinearLayout linearLayoutSearch = requireActivity().findViewById(R.id.linearLayoutSearch);
+        linearLayoutSearch.setVisibility(View.GONE);
+    }
 }

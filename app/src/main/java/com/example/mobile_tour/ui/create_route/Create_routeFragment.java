@@ -228,7 +228,7 @@ public class Create_routeFragment extends Fragment{
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        linearLayoutSearch.setVisibility(View.VISIBLE);
+
     }
 
     @Override

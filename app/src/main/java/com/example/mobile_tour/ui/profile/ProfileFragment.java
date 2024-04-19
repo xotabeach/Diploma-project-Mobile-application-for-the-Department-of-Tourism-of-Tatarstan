@@ -150,6 +150,8 @@ public class ProfileFragment extends Fragment {
     private String city;
     private String routes;
 
+    private LinearLayout linearLayoutSearch;
+
 
     private void showSoftKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -186,14 +188,15 @@ public class ProfileFragment extends Fragment {
         scrollstate = false;
         String[] userData = dbHelper.getUserDataByEmail(data[0]);
 
-
+        linearLayoutSearch = requireActivity().findViewById(R.id.linearLayoutSearch);
+        linearLayoutSearch.setVisibility(View.GONE);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         viewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
 
         LinearLayout linearLayoutSearch = requireActivity().findViewById(R.id.linearLayoutSearch);
-        linearLayoutSearch.setVisibility(View.VISIBLE);
+        linearLayoutSearch.setVisibility(View.GONE);
 
         if (userData != null) {
             // Используйте полученные данные о пользователе здесь, например:
@@ -648,6 +651,8 @@ public class ProfileFragment extends Fragment {
         super.onDestroyView();
         binding = null;
         scrollstate = false;
+
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
