@@ -62,8 +62,9 @@ public class RangeSeekBar extends View {
         textPaint.setTextSize(textSize);
     }
 
-    @Override
 
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
@@ -75,9 +76,15 @@ public class RangeSeekBar extends View {
         float startY = getHeight() / 2f;
         canvas.drawLine(startX, startY, endX, startY, paint);
 
+        // Draw line between thumbs
+        paint.setStrokeWidth(rangeWidth + 2); // Увеличиваем толщину линии
+        paint.setColor(ContextCompat.getColor(getContext(), R.color.line_color)); // Указываем цвет линии
+        float leftX = startX + (leftThumb / (float) max) * (endX - startX);
+        float rightX = startX + (rightThumb / (float) max) * (endX - startX);
+        canvas.drawLine(leftX, startY, rightX, startY, paint); // Линия между маркерами
+
         // Draw left thumb
         paint.setColor(isTouchingLeftThumb ? thumbSelectedColor : thumbNormalColor);
-        float leftX = startX + (leftThumb / (float) max) * (endX - startX);
         Drawable customThumb = ContextCompat.getDrawable(getContext(), R.drawable.custom_thumb); // Загрузка пользовательского маркера
         customThumb.setBounds((int) (leftX - thumbRadius), (int) (startY - thumbRadius), (int) (leftX + thumbRadius), (int) (startY + thumbRadius));
         customThumb.draw(canvas);
@@ -85,11 +92,12 @@ public class RangeSeekBar extends View {
 
         // Draw right thumb
         paint.setColor(isTouchingRightThumb ? thumbSelectedColor : thumbNormalColor);
-        float rightX = startX + (rightThumb / (float) max) * (endX - startX);
         customThumb.setBounds((int) (rightX - thumbRadius), (int) (startY - thumbRadius), (int) (rightX + thumbRadius), (int) (startY + thumbRadius));
         customThumb.draw(canvas);
         canvas.drawText(String.valueOf(rightThumb), rightX, startY - thumbRadius - textPadding, textPaint); // Отображение значения
     }
+
+
 
 
     @Override
@@ -122,6 +130,10 @@ public class RangeSeekBar extends View {
                 getParent().requestDisallowInterceptTouchEvent(false);
                 break;
         }
+
+        int leftThumbValue = leftThumb;
+        int rightThumbValue = rightThumb;
+
         return true;
     }
 

@@ -23,4 +23,5 @@
     <color name="checkbox_border_unchecked">#D9D9D9</color> <!-- Border color when unchecked -->
     <color name="checkbox_tint_checked">#FF9960</color> <!-- Tint color when checked -->
     <color name="checkbox_tint_unchecked">#D9D9D9</color>
+    <color name="line_color" >#FF9960</color>
 </resources>
