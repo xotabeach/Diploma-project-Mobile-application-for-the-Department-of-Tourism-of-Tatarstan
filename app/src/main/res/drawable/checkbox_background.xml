@@ -1,0 +1,18 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background when checkbox is checked -->
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/checkbox_checked_background" /> <!-- Background color when checked -->
+            <stroke android:color="@color/checkbox_border_checked" android:width="2dp" /> <!-- Border color when checked -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+    <!-- Background when checkbox is not checked -->
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/checkbox_unchecked_background" /> <!-- Background color when unchecked -->
+            <stroke android:color="@color/checkbox_border_unchecked" android:width="2dp" /> <!-- Border color when unchecked -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+</selector>

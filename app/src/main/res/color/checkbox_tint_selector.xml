@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Tint color when checked -->
+    <item android:state_checked="true" android:color="@color/checkbox_tint_checked" />
+    <!-- Tint color when unchecked -->
+    <item android:state_checked="false" android:color="@color/checkbox_tint_unchecked" />
+</selector>

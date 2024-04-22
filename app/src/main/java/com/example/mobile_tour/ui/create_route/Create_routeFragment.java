@@ -16,9 +16,13 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.mobile_tour.DataBaseHelper;
 import com.example.mobile_tour.R;
@@ -26,6 +30,7 @@ import com.example.mobile_tour.databinding.FragmentCreateRouteBinding;
 
 
 import com.example.mobile_tour.ui.ClickedTravelData;
+import com.example.mobile_tour.ui.CreateRouteParamsFragment;
 import com.example.mobile_tour.ui.SharedViewModel;
 import com.example.mobile_tour.ui.home.ClickedLocationDialog;
 import com.example.mobile_tour.ui.home.TravelLocation;
@@ -203,7 +208,9 @@ public class Create_routeFragment extends Fragment{
 
         if (clickedLandscapes.size() == 0) {
             textView.setText("Создание маршрута");
-            deleteAllButton.setVisibility(View.GONE); // Скрыть кнопку удаления всех элементов
+            deleteAllButton.setVisibility(View.GONE);
+            initViews(root);
+
         } else {
             itemsCase.setVisibility(View.GONE);
             createAutoRoute.setVisibility(View.GONE);
@@ -224,12 +231,37 @@ public class Create_routeFragment extends Fragment{
     }
 
 
+    private void initViews(View root) {
+        itemsCase = root.findViewById(R.id.itemsCase);
+        createAutoRoute = root.findViewById(R.id.createAutoRoute);
+        createParamsRoute = root.findViewById(R.id.createParamsRoute);
+        textyourchoise = root.findViewById(R.id.textyourchoise);
+
+        createParamsRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToParamsFragment();
+            }
+        });
+    }
+
+    private void navigateToParamsFragment() {
+        // Получаем NavController
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+
+        // Навигация к фрагменту CreateRouteParamsFragment
+        navController.navigate(R.id.createRouteParamsFragment);
+    }
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
 
     }
+
+
 
     @Override
     public void onResume() {

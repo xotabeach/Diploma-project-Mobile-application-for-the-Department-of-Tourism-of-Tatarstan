@@ -16,6 +16,12 @@
         <item name="android:background">@drawable/button_clicked_dost_before</item>
     </style>
 
+    <style name="CheckboxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_selector</item>
+        <item name="android:background">@drawable/checkbox_background</item>
+        <item name="android:buttonTint">@color/checkbox_tint_selector</item>
+    </style>
+
 
     <style name="Widget.Mobile_tour.AppWidget.InnerView" parent="android:Widget">
         <item name="android:background">@color/white</item>

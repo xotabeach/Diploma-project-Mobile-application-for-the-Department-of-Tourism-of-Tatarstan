@@ -36,6 +36,12 @@
         tools:layout="@layout/fragment_right_bar" />
 
     <fragment
+        android:id="@+id/createRouteParamsFragment"
+        android:name="com.example.mobile_tour.ui.CreateRouteParamsFragment"
+        android:label="Create Route Params Fragment"
+        tools:layout="@layout/fragment_create_route_params"/>
+
+    <fragment
         android:id="@+id/activity_login"
         android:name="com.example.mobile_tour.ui.login.LoginActivity"
         android:label="Login Activity"
