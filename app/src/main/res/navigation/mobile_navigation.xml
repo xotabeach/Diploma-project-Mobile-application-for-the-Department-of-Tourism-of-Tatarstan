@@ -47,4 +47,13 @@
         android:label="Login Activity"
         tools:layout="@layout/activity_login"
         />
+
+    <fragment
+        android:id="@+id/route_fragment"
+        android:name="com.example.mobile_tour.ui.RouteFragment"
+        android:label="route_fragment"
+        tools:layout="@layout/fragment_route"
+        />
+
+
 </navigation>

@@ -146,4 +146,10 @@ public class RangeSeekBar extends View {
         float rightX = (rightThumb / (float) max) * (getWidth() - 2 * thumbRadius) + thumbRadius;
         return x >= rightX - thumbRadius && x <= rightX + thumbRadius;
     }
+
+    public int[] getThumbValues() {
+        int[] thumbValues = {leftThumb, rightThumb};
+        return thumbValues;
+    }
+
 }

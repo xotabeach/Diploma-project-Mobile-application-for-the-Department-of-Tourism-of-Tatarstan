@@ -24,4 +24,10 @@ public class TravelCategory {
     public int getImageResId() {
         return imageResId;
     }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
+
