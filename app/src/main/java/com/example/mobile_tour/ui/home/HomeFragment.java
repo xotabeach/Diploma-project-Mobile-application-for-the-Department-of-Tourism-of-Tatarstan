@@ -35,6 +35,7 @@ import com.example.mobile_tour.ui.SharedViewModel;
 import com.example.mobile_tour.ui.create_route.Create_routeFragment;
 import com.example.mobile_tour.ui.right_bar.RightBarFragment;
 import com.example.mobile_tour.ui.right_bar.RightBarViewModel;
+import com.flaviofaria.kenburnsview.KenBurnsView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -50,12 +51,13 @@ public class HomeFragment extends Fragment {
         throw new RuntimeException("Stub!");
     }
 
+    private List<TravelLocation> travelLocations;
 
     private void editViewPager(ViewPager2 locationsViewPager) {
         Random ran = new Random();
         locationsViewPager.setClipToPadding(false);
         locationsViewPager.setClipChildren(false);
-        locationsViewPager.setOffscreenPageLimit(9);
+        locationsViewPager.setOffscreenPageLimit(21);
         locationsViewPager.setCurrentItem(ran.nextInt(9));
         locationsViewPager.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
     }
@@ -81,13 +83,15 @@ public class HomeFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        View item = inflater.inflate(R.layout.item_container_cardview, container, false);
 
 
         ViewPager2 locationsViewPager = root.findViewById(R.id.viewpagerHomeFragment);
         ViewPager2 categoryViewPager = root.findViewById(R.id.viewpagerHomeFragment_category);
 
+        KenBurnsView kenBurnsView = item.findViewById(R.id.kbvLocation);
 
-        List<TravelLocation> travelLocations = new ArrayList<>();
+
         DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
         dbHelper.displayAllData();
         travelLocations = dbHelper.getAllTravelLocations();
@@ -220,6 +224,8 @@ public class HomeFragment extends Fragment {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 View viewDefault = ((RecyclerView) locationsViewPager.getChildAt(0)).getLayoutManager().findViewByPosition(0);
+
+
                 float defSizeX = viewDefault.getScaleX();
                 float defSizeY = viewDefault.getScaleY();
                 for (int i = 0; i < locationsViewPager.getAdapter().getItemCount(); i++) {
@@ -234,7 +240,7 @@ public class HomeFragment extends Fragment {
                             //view.setScaleY(0.8f);
                             view.setTranslationZ(10);
                             view.setAlpha(0.75f);
-
+                            kenBurnsView.pause();
                         }
                     }
                 }

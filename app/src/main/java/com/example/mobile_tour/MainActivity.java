@@ -120,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
         List<TravelLocation> travelLocations = new ArrayList<>();
         List<TravelCategory> travelCategories = new ArrayList<>();
 
+
         /*
+
 
         TravelLocation travelLocationFamilyCenter = new TravelLocation();
         travelLocationFamilyCenter.imageUrl = R.drawable.family_center_kazan;
@@ -233,6 +235,155 @@ public class MainActivity extends AppCompatActivity {
         travelLocations.add(travelLocationDvorecZemledelec);
 
 
+        TravelLocation travelLocationBaumanStreet = new TravelLocation();
+        travelLocationBaumanStreet.imageUrl = R.drawable.bauman_street;
+        travelLocationBaumanStreet.title = "Улица Баумана";
+        travelLocationBaumanStreet.category = "Архитектура";
+        travelLocationBaumanStreet.year = "Основание: 15 век";
+        travelLocationBaumanStreet.description = "Улица Баумана — одна из самых старых улиц Казани. В эпоху Казанского ханства она называлась Ногайской дорогой. В 1552 году, во время штурма Казанского Кремля московскими войсками Ивана Грозного, обе его стены южнее и севернее улицы были проломлены взрывами, а улица была названа сначала Проломной, а затем Большой Проломной. В XVI веке, продолжая уже имевшуюся застройку северной части улицы, в её южной части возникла Новая слобода, получившая позже название Богоявленской по названию сооружённой здесь церкви. В 1930 году, улица была переименована в честь выходца из Казани революционера Баумана. Это название сохранилось до настоящего времени, хотя в постсоветское время предлагалось её переименовать в улицу Шаляпина.";
+        travelLocationBaumanStreet.location = "Казань";
+        travelLocationBaumanStreet.starRating = 4.8f;
+        travelLocations.add(travelLocationBaumanStreet);
+
+
+
+        TravelLocation travelLocationKulSharif = new TravelLocation();
+        travelLocationKulSharif.imageUrl = R.drawable.kul_sharif;
+        travelLocationKulSharif.title = "Кул Шариф";
+        travelLocationKulSharif.category = "Архитектура";
+        travelLocationKulSharif.year = "Год основания: 2005";
+        travelLocationKulSharif.description = "Кул Шариф - главная мечеть татарстана. Она была построена в Казанском кремле в 2005 году, там, где когда-то находилась легендарная соборная мечеть, разрушенная при взятии Казани войсками Ивана Грозного. Мечеть стала одним из главных символов современного мультикультурного Татарстана.";
+        travelLocationKulSharif.location = "Казань";
+        travelLocationKulSharif.starRating = 4.6f;
+        travelLocations.add(travelLocationKulSharif);
+
+
+        TravelLocation travelLocationKabanLake = new TravelLocation();
+        travelLocationKabanLake.imageUrl = R.drawable.kaban_lake;
+        travelLocationKabanLake.title = "Набережная озера Кабан";
+        travelLocationKabanLake.category = "Парки";
+        travelLocationKabanLake.year = "Год основания: 2016";
+        travelLocationKabanLake.description = "Набережная озера Кабан — пешеходная набережная в центре Казани.\n" +
+                "\n" +
+                "Территория имеет длину более 3,5 километров. Вдоль озера высажены 12 500 растений, кустарников и деревьев: ивы, камыш, рогоз, аир, дербенник, черёмуха, яблони, клены, ирга и другие.\n" +
+                "\n" +
+                "Водные растения в чаше каскада выполняют не только декоративную функцию — они чистят воду.\n" +
+                "\n" +
+                "На набережной проводят массовые народные гулянья во время празднования Дня республики, Дня города и других событий.";
+        travelLocationKabanLake.location = "Казань";
+        travelLocationKabanLake.starRating = 4.8f;
+        travelLocations.add(travelLocationKabanLake);
+
+
+
+        TravelLocation travelLocationParkMillenium = new TravelLocation();
+        travelLocationParkMillenium.imageUrl = R.drawable.park_1000;
+        travelLocationParkMillenium.title = "Парк Тысячелетия";
+        travelLocationParkMillenium.category = "Парки";
+        travelLocationParkMillenium.year = "Год основания: 2005";
+        travelLocationParkMillenium.description = "Парк Тысячелетия Казани открыли в 2005 году, в честь юбилея города, это один из самых молодых парков в столице Республики Татарстан, его второе название — «Миллениум».  До 2000-х годов на месте будущего парка стояли ветхие дома (малоэтажная застройка), почти каждой весной уровень воды в озере Кабан достигал критических значений, и подтапливал слободу.\n" +
+                "\n" +
+                "На экскурсии по Казани гиды могут показать архивные фотографии, по которым видно, что в моменты половодья жители даже плавали на лодках по улицам.";
+        travelLocationParkMillenium.location = "Казань";
+        travelLocationParkMillenium.starRating = 4.7f;
+        travelLocations.add(travelLocationParkMillenium);
+
+
+
+        TravelLocation travelLocationPeterStreet = new TravelLocation();
+        travelLocationPeterStreet.imageUrl = R.drawable.peter_street;
+        travelLocationPeterStreet.title = "Петербургская улица";
+        travelLocationPeterStreet.category = "Архитектура";
+        travelLocationPeterStreet.year = "Год основания: 2005";
+        travelLocationPeterStreet.description = "Петербургская улица — частично пешеходная улица в историческом центре Казани, одна из комплексных достопримечательностей города.\n" +
+                "\n" +
+                "Улица пролегает от центральной городской площади Тукая на северо-западе до перпендикулярной ей улицы Назарбаева на юго-востоке, пересекая улицы Айдинова, Ульянова-Ленина, Волкова, Туфана Миннуллина и Суконная.\n" +
+                "\n" +
+                "Протяжённость улицы — 1800 м, из них 530 м являются пешеходными.\n" +
+                "\n" +
+                "Основная архитектурно-художественная идея улицы — создание «уголка Петербурга». Для этого используются стилизованные мостики, ограда и рисунки мощения пешеходной эспланады, символизирующие петербургские каналы, ротонда, скульптурно-монументальные композиции и другие архитектурные приёмы и малые формы.";
+        travelLocationPeterStreet.location = "Казань";
+        travelLocationPeterStreet.starRating = 4.9f;
+        travelLocations.add(travelLocationPeterStreet);
+
+
+        TravelLocation travelLocationPyramid = new TravelLocation();
+        travelLocationPyramid.imageUrl = R.drawable.pyramid;
+        travelLocationPyramid.title = "Пирамида";
+        travelLocationPyramid.category = "Развлечения";
+        travelLocationPyramid.year = "Год основания: 1996";
+        travelLocationPyramid.description = "«Пирамида» — культурно-развлекательный комплекс в центре Казани, выполненный в виде пирамиды.\n" +
+                "\n" +
+                "Это уникальный в России и один из немногих в мире современных крупных объектов подобной формы. Комплекс является одной из современных и знаковых достопримечательностей города как в плане архитектуры, так и в плане функциональности.\n" +
+                "\n" +
+                "В «Пирамиде» проходят ведомственно-отраслевые конгрессы, конференции, презентации, банкеты и прочие мероприятия.";
+        travelLocationPyramid.location = "Казань";
+        travelLocationPyramid.starRating = 4.5f;
+        travelLocations.add(travelLocationPyramid);
+
+
+        TravelLocation travelLocationBiblioteka = new TravelLocation();
+        travelLocationBiblioteka.imageUrl = R.drawable.biblioteka_nac;
+        travelLocationBiblioteka.title = "Парк Тысячелетия";
+        travelLocationBiblioteka.category = "Развлечения";
+        travelLocationBiblioteka.year = "Год основания: 1865";
+        travelLocationBiblioteka.description = "Национальная библиотека Республики Татарстан — главное книгохранилище Татарстана для национальных, республиканских, русских и зарубежных изданий.\n" +
+                "\n" +
+                "Она содержит более трёх миллионов двухсот тысяч документов, в том числе более 100 тысяч документов на татарском языке и ещё 100 тысяч на иностранных языках.\n" +
+                "\n" +
+                "Библиотека была официально открыта 10 января 1865 года как городская публичная библиотека Казани.";
+        travelLocationBiblioteka.location = "Казань";
+        travelLocationBiblioteka.starRating = 4.9f;
+        travelLocations.add(travelLocationBiblioteka);
+
+
+
+        TravelLocation travelLocationAgafredo = new TravelLocation();
+        travelLocationAgafredo.imageUrl = R.drawable.agafredo;
+        travelLocationAgafredo.title = "Сеть кафе Агафредо";
+        travelLocationAgafredo.category = "Кафе";
+        travelLocationAgafredo.year = "Год основания: 2003";
+        travelLocationAgafredo.description = "В сети кофеен «Агафредо» теплая\n" +
+                "и спокойная атмосфера сочетается\n" +
+                "с изысканными сортами чая,\n" +
+                "профессионально приготовленным кофе\n" +
+                "и превосходной кухней.";
+        travelLocationAgafredo.location = "Казань";
+        travelLocationAgafredo.starRating = 4.9f;
+        travelLocations.add(travelLocationAgafredo);
+
+
+
+        TravelLocation travelLocationRannyaPtashka = new TravelLocation();
+        travelLocationRannyaPtashka.imageUrl = R.drawable.ptashka;
+        travelLocationRannyaPtashka.title = "Кафе Ранняя Пташка";
+        travelLocationRannyaPtashka.category = "Кафе";
+        travelLocationRannyaPtashka.year = "Год основания: 2019";
+        travelLocationRannyaPtashka.description = "«Ранняя пташка» — отличное кафе для завтрака и для работы. Там много пространства и света. Розовая неоновая подсветка, кофе, бейглы и живые цветы делают заведение популярным у казанских девушек.\n" +
+                "\n" +
+                "Там всегда хороший ассортимент кофе и можно купить зерно. Бариста помогут с выбором и подскажут, каким способом его лучше заваривать.";
+        travelLocationRannyaPtashka.location = "Казань";
+        travelLocationRannyaPtashka.starRating = 4.6f;
+        travelLocations.add(travelLocationRannyaPtashka);
+
+
+
+        TravelLocation travelLocationHotelShalyapin = new TravelLocation();
+        travelLocationHotelShalyapin.imageUrl = R.drawable.shalyapin;
+        travelLocationHotelShalyapin.title = "Отель Шаляпин";
+        travelLocationHotelShalyapin.category = "Отели";
+        travelLocationHotelShalyapin.year = "Год основания: 2009";
+        travelLocationHotelShalyapin.description = "Шаляпин Палас Отель располагается в здании отреставрированного памятника архитектуры 19 века, вблизи Богоявленского Собора, в котором был крещен великий оперный певец – Федор Иванович Шаляпин.\n" +
+                "\n" +
+                "Отель Шаляпин это 123 уютных номера различной категории, 8 конференц-залов, фитнес-центр с бассейном, ресторан европейской и национальной кухни и лобби-бар.\n" +
+                "Удобное  расположение отеля в самом историческом центре города – на пешеходной улице Баумана – является его неоспоримым преимуществом.";
+        travelLocationHotelShalyapin.location = "Казань";
+        travelLocationHotelShalyapin.starRating = 4.9f;
+        travelLocations.add(travelLocationHotelShalyapin);
+
+
+
+
         TravelLocation travelLocationMitaka = new TravelLocation();
         travelLocationMitaka.imageUrl = R.drawable.asa_mitaka;
         travelLocationMitaka.title = "Аса Митака";
@@ -240,8 +391,8 @@ public class MainActivity extends AppCompatActivity {
         travelLocationMitaka.starRating = 5.0f;
         travelLocations.add(travelLocationMitaka);
 
-
         */
+
 
 
         TravelCategory travelCategoryParks = new TravelCategory();
