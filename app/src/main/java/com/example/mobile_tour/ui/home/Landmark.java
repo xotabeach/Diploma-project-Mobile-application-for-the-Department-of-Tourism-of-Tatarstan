@@ -4,16 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Landmark implements Parcelable {
+    private Float coordX;
+    private Float coordY;
     private int id;
     private String title;
     private int image;
     private String category;
 
-    public Landmark(int id, String title, int image, String category) {
+    private int costable;
+
+    public Landmark(int id, String title, int image, String category , float coordX, float coordY , int costable) {
         this.id = id;
         this.title = title;
         this.image = image;
         this.category = category;
+        this.coordX = coordX;
+        this.coordY = coordY;
+        this.costable = costable;
     }
 
     protected Landmark(Parcel in) {
@@ -21,6 +28,9 @@ public class Landmark implements Parcelable {
         title = in.readString();
         image = in.readInt();
         category = in.readString();
+        coordX = in.readFloat();
+        coordY = in.readFloat();
+        costable = in.readInt();
     }
 
     public static final Creator<Landmark> CREATOR = new Creator<Landmark>() {
@@ -63,4 +73,10 @@ public class Landmark implements Parcelable {
     public String getCategory() {
         return category;
     }
+
+    public float getCoordX() { return  coordX;}
+
+    public float getCoordY() { return  coordY;}
+
+    public int getCostable() { return  costable;}
 }

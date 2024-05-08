@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
                 "Кроме того, кремль находится на берегу реки Казанка и предлагает живописные виды на окружающую местность.";
 
 
+        travelLocationKazanKremlin.coordX = 55.797661F;
+        travelLocationKazanKremlin.coordY = 49.106815F;
         travelLocationKazanKremlin.location = "Казань";
         travelLocationKazanKremlin.starRating = 4.8f;
         travelLocations.add(travelLocationKazanKremlin);
@@ -391,8 +393,8 @@ public class MainActivity extends AppCompatActivity {
         travelLocationMitaka.starRating = 5.0f;
         travelLocations.add(travelLocationMitaka);
 
-        */
 
+        */
 
 
         TravelCategory travelCategoryParks = new TravelCategory();

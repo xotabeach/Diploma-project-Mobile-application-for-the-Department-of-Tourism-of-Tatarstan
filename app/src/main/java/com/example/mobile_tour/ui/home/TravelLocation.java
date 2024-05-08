@@ -11,6 +11,9 @@ public class TravelLocation implements Parcelable {
     public String location;
     public Integer imageUrl;
     public Float starRating;
+    public Float coordX;
+    public Float coordY;
+    public int costable;
 
     public TravelLocation() {
 
@@ -22,6 +25,8 @@ public class TravelLocation implements Parcelable {
         category = in.readString();
         description = in.readString();
         location = in.readString();
+        coordX = in.readFloat();
+        coordY = in.readFloat();
         if (in.readByte() == 0) {
             imageUrl = null;
         } else {
@@ -41,6 +46,8 @@ public class TravelLocation implements Parcelable {
         dest.writeString(category);
         dest.writeString(description);
         dest.writeString(location);
+        dest.writeFloat(coordX);
+        dest.writeFloat(coordY);
         if (imageUrl == null) {
             dest.writeByte((byte) 0);
         } else {

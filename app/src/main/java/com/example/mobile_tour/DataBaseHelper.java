@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "landmarks2.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final String DATABASE_NAME = "landmarks3.db";
+    private static final int DATABASE_VERSION = 10;
 
     public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -54,6 +54,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "foundation_date TEXT," +
                 "description TEXT," +
                 "location TEXT," +
+                "coordX REAL," +
+                "coordY REAL," +
+                "costable INTEGER," +
                 "starRating REAL);");
 
 
@@ -252,6 +255,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("foundation_date", location.year);
             values.put("description", location.description);
             values.put("location", location.location);
+            values.put("coordX", location.coordX);
+            values.put("coordY", location.coordY);
+            values.put("costable", location.costable);
             values.put("starRating", location.starRating);
             db.insert("landmarks", null, values);
         }
@@ -452,10 +458,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
             @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
             @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
+            @SuppressLint("Range") float coordX = cursor.getFloat(cursor.getColumnIndex("coordX"));
+            @SuppressLint("Range") float coordY = cursor.getFloat(cursor.getColumnIndex("coordY"));
+            @SuppressLint("Range") int costable = cursor.getInt(cursor.getColumnIndex("costable"));
+
             // Добавьте другие поля, если нужно
 
             // Создаем объект Landmark и добавляем его в список
-            Landmark landmark = new Landmark(id, title, image, category);
+            Landmark landmark = new Landmark(id, title, image, category , coordX , coordY, costable);
             landmarks.add(landmark);
         }
 

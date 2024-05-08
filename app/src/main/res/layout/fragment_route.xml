@@ -91,7 +91,7 @@
 
                 <!-- Круг-иконка станции -->
                 <ImageView
-                    android:id="@+id/stationIcon2"
+                    android:id="@+id/stationIcon1"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginStart="8dp"
@@ -270,12 +270,7 @@
                 android:orientation="horizontal">
 
                 <!-- Кнопка "Открыть в" -->
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_open_in_new" />
+
 
                 <!-- Надпись "Открыть в" -->
                 <TextView
@@ -309,13 +304,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:layout_marginTop="11dp"
+                >
 
                 <!-- Кнопка "Поделиться" -->
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center|center_vertical"
                     android:layout_weight="1"
                     android:src="@drawable/ic_share" />
 
