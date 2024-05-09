@@ -5,17 +5,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.mobile_tour.DataBaseHelper;
 import com.example.mobile_tour.R;
 import com.example.mobile_tour.databinding.FragmentRouteBinding;
 import com.example.mobile_tour.ui.home.Landmark;
 
-
 import java.util.List;
 import java.util.Random;
-
-import androidx.fragment.app.Fragment;
 
 public class RouteFragment extends Fragment {
 
@@ -64,12 +66,33 @@ public class RouteFragment extends Fragment {
 
         // Выводим информацию о выбранных достопримечательностях в лог
         Log.d("RouteLandmarks", "Selected landmarks count: " + numOfLandmarks);
+        LinearLayout stationsLayout = root.findViewById(R.id.stationsLayout);
+        LayoutInflater layoutInflater = LayoutInflater.from(requireContext());
         for (int i = 0; i < numOfLandmarks; i++) {
             Landmark landmark = landmarks.get(i);
-            Log.d("RouteLandmark", "Name: " + landmark.getTitle()+ " CoordX:" + landmark.getCoordX());
+            // Создаем копию LinearLayout с id "station"
+            LinearLayout stationCopy = createStationCopy(layoutInflater, stationsLayout, landmark, i);
+            // Добавляем копию в родительский LinearLayout
+            stationsLayout.addView(stationCopy);
         }
 
         // Возвращаем макет
         return root;
+    }
+
+    private LinearLayout createStationCopy(LayoutInflater layoutInflater, LinearLayout parentLayout, Landmark landmark, int index) {
+        // Создаем копию LinearLayout с id "station"
+        LinearLayout stationCopy = (LinearLayout) layoutInflater.inflate(R.layout.station_layout, parentLayout, false);
+        // Присваиваем уникальный id к копии
+        stationCopy.setId(View.generateViewId());
+        // Находим в этой копии элементы
+        ImageView stationIcon = stationCopy.findViewById(R.id.stationIcon1);
+        TextView stationName = stationCopy.findViewById(R.id.stationName1);
+        // Устанавливаем данные в найденные элементы
+        stationIcon.setImageResource(R.drawable.circle_point);
+        stationName.setText(landmark.getTitle());
+        // Устанавливаем Tag, чтобы позже можно было определить, с какой станцией мы работаем
+        stationCopy.setTag("station_" + index);
+        return stationCopy;
     }
 }

@@ -83,7 +83,7 @@
 
             <!-- Пример станции -->
             <LinearLayout
-                android:id="@+id/station1"
+                android:id="@+id/station"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -131,47 +131,11 @@
                 android:layout_marginBottom="5dp"/>
 
             <!-- Пример станции -->
-            <LinearLayout
-                android:id="@+id/station2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
 
-                <!-- Круг-иконка станции -->
-                <ImageView
-                    android:id="@+id/stationIcon2"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/circle_point"
-                    android:gravity="center" />
-
-                <!-- Название станции -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="10dp">
-                    <TextView
-                        android:id="@+id/stationName2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="Станция 2"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-
-                        android:background="@color/line_color"/>
-
-                </LinearLayout>
             </LinearLayout>
 
             <!-- Продолжаем добавлять станции и линии в соответствии с маршрутом -->
-        </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 

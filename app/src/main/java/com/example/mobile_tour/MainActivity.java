@@ -132,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationFamilyCenter.year = "Год основания 2013";
         travelLocationFamilyCenter.description ="Данное сооружение выполнено в форме чаши – традиционного татарского казана. Тюркское слово «казан» означает котел для приготовления пищи. Такой вид строения выбран неспроста – чаша символизирует домашний очаг и семейный уют, а также ассоциируется с культурой местного народа.\n" +
                 "Интересный факт: в день открытия Чаши в ней заключили брак 27 человек в честь 27ми летия Универсиады ";
+        travelLocationFamilyCenter.coordX = 55.81288215F;
+        travelLocationFamilyCenter.coordY = 49.108333F;
+        travelLocationFamilyCenter.costable = 0;
         travelLocationFamilyCenter.location = "Казань";
         travelLocationFamilyCenter.starRating = 5.0f;
         travelLocations.add(travelLocationFamilyCenter);
@@ -152,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         travelLocationKazanKremlin.coordX = 55.797661F;
         travelLocationKazanKremlin.coordY = 49.106815F;
+        travelLocationKazanKremlin.costable = 0;
         travelLocationKazanKremlin.location = "Казань";
         travelLocationKazanKremlin.starRating = 4.8f;
         travelLocations.add(travelLocationKazanKremlin);
@@ -167,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
                 "Идеальное место для семейного отдыха и активного времяпровождения.\n" +
                 "Хостинг различных мероприятий, включая концерты и фестивали.\n" +
                 "Аквапарк \"Ривьера\" стал популярным местом для местных жителей и туристов, предлагая увлекательные водные развлечения в самом сердце города.";
+        travelLocationRiveraAqua.coordX = 55.81474430726972F;
+        travelLocationRiveraAqua.coordY = 49.13099884986878F;
+        travelLocationRiveraAqua.costable = 1;
         travelLocationRiveraAqua.location = "Казань";
         travelLocationRiveraAqua.starRating = 4.7f;
         travelLocations.add(travelLocationRiveraAqua);
@@ -181,6 +188,9 @@ public class MainActivity extends AppCompatActivity {
                 "Состоящий из старинных деревенских домов, мастерских и интересных музеев, \"Туган Авыл\" предоставляет посетителям уникальную возможность познакомиться с традиционным татарским образом жизни. Дома представляют собой аутентичные строения, передающие архитектурные особенности татарских поселений.\n" +
                 "\n" +
                 "Кроме того, в этом этнографическом комплексе проводятся разнообразные мероприятия и фестивали, позволяя посетителям не только увидеть традиции, но и активно участвовать в них. Мастер-классы по традиционным ремеслам, культурные события и выставки создают привлекательную атмосферу для тех, кто стремится глубже понять татарскую культуру.";
+        travelLocationTatarVilage.coordX = 55.77959235F;
+        travelLocationTatarVilage.coordY = 49.13581707236855F;
+        travelLocationTatarVilage.costable = 0;
         travelLocationTatarVilage.location = "Казань";
         travelLocationTatarVilage.starRating = 4.7f;
         travelLocations.add(travelLocationTatarVilage);
@@ -191,6 +201,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationUramPark.category = "Развлечения";
         travelLocationUramPark.year = "Год основания: 2021";
         travelLocationUramPark.description = "Самый большой в России и Европе всесезонный экстрим-парк УРАМ состоит из двух частей – крытой и открытой. На открытой территории площадью 20 000 кв.м. можно заниматься скейтбордингом, BMX Freestyle, паркуром, воркаутом и стритболом. В крытом центре уличной культуры на двух этажах расположились экстрим-зоны (эйр-парк, стрит-плаза, бетонный боул и скейт-дом), а также культурные пространства – центр современной музыки, школа диджеинга, скейт-шоп, зал для танцев, лекторий и кафе. Все спортивные объекты в парке построены в соответствии с международными требованиями безопасности и открыты для всех желающих.";
+        travelLocationUramPark.coordX = 55.80450165F;
+        travelLocationUramPark.coordY = 49.146027282888966F;
+        travelLocationUramPark.costable = 0;
         travelLocationUramPark.location = "Казань";
         travelLocationUramPark.starRating = 5.0f;
         travelLocations.add(travelLocationUramPark);
@@ -201,6 +214,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationParkGorkogo.category = "Парки";
         travelLocationParkGorkogo.year = "Год основания: 1928";
         travelLocationParkGorkogo.description = "Крупный парк в Вахитовском районе Казани, один из многих в СССР центральных парков, традиционно названных в честь писателя Максима Горького.На площади перед парком стоит мемориал из монумента «Павшим за советскую власть» (1967 г.) и памятника неизвестному солдату. В парке обитает большое количество серых и рыжих белок.";
+        travelLocationParkGorkogo.coordX = 55.7993481F;
+        travelLocationParkGorkogo.coordY = 49.14867463250507F;
+        travelLocationParkGorkogo.costable = 0;
         travelLocationParkGorkogo.location = "Казань";
         travelLocationParkGorkogo.starRating = 4.9f;
         travelLocations.add(travelLocationParkGorkogo);
@@ -212,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationWheel.category = "Развлечения";
         travelLocationWheel.year = "Год основания: 2016";
         travelLocationWheel.description = "Совсем недавно построенное колесо обозрения высотой в 65 метров находится рядом с аквапарком \"Ривьера\".Всего на колесе 36 кабинок и каждая из них символизирует какую-либо страну. Как снаружи, так и внутри в оформлении можно увидеть достопримечательности и послушать музыку этой страны.";
+        travelLocationWheel.coordX = 55.81430424496206F;
+        travelLocationWheel.coordY = 49.13171768188477F;
+        travelLocationWheel.costable = 1;
         travelLocationWheel.location = "Казань";
         travelLocationWheel.starRating = 4.5f;
         travelLocations.add(travelLocationWheel);
@@ -222,6 +241,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationAlexPassaj.category = "Архитектура";
         travelLocationAlexPassaj.year = "Год основания: 1880";
         travelLocationAlexPassaj.description = "Это архитектурный памятник более позднего периода истории Казани. Доходный дом в стиле необарокко построили в 1880-х годах по заказу купца Александрова. Но в провинциальной Казани не оказалось столько желающих снимать дорогое жильё. Тогда предприниматель продал здание своей сестре, которая захотела передать его городском музею. Но внутренняя планировка не подходила под музейные нужды. Помещения продолжили сдавать в наём, в том числе и под магазины.";
+        travelLocationAlexPassaj.coordX = 55.7942308F;
+        travelLocationAlexPassaj.coordY = 49.115664293403455F;
+        travelLocationAlexPassaj.costable = 1;
         travelLocationAlexPassaj.location = "Казань";
         travelLocationAlexPassaj.starRating = 5.0f;
         travelLocations.add(travelLocationAlexPassaj);
@@ -232,6 +254,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationDvorecZemledelec.category = "Архитектура";
         travelLocationDvorecZemledelec.year = "Год основания:2010";
         travelLocationDvorecZemledelec.description = "Современная постройка расположена неподалёку от Казанского кремля и набережной реки Казанки. Здание спроектировали для Министерства сельского хозяйства и продовольствия республики Татарстан. Архитектура Дворца землевладельцев напоминает об имперских зданиях западной Европы, но после завершения работ проект вызвал неоднозначную реакцию у общественности. Несмотря это, здание пользуется популярностью у блогеров, которые часто фотографируются у портала главного корпуса, где установлено бронзовое 20-метровое дерево, символизирующее плодородие и процветание казанских земель.";
+        travelLocationDvorecZemledelec.coordX = 55.80046365F;
+        travelLocationDvorecZemledelec.coordY = 49.1120257419805F;
+        travelLocationDvorecZemledelec.costable = 0;
         travelLocationDvorecZemledelec.location = "Казань";
         travelLocationDvorecZemledelec.starRating = 5.0f;
         travelLocations.add(travelLocationDvorecZemledelec);
@@ -243,6 +268,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationBaumanStreet.category = "Архитектура";
         travelLocationBaumanStreet.year = "Основание: 15 век";
         travelLocationBaumanStreet.description = "Улица Баумана — одна из самых старых улиц Казани. В эпоху Казанского ханства она называлась Ногайской дорогой. В 1552 году, во время штурма Казанского Кремля московскими войсками Ивана Грозного, обе его стены южнее и севернее улицы были проломлены взрывами, а улица была названа сначала Проломной, а затем Большой Проломной. В XVI веке, продолжая уже имевшуюся застройку северной части улицы, в её южной части возникла Новая слобода, получившая позже название Богоявленской по названию сооружённой здесь церкви. В 1930 году, улица была переименована в честь выходца из Казани революционера Баумана. Это название сохранилось до настоящего времени, хотя в постсоветское время предлагалось её переименовать в улицу Шаляпина.";
+        travelLocationBaumanStreet.coordX = 55.792137960041494F;
+        travelLocationBaumanStreet.coordY = 49.11180496215821F;
+        travelLocationBaumanStreet.costable = 0;
         travelLocationBaumanStreet.location = "Казань";
         travelLocationBaumanStreet.starRating = 4.8f;
         travelLocations.add(travelLocationBaumanStreet);
@@ -255,6 +283,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationKulSharif.category = "Архитектура";
         travelLocationKulSharif.year = "Год основания: 2005";
         travelLocationKulSharif.description = "Кул Шариф - главная мечеть татарстана. Она была построена в Казанском кремле в 2005 году, там, где когда-то находилась легендарная соборная мечеть, разрушенная при взятии Казани войсками Ивана Грозного. Мечеть стала одним из главных символов современного мультикультурного Татарстана.";
+        travelLocationKulSharif.coordX = 55.79828379572671F;
+        travelLocationKulSharif.coordY = 49.10514235496522F;
+        travelLocationKulSharif.costable = 0;
         travelLocationKulSharif.location = "Казань";
         travelLocationKulSharif.starRating = 4.6f;
         travelLocations.add(travelLocationKulSharif);
@@ -272,6 +303,9 @@ public class MainActivity extends AppCompatActivity {
                 "Водные растения в чаше каскада выполняют не только декоративную функцию — они чистят воду.\n" +
                 "\n" +
                 "На набережной проводят массовые народные гулянья во время празднования Дня республики, Дня города и других событий.";
+        travelLocationKabanLake.coordX = 55.77966236981707F;
+        travelLocationKabanLake.coordY = 49.121932983398445F;
+        travelLocationKabanLake.costable = 0;
         travelLocationKabanLake.location = "Казань";
         travelLocationKabanLake.starRating = 4.8f;
         travelLocations.add(travelLocationKabanLake);
@@ -286,6 +320,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationParkMillenium.description = "Парк Тысячелетия Казани открыли в 2005 году, в честь юбилея города, это один из самых молодых парков в столице Республики Татарстан, его второе название — «Миллениум».  До 2000-х годов на месте будущего парка стояли ветхие дома (малоэтажная застройка), почти каждой весной уровень воды в озере Кабан достигал критических значений, и подтапливал слободу.\n" +
                 "\n" +
                 "На экскурсии по Казани гиды могут показать архивные фотографии, по которым видно, что в моменты половодья жители даже плавали на лодках по улицам.";
+        travelLocationParkMillenium.coordX = 55.78337175F;
+        travelLocationParkMillenium.coordY = 49.12372922494721F;
+        travelLocationParkMillenium.costable = 0;
         travelLocationParkMillenium.location = "Казань";
         travelLocationParkMillenium.starRating = 4.7f;
         travelLocations.add(travelLocationParkMillenium);
@@ -304,6 +341,9 @@ public class MainActivity extends AppCompatActivity {
                 "Протяжённость улицы — 1800 м, из них 530 м являются пешеходными.\n" +
                 "\n" +
                 "Основная архитектурно-художественная идея улицы — создание «уголка Петербурга». Для этого используются стилизованные мостики, ограда и рисунки мощения пешеходной эспланады, символизирующие петербургские каналы, ротонда, скульптурно-монументальные композиции и другие архитектурные приёмы и малые формы.";
+        travelLocationPeterStreet.coordX = 55.785864468184386F;
+        travelLocationPeterStreet.coordY = 49.124422073364265F;
+        travelLocationPeterStreet.costable = 0;
         travelLocationPeterStreet.location = "Казань";
         travelLocationPeterStreet.starRating = 4.9f;
         travelLocations.add(travelLocationPeterStreet);
@@ -319,6 +359,9 @@ public class MainActivity extends AppCompatActivity {
                 "Это уникальный в России и один из немногих в мире современных крупных объектов подобной формы. Комплекс является одной из современных и знаковых достопримечательностей города как в плане архитектуры, так и в плане функциональности.\n" +
                 "\n" +
                 "В «Пирамиде» проходят ведомственно-отраслевые конгрессы, конференции, презентации, банкеты и прочие мероприятия.";
+        travelLocationPyramid.coordX = 55.7947857942284F;
+        travelLocationPyramid.coordY = 49.1031038761139F;
+        travelLocationPyramid.costable = 0;
         travelLocationPyramid.location = "Казань";
         travelLocationPyramid.starRating = 4.5f;
         travelLocations.add(travelLocationPyramid);
@@ -334,6 +377,9 @@ public class MainActivity extends AppCompatActivity {
                 "Она содержит более трёх миллионов двухсот тысяч документов, в том числе более 100 тысяч документов на татарском языке и ещё 100 тысяч на иностранных языках.\n" +
                 "\n" +
                 "Библиотека была официально открыта 10 января 1865 года как городская публичная библиотека Казани.";
+        travelLocationBiblioteka.coordX = 55.80177545280637F;
+        travelLocationBiblioteka.coordY = 49.12585973739625F;
+        travelLocationBiblioteka.costable = 0;
         travelLocationBiblioteka.location = "Казань";
         travelLocationBiblioteka.starRating = 4.9f;
         travelLocations.add(travelLocationBiblioteka);
@@ -350,6 +396,9 @@ public class MainActivity extends AppCompatActivity {
                 "с изысканными сортами чая,\n" +
                 "профессионально приготовленным кофе\n" +
                 "и превосходной кухней.";
+        travelLocationAgafredo.coordX = 55.8188417F;
+        travelLocationAgafredo.coordY = 49.1170194F;
+        travelLocationAgafredo.costable = 1;
         travelLocationAgafredo.location = "Казань";
         travelLocationAgafredo.starRating = 4.9f;
         travelLocations.add(travelLocationAgafredo);
@@ -364,6 +413,9 @@ public class MainActivity extends AppCompatActivity {
         travelLocationRannyaPtashka.description = "«Ранняя пташка» — отличное кафе для завтрака и для работы. Там много пространства и света. Розовая неоновая подсветка, кофе, бейглы и живые цветы делают заведение популярным у казанских девушек.\n" +
                 "\n" +
                 "Там всегда хороший ассортимент кофе и можно купить зерно. Бариста помогут с выбором и подскажут, каким способом его лучше заваривать.";
+        travelLocationRannyaPtashka.coordX = 55.7912179F;
+        travelLocationRannyaPtashka.coordY = 49.1182238F;
+        travelLocationRannyaPtashka.costable = 1;
         travelLocationRannyaPtashka.location = "Казань";
         travelLocationRannyaPtashka.starRating = 4.6f;
         travelLocations.add(travelLocationRannyaPtashka);
@@ -379,6 +431,9 @@ public class MainActivity extends AppCompatActivity {
                 "\n" +
                 "Отель Шаляпин это 123 уютных номера различной категории, 8 конференц-залов, фитнес-центр с бассейном, ресторан европейской и национальной кухни и лобби-бар.\n" +
                 "Удобное  расположение отеля в самом историческом центре города – на пешеходной улице Баумана – является его неоспоримым преимуществом.";
+        travelLocationHotelShalyapin.coordX = 55.78789139910992F;
+        travelLocationHotelShalyapin.coordY = 49.11931514739991F;
+        travelLocationHotelShalyapin.costable = 1;
         travelLocationHotelShalyapin.location = "Казань";
         travelLocationHotelShalyapin.starRating = 4.9f;
         travelLocations.add(travelLocationHotelShalyapin);
