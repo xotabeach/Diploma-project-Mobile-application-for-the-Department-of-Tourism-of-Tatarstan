@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,10 +18,13 @@ import com.example.mobile_tour.ui.ClickedTravelData;
 import com.example.mobile_tour.ui.home.Landmark;
 import com.example.mobile_tour.ui.home.TravelCategory;
 import com.example.mobile_tour.ui.home.TravelLocation;
-
+import java.util.Set;
+import java.util.HashSet;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "landmarks3.db";
@@ -475,13 +479,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return landmarks;
     }
 
-    public List<Landmark> getLandmarksByCategoryCost(String category, int costable) {
+    public List<Landmark> getLandmarksByCategoryCost(String category, int costable, int limit) {
         List<Landmark> landmarks = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Выполняем запрос
-        String query = "SELECT * FROM landmarks WHERE category = ? AND costable = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{category, String.valueOf(costable)});
+        // Проверяем, если limit больше, чем количество доступных записей, устанавливаем limit равным количеству доступных
+        int actualLimit = Math.min(limit, getLandmarkCountByCategoryCost(category, costable));
+
+        // Выполняем запрос с ограничением на количество строк
+        String query = "SELECT * FROM landmarks WHERE category = ? AND costable = ? LIMIT ?";
+        Cursor cursor = db.rawQuery(query, new String[]{category, String.valueOf(costable), String.valueOf(actualLimit)});
 
         // Обрабатываем результат запроса
         while (cursor.moveToNext()) {
@@ -501,6 +508,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         return landmarks;
     }
+
 
 
     public void displayClickedData() {
@@ -569,31 +577,117 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<Landmark> getLandmarksByCostable(int costable) {
+    private int getLandmarkCountByCategoryCost(String category, int costable) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM landmarks WHERE category = ? AND costable = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{category, String.valueOf(costable)});
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count;
+    }
+
+    private int getLandmarkCountByCostable(int costable) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM landmarks WHERE costable = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(costable)});
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count;
+    }
+
+    public List<Landmark> getLandmarksByCostable(int costable, int limit) {
         List<Landmark> landmarks = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Выполняем запрос
-        String query = "SELECT * FROM landmarks WHERE costable = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(costable)});
+        // Выбираем случайные 80% платных и 20% бесплатных достопримечательностей
+        Random random = new Random();
+        int paidLimit = (int) (limit * 0.8); // 80% платных
+        int freeLimit = limit - paidLimit; // 20% бесплатных
 
-        // Обрабатываем результат запроса
-        while (cursor.moveToNext()) {
-            @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
-            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
-            @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category"));
-            @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
-            @SuppressLint("Range") float coordX = cursor.getFloat(cursor.getColumnIndex("coordX"));
-            @SuppressLint("Range") float coordY = cursor.getFloat(cursor.getColumnIndex("coordY"));
+        int paidCount = 0;
+        int freeCount = 0;
+        String avoidCategory = null;
+        Set<Integer> selectedIds = new HashSet<>(); // Множество для хранения выбранных ID
 
-            // Создаем объект Landmark и добавляем его в список
-            Landmark landmark = new Landmark(id, title, image, category, coordX, coordY, costable);
+        // Выбираем достопримечательности сначала среди платных
+        while (paidCount < paidLimit) {
+            Landmark landmark = getSingleLandmark(db, costable, true, avoidCategory, selectedIds);
+            if (landmark == null) break; // Если не удалось получить достопримечательность, прерываем цикл
             landmarks.add(landmark);
+            selectedIds.add(landmark.getId());
+            if (landmark.getCategory().equals("Кафе") || landmark.getCategory().equals("Отель")) {
+                avoidCategory = landmark.getCategory(); // Указываем категорию, которую нужно исключить
+            } else {
+                avoidCategory = null; // Сбрасываем исключение
+            }
+            paidCount++;
         }
 
-        cursor.close();
+        // Затем выбираем оставшиеся места среди бесплатных
+        while (freeCount < freeLimit) {
+            Landmark landmark = getSingleLandmark(db, costable, false, avoidCategory, selectedIds);
+            if (landmark == null) break; // Если не удалось получить достопримечательность, прерываем цикл
+            landmarks.add(landmark);
+            selectedIds.add(landmark.getId());
+            if (landmark.getCategory().equals("Кафе") || landmark.getCategory().equals("Отель")) {
+                avoidCategory = landmark.getCategory(); // Указываем категорию, которую нужно исключить
+            } else {
+                avoidCategory = null; // Сбрасываем исключение
+            }
+            freeCount++;
+        }
+
         db.close();
 
         return landmarks;
     }
+
+    // Метод для получения одной достопримечательности из базы данных
+    private Landmark getSingleLandmark(SQLiteDatabase db, int costable, boolean isPaid, String avoidCategory, Set<Integer> selectedIds) {
+        String query;
+        if (isPaid) {
+            query = "SELECT * FROM landmarks WHERE costable = 1";
+        } else {
+            query = "SELECT * FROM landmarks WHERE costable = 0";
+        }
+        if (avoidCategory != null) {
+            query += " AND category != '" + avoidCategory + "'";
+        }
+        if (!selectedIds.isEmpty()) {
+            String selectedIdsString = TextUtils.join(",", selectedIds);
+            query += " AND id NOT IN (" + selectedIdsString + ")";
+        }
+        query += " ORDER BY RANDOM() LIMIT 1";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            String title = cursor.getString(cursor.getColumnIndex("title"));
+            String category = cursor.getString(cursor.getColumnIndex("category"));
+            int image = cursor.getInt(cursor.getColumnIndex("image"));
+            float coordX = cursor.getFloat(cursor.getColumnIndex("coordX"));
+            float coordY = cursor.getFloat(cursor.getColumnIndex("coordY"));
+            int landmarkCostable = cursor.getInt(cursor.getColumnIndex("costable"));
+
+            cursor.close();
+            return new Landmark(id, title, image, category, coordX, coordY, landmarkCostable);
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

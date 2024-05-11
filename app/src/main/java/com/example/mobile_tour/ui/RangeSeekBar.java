@@ -19,9 +19,9 @@ public class RangeSeekBar extends View {
     private int rangeColor;
     private int rangeWidth;
     private int min = 0;
-    private int max = 25;
-    private int leftThumb = 1;
-    private int rightThumb = 16;
+    private int max = 10;
+    private int leftThumb = 2;
+    private int rightThumb = 7;
     private boolean isTouchingLeftThumb = false;
     private boolean isTouchingRightThumb = false;
 
@@ -114,12 +114,24 @@ public class RangeSeekBar extends View {
             case MotionEvent.ACTION_MOVE:
                 if (isTouchingLeftThumb) {
                     leftThumb = (int) ((x - thumbRadius) / (getWidth() - 2 * thumbRadius) * max);
-                    leftThumb = Math.min(Math.max(leftThumb, min), rightThumb);
+                    leftThumb = Math.min(Math.max(leftThumb, min), rightThumb - 1); // Ограничение левого маркера
+
+                    // Проверка на наезд маркеров
+                    if (leftThumb >= rightThumb - 1) {
+                        rightThumb = leftThumb + 1;
+                    }
+
                     invalidate();
                 }
                 if (isTouchingRightThumb) {
                     rightThumb = (int) ((x - thumbRadius) / (getWidth() - 2 * thumbRadius) * max);
-                    rightThumb = Math.min(Math.max(rightThumb, leftThumb), max);
+                    rightThumb = Math.min(Math.max(rightThumb, leftThumb + 1), max); // Ограничение правого маркера
+
+                    // Проверка на наезд маркеров
+                    if (rightThumb <= leftThumb + 1) {
+                        leftThumb = rightThumb - 1;
+                    }
+
                     invalidate();
                 }
                 break;
@@ -136,6 +148,7 @@ public class RangeSeekBar extends View {
 
         return true;
     }
+
 
     private boolean isInsideLeftThumb(float x) {
         float leftX = (leftThumb / (float) max) * (getWidth() - 2 * thumbRadius) + thumbRadius;

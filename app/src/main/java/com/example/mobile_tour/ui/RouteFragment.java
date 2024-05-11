@@ -1,11 +1,13 @@
 package com.example.mobile_tour.ui;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ public class RouteFragment extends Fragment {
     private FragmentRouteBinding binding;
     private boolean isHidden = true;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -42,6 +45,8 @@ public class RouteFragment extends Fragment {
 
         int costableState = 0;
         String preferCat = args.getString("autoCompleteText");
+        assert preferCat != null;
+        preferCat = preferCat.trim();
         int minThumbValue = args.getInt("leftThumbValue");
         int maxThumbValue = args.getInt("rightThumbValue");
         boolean freeTravelChecked = args.getBoolean("freeTravelChecked");
@@ -58,17 +63,19 @@ public class RouteFragment extends Fragment {
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(requireContext());
 
+        Random r = new Random();
         if(!freeTravelChecked) costableState =1;
+        int numOfLandmarks = minThumbValue + r.nextInt(maxThumbValue - minThumbValue);
 
 
-        if(preferCat != "" || preferCat != "Например: кафе"){
-            landmarks = dataBaseHelper.getLandmarksByCategoryCost(preferCat, costableState);
-        }
-        else{
-            landmarks = dataBaseHelper.getLandmarksByCostable(costableState);
-        }
+        if (!preferCat.equals(""))
+            if(!preferCat.equals("Например: кафе"))
+                landmarks = dataBaseHelper.getLandmarksByCategoryCost(preferCat, costableState, numOfLandmarks);
+        else landmarks = dataBaseHelper.getLandmarksByCostable(costableState, numOfLandmarks);
 
-        int numOfLandmarks = Math.min(landmarks.size(), minThumbValue + new Random().nextInt(maxThumbValue - minThumbValue + 1));
+
+
+
         Log.d("RouteLandmarks", "Selected landmarks count: " + numOfLandmarks);
 
         LinearLayout stationsLayout = root.findViewById(R.id.stationsLayout);
@@ -112,24 +119,46 @@ public class RouteFragment extends Fragment {
             showMoreText.setLayoutParams(params);
             showMoreText.setGravity(Gravity.CENTER);
 
+
+
             showMoreText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     isHidden = !isHidden;
+
+                    // Анимация изменения текста
+                    showMoreText.animate().alpha(0.0f).setDuration(300)
+                            .withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showMoreText.setText(isHidden ? "Показать все" : "Скрыть");
+                                    showMoreText.animate().alpha(1.0f).setDuration(300);
+                                }
+                            });
+
+                    // Анимация переключения видимости элементов
+                    int delay = 0; // Задержка в миллисекундах для каждого элемента
                     for (int i = 2; i < numOfLandmarks * 2 - 2; i++) {
-                        View view = stationsLayout.getChildAt(i);
+                        final View view = stationsLayout.getChildAt(i);
                         if (view != null) {
-                            view.setVisibility(isHidden ? View.GONE : View.VISIBLE);
+                            view.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.setVisibility(isHidden ? View.GONE : View.VISIBLE);
+                                    view.animate().alpha(isHidden ? 0.0f : 1.0f).setDuration(500);
+                                }
+                            }, delay);
+                            delay += 55;
                         }
                     }
+
                     TextView firstDotText = (TextView) stationsLayout.getChildAt(1).findViewById(R.id.dotText);
                     firstDotText.setText(isHidden ? "2 мин" : "10 мин");
-                    showMoreText.setText(isHidden ? "Показать все" : "Скрыть");
-
-
-
+                    firstDotText.animate().alpha(1.0f).setDuration(300);
                 }
             });
+
+
             stationsLayout.addView(showMoreText);
         }
 
