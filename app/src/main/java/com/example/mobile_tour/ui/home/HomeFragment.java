@@ -51,6 +51,9 @@ public class HomeFragment extends Fragment {
         throw new RuntimeException("Stub!");
     }
 
+    private int activePosition = 0;
+
+    private KenBurnsView kenBurnsView;
     private List<TravelLocation> travelLocations;
 
     private void editViewPager(ViewPager2 locationsViewPager) {
@@ -91,7 +94,7 @@ public class HomeFragment extends Fragment {
 
         KenBurnsView kenBurnsView = item.findViewById(R.id.kbvLocation);
 
-
+        kenBurnsView.pause();
         DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
         dbHelper.displayAllData();
         travelLocations = dbHelper.getAllTravelLocations();
@@ -148,6 +151,8 @@ public class HomeFragment extends Fragment {
 
 
         editViewPager(locationsViewPager);
+
+
 
 
 
@@ -219,12 +224,23 @@ public class HomeFragment extends Fragment {
 
 
 
+
+
         locationsViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            private int oldPosition = -1;
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                int newPosition = position;
+                adapter.setActivePosition(newPosition);
+                oldPosition = newPosition;
+            }
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 View viewDefault = ((RecyclerView) locationsViewPager.getChildAt(0)).getLayoutManager().findViewByPosition(0);
-
 
                 float defSizeX = viewDefault.getScaleX();
                 float defSizeY = viewDefault.getScaleY();
@@ -235,17 +251,18 @@ public class HomeFragment extends Fragment {
                         if (i == position) {
                             view.setTranslationZ(150);
                             view.setAlpha(1f);
-
+                            adapter.setActivePosition(position);
+                            adapter.stopAllKenBurnsViews(locationsViewPager);
                         } else {
-                            //view.setScaleY(0.8f);
+                            // view.setScaleY(0.8f);
                             view.setTranslationZ(10);
                             view.setAlpha(0.75f);
-                            kenBurnsView.pause();
                         }
                     }
                 }
             }
         });
+
 
         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
         compositePageTransformer.addTransformer(new MarginPageTransformer(40));
@@ -278,6 +295,9 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
+
+
+
         super.onResume();
         DataBaseHelper dbHelper = new DataBaseHelper(this.getContext());
         dbHelper.displayAllData();

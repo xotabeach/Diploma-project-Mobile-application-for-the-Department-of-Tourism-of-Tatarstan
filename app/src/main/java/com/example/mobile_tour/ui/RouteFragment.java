@@ -22,10 +22,12 @@ import com.example.mobile_tour.databinding.FragmentRouteBinding;
 import com.example.mobile_tour.ui.home.Landmark;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class RouteFragment extends Fragment {
 
+    private List<Landmark> landmarks;
     private FragmentRouteBinding binding;
     private boolean isHidden = true;
 
@@ -36,10 +38,9 @@ public class RouteFragment extends Fragment {
         View root = binding.getRoot();
         Typeface customTypeface = ResourcesCompat.getFont(requireContext(), R.font.gothampro);
 
-        // Получаем объект ContentValues из аргументов
         Bundle args = getArguments();
 
-        // Извлекаем данные из ContentValues
+        int costableState = 0;
         String preferCat = args.getString("autoCompleteText");
         int minThumbValue = args.getInt("leftThumbValue");
         int maxThumbValue = args.getInt("rightThumbValue");
@@ -55,22 +56,24 @@ public class RouteFragment extends Fragment {
         Log.d("RouteParams", "Transport Checked: " + transportChecked);
         Log.d("RouteParams", "No Money Matters Checked: " + noMoneyMattersChecked);
 
-        // Создаем объект базы данных
         DataBaseHelper dataBaseHelper = new DataBaseHelper(requireContext());
 
-        // Получаем список достопримечательностей по выбранной категории
-        List<Landmark> landmarks = dataBaseHelper.getLandmarksByCategory(preferCat);
+        if(!freeTravelChecked) costableState =1;
 
-        // Выбираем случайное количество достопримечательностей в диапазоне от minThumbValue до maxThumbValue
+
+        if(preferCat != "" || preferCat != "Например: кафе"){
+            landmarks = dataBaseHelper.getLandmarksByCategoryCost(preferCat, costableState);
+        }
+        else{
+            landmarks = dataBaseHelper.getLandmarksByCostable(costableState);
+        }
+
         int numOfLandmarks = Math.min(landmarks.size(), minThumbValue + new Random().nextInt(maxThumbValue - minThumbValue + 1));
-
-        // Выводим информацию о выбранных достопримечательностях в лог
         Log.d("RouteLandmarks", "Selected landmarks count: " + numOfLandmarks);
 
         LinearLayout stationsLayout = root.findViewById(R.id.stationsLayout);
         LayoutInflater layoutInflater = LayoutInflater.from(requireContext());
 
-        // Создаем станции и точки
         for (int i = 0; i < numOfLandmarks; i++) {
             Landmark landmark = landmarks.get(i);
             LinearLayout stationCopy = createStationCopy(layoutInflater, stationsLayout, landmark, i, numOfLandmarks);
@@ -78,80 +81,69 @@ public class RouteFragment extends Fragment {
 
             LinearLayout dotLayout = (LinearLayout) layoutInflater.inflate(R.layout.station_dot_layout, stationsLayout, false);
             dotLayout.setId(View.generateViewId());
-            if (numOfLandmarks > 4 && i == 0) { // Проверяем, больше ли четырех станций и индекс равен 0
+            if (numOfLandmarks > 4 && i == 0) {
                 TextView dotText = dotLayout.findViewById(R.id.dotText);
-                dotText.setText("2 мин"); // Устанавливаем текст вместо "10 мин"
-            } else if (i == numOfLandmarks - 1) { // Если это последняя станция
+                dotText.setText("2 мин");
+            } else if (i == numOfLandmarks - 1) {
                 TextView dotText = dotLayout.findViewById(R.id.dotText);
-                dotText.setText("1 час"); // Устанавливаем текст вместо "1 час"
+                dotText.setText("1 час");
                 dotLayout.setVisibility(View.GONE);
             }
             stationsLayout.addView(dotLayout);
         }
 
-        Log.d("RouteParams", "Количество: " + numOfLandmarks);
-
-        // Скрываем ненужные станции и точки, если их больше 4
         if (numOfLandmarks > 4) {
-            // Проходим по всем станциям и точкам, начиная со второй и заканчивая предпоследней
             for (int i = 2; i < numOfLandmarks * 2 - 2; i++) {
                 View view = stationsLayout.getChildAt(i);
                 if (view != null) {
-                    view.setVisibility(View.GONE); // Устанавливаем невидимость
+                    view.setVisibility(View.GONE);
                 }
             }
         }
 
-        // Добавляем кнопку для показа остальных станций, если их больше четырех
         if (numOfLandmarks > 4) {
-            // Добавляем кнопку для показа остальных станций
+
             TextView showMoreText = new TextView(requireContext());
             showMoreText.setText("Показать все");
             showMoreText.setTextColor(Color.BLACK);
             showMoreText.setTypeface(customTypeface);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 45);
-            params.setMargins(0, 0, 0, 35); // Отступ снизу
+            params.setMargins(0, 0, 0, 35);
             showMoreText.setLayoutParams(params);
-            showMoreText.setGravity(Gravity.CENTER); // Выравнивание текста по центру
+            showMoreText.setGravity(Gravity.CENTER);
 
             showMoreText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     isHidden = !isHidden;
-                    // Проходим по всем станциям и точкам, начиная со второй и заканчивая предпоследней
                     for (int i = 2; i < numOfLandmarks * 2 - 2; i++) {
                         View view = stationsLayout.getChildAt(i);
                         if (view != null) {
-                            view.setVisibility(isHidden ? View.GONE : View.VISIBLE); // Устанавливаем видимость
+                            view.setVisibility(isHidden ? View.GONE : View.VISIBLE);
                         }
                     }
                     TextView firstDotText = (TextView) stationsLayout.getChildAt(1).findViewById(R.id.dotText);
-                    firstDotText.setText(isHidden ? "2 мин" : "10 мин"); // Изменяем текст при нажатии
+                    firstDotText.setText(isHidden ? "2 мин" : "10 мин");
                     showMoreText.setText(isHidden ? "Показать все" : "Скрыть");
 
-                    // Обновляем параметры ScrollView
+
 
                 }
             });
             stationsLayout.addView(showMoreText);
         }
 
-        // Возвращаем макет
+
         return root;
     }
 
     private LinearLayout createStationCopy(LayoutInflater layoutInflater, LinearLayout parentLayout, Landmark landmark, int index, int numOfLandmarks) {
-        // Создаем копию LinearLayout с id "station"
         LinearLayout stationCopy = (LinearLayout) layoutInflater.inflate(R.layout.station_layout, parentLayout, false);
-        // Присваиваем уникальный id к копии
         stationCopy.setId(View.generateViewId());
-        // Находим в этой копии элементы
         ImageView stationIcon = stationCopy.findViewById(R.id.stationIcon1);
         TextView stationName = stationCopy.findViewById(R.id.stationName1);
-        // Устанавливаем данные в найденные элементы
         stationIcon.setImageResource(R.drawable.circle_point);
         stationName.setText(landmark.getTitle());
-        // Устанавливаем Tag, чтобы позже можно было определить, с какой станцией мы работаем
         stationCopy.setTag("station_" + index);
 
         return stationCopy;

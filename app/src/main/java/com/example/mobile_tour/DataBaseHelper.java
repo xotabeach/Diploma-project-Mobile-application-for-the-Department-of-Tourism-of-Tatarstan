@@ -475,6 +475,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return landmarks;
     }
 
+    public List<Landmark> getLandmarksByCategoryCost(String category, int costable) {
+        List<Landmark> landmarks = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Выполняем запрос
+        String query = "SELECT * FROM landmarks WHERE category = ? AND costable = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{category, String.valueOf(costable)});
+
+        // Обрабатываем результат запроса
+        while (cursor.moveToNext()) {
+            @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
+            @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
+            @SuppressLint("Range") float coordX = cursor.getFloat(cursor.getColumnIndex("coordX"));
+            @SuppressLint("Range") float coordY = cursor.getFloat(cursor.getColumnIndex("coordY"));
+
+            // Создаем объект Landmark и добавляем его в список
+            Landmark landmark = new Landmark(id, title, image, category, coordX, coordY, costable);
+            landmarks.add(landmark);
+        }
+
+        cursor.close();
+        db.close();
+
+        return landmarks;
+    }
+
 
     public void displayClickedData() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -542,7 +569,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public List<Landmark> getLandmarksByCostable(int costable) {
+        List<Landmark> landmarks = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        // Выполняем запрос
+        String query = "SELECT * FROM landmarks WHERE costable = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(costable)});
 
+        // Обрабатываем результат запроса
+        while (cursor.moveToNext()) {
+            @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+            @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
+            @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category"));
+            @SuppressLint("Range") int image = cursor.getInt(cursor.getColumnIndex("image"));
+            @SuppressLint("Range") float coordX = cursor.getFloat(cursor.getColumnIndex("coordX"));
+            @SuppressLint("Range") float coordY = cursor.getFloat(cursor.getColumnIndex("coordY"));
 
+            // Создаем объект Landmark и добавляем его в список
+            Landmark landmark = new Landmark(id, title, image, category, coordX, coordY, costable);
+            landmarks.add(landmark);
+        }
+
+        cursor.close();
+        db.close();
+
+        return landmarks;
+    }
 }
