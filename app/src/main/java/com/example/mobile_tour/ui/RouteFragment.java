@@ -7,28 +7,38 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import com.example.mobile_tour.DataBaseHelper;
 import com.example.mobile_tour.R;
 import com.example.mobile_tour.databinding.FragmentRouteBinding;
+import com.example.mobile_tour.network.OpenRouteServiceAPI;
+import com.example.mobile_tour.network.RouteRequest;
+import com.example.mobile_tour.network.RouteResponse;
 import com.example.mobile_tour.ui.home.Landmark;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
+
+import retrofit2.Response;
 
 public class RouteFragment extends Fragment {
 
+    double[][] coordinates;
     private List<Landmark> landmarks;
     private FragmentRouteBinding binding;
     private boolean isHidden = true;
@@ -73,8 +83,14 @@ public class RouteFragment extends Fragment {
                 landmarks = dataBaseHelper.getLandmarksByCategoryCost(preferCat, costableState, numOfLandmarks);
         else landmarks = dataBaseHelper.getLandmarksByCostable(costableState, numOfLandmarks);
 
+        coordinates = new double[landmarks.size()][2];
+        for (Landmark landmark : landmarks) {
 
-
+            coordinates[landmarks.indexOf(landmark)][0] = landmark.getCoordX();
+            coordinates[landmarks.indexOf(landmark)][1] = landmark.getCoordY();
+            Log.d("LandmarkCoordinates", landmark.getTitle() + " - CoordX: " + coordinates[landmarks.indexOf(landmark)][0] + ", CoordY: " + coordinates[landmarks.indexOf(landmark)][1]);
+        }
+        getRoute(coordinates);
 
         Log.d("RouteLandmarks", "Selected landmarks count: " + numOfLandmarks);
 
@@ -166,6 +182,9 @@ public class RouteFragment extends Fragment {
         return root;
     }
 
+
+
+
     private LinearLayout createStationCopy(LayoutInflater layoutInflater, LinearLayout parentLayout, Landmark landmark, int index, int numOfLandmarks) {
         LinearLayout stationCopy = (LinearLayout) layoutInflater.inflate(R.layout.station_layout, parentLayout, false);
         stationCopy.setId(View.generateViewId());
@@ -177,4 +196,72 @@ public class RouteFragment extends Fragment {
 
         return stationCopy;
     }
+
+
+
+
+    private void getRoute(double[][] coordinates) {
+        // Создаем объект Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.openrouteservice.org/v2/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Получаем ключ API
+        String apiKey = "5b3ce3597851110001cf6248fa4ef474da3e495da7eddcf7fff4288b";
+
+        // Создаем экземпляр интерфейса OpenRouteServiceAPI
+        OpenRouteServiceAPI serviceAPI = retrofit.create(OpenRouteServiceAPI.class);
+
+        // Создаем объект запроса
+        RouteRequest request = new RouteRequest(coordinates);
+
+        // Выводим запрос в консоль
+        System.out.println("Request URL: " + serviceAPI.getWalkingRoute("Bearer " + apiKey, request).request().url());
+        System.out.println("Request Body: " + new Gson().toJson(request));
+
+        // Отправляем запрос с ключом API
+        Call<RouteResponse> call = serviceAPI.getWalkingRoute("Bearer " + apiKey, request);
+        call.enqueue(new Callback<RouteResponse>() {
+            @Override
+            public void onResponse(Call<RouteResponse> call, Response<RouteResponse> response) {
+                if (response.isSuccessful()) {
+                    RouteResponse routeResponse = response.body();
+                    if (routeResponse != null) {
+                        // Обработка успешного ответа
+                    }
+                } else {
+                    // Обработка неуспешного ответа
+                    try {
+                        String errorBody = response.errorBody().string();
+                        Log.e("RouteRequest", "Failed to get route. Error code: " + response.code() + ", Error message: " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RouteResponse> call, Throwable t) {
+                // Обработка ошибки
+                Log.e("RouteRequest", "Failed to get route: " + t.getMessage());
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
